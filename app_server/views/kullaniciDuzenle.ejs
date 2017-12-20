@@ -1,0 +1,51 @@
+
+<div class="row">
+  <h2>Kullanıcı Düzenle</h2>
+  <hr>
+
+  <% if(mesaj=="ok" ) { %>
+  <div class="alert alert-success">
+    <strong>Kullanıcı bilgileri güncellendi.</strong>
+  </div>
+  <% } %>
+  <% if(mesaj=="err" ) { %>
+  <div class="alert alert-danger">
+    <strong>Hata!</strong> Bilgiler güncellenemedi!
+  </div>
+  <% } %>
+
+  <form action="../kullanicilar" method="POST">
+      <input type="text" class="hidden" id="kullaniciId" name="kullaniciId" value="<%= kullanici.id%>">
+    <div class="form-group">
+      <label for="kullaniciAdi">Kullanıcı Adı:</label>
+      <input type="text" class="form-control" id="kullaniciAdi" placeholder="Kullanıcı Adı" name="kullaniciAdi" required="true" value="<%= kullanici.kullaniciAdi%>">
+    </div>
+    <div class="form-group">
+      <label for="email">E-posta:</label>
+      <input type="email" class="form-control" id="email" placeholder="E-posta" name="email" value="<%= kullanici.mail%>">
+    </div>
+    <div class="form-group">
+      <label for="yetki">Yetki:</label>
+      <select class="form-control" id="yetki" name="yetki" required="true">
+        <% if(kullanici.yetki == 1){ %>
+        <option selected="true" value="1" >Yönetici</option>
+        <%}else{%>
+        <option value="1" >Yönetici</option>
+        <%}%>
+        <% if(kullanici.yetki == 2){ %>
+        <option selected="true" value="2" >Kullanıcı</option>
+        <%}else{%>
+        <option value="2" >Kullanıcı</option>
+        <%}%>
+      </select>
+    </div>
+    <!-- div class="form-group">
+      <label for="pwd">Şifre:</label>
+      <input type="password" class="form-control" id="pwd" placeholder="Şifre" name="pwd" required="true">
+    </div -->
+    <!-- div class="col-sm-4 col-sm-push-11 align-right">
+      <button type="submit" class="btn btn-info">Kaydet</button>
+    </div -->
+      <button type="submit" class="btn btn-info">Kaydet</button>
+  </form>
+</div>

@@ -1,0 +1,93 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Akademik Kurul</h1>
+    </div>
+    <!-- /.col-lg-12 -->
+
+  <% if(mesaj=="ok" ) { %>
+  <div class="alert alert-success">
+    <strong>Akademik Rapor güncellendi.</strong>
+  </div>
+  <% } %>
+  <% if(mesaj=="err" ) { %>
+  <div class="alert alert-danger">
+    <strong>Hata!</strong> Bilgiler güncellenemedi!
+  </div>
+  <% } %>
+
+
+  <form action="../akademikKurul" method="POST">
+    <input type="text" class="hidden" id="raporId" name="raporId" value="<%= akademikRapor.id %>">
+    <div class=row>
+      <div class="form-group col-sm-4">
+        <label for="donem">Eğitim-Öğretim Dönemi:</label>
+        <select class="form-control" id="donem" name="donem" required="true">
+          <% for (var i = (parseInt(year)-5); i <= (parseInt(year) + 5); i++) { %>
+            <% if ((i+"-"+(i+1)) == akademikRapor.donem) { %>
+              <option selected="true"><%= akademikRapor.donem %></option>
+            <% } else { %>
+              <option><%= i %>-<%=i+1%></option>
+            <% } %>
+          <% } %>
+        </select>
+      </div>
+      <div class="form-group col-sm-4">
+        <label for="raporNo">Rapor No:</label>
+        <input type="number" class="form-control" id="raporNo" name="raporNo" required="true" value="<%= akademikRapor.raporNo %>">
+      </div>
+      <div class="form-group col-sm-4">
+        <label for="raporTarih">Rapor Tarihi:</label>
+        <input type="date" class="form-control" id="raporTarih" name="raporTarih" required="true" value="<%= akademikRapor.raporTarih %>">
+      </div>
+    </div>
+    <div class=row>
+      <div class="form-group col-sm-6">
+        <label for="ukyTeknikler">Ünitede Kullanılan Yöntem Teknikler (Turnuva):</label>
+        <textarea class="form-control" rows="5" id="ukyTeknikler" name="ukyTeknikler" required="true"><%= akademikRapor.ukyTeknikler %></textarea>
+      </div>
+    </div>
+    <div class=row>
+      <div class="form-group col-sm-6">
+        <label for="ogrMateryali">Ünitede Hazırlanan ve Kullanılan Öğretim Materyali:</label>
+        <textarea class="form-control" rows="5" id="ogrMateryali" name="ogrMateryali" required="true"><%= akademikRapor.ogrMateryali %></textarea>
+      </div>
+    </div>
+    <div class=row>
+      <div class="form-group col-sm-6">
+        <label for="hazirlananSorular">Soru Bankası için Hazırlanan Sorular:</label>
+        <textarea class="form-control" rows="5" id="hazirlananSorular" name="hazirlananSorular" required="true"><%= akademikRapor.hazirlananSorular %></textarea>
+      </div>
+    </div>
+    <div class=row>
+      <div class="form-group col-sm-6">
+        <label for="agis">AGİS (Akademik Gelişim İzleme Sınav Sonuçları ve Tedbirler):</label>
+        <textarea class="form-control" rows="5" id="agis" name="agis" required="true"><%= akademikRapor.agis %></textarea>
+      </div>
+    </div>
+    <div class=row>
+      <div class="form-group col-sm-6">
+        <label for="digerEtkinlikler">Diğer Faaliyet ve Etkinlikler:</label>
+        <textarea class="form-control" rows="5" id="digerEtkinlikler" name="digerEtkinlikler" required="true"><%= akademikRapor.digerEtkinlikler %></textarea>
+      </div>
+    </div>
+    <div class=row>
+      <div class="form-group col-sm-6">
+        <label for="zumreBaskani">Zümre Başkanı:</label>
+        <input type="text" class="form-control" id="zumreBaskani" name="zumreBaskani" required="true" value="<%= akademikRapor.zumreBaskani %>">
+      </div>
+      <div class="form-group col-sm-6">
+        <label for="akademikDanisman">Akademik Danışman:</label>
+        <input type="text" class="form-control" id="akademikDanisman" name="akademikDanisman" required="true" value="<%= akademikRapor.akademikDanisman %>">
+      </div>
+    </div>
+    <div class=row>
+      <div class="form-group col-sm-12">
+      <button type="submit" class="btn btn-info col-sm-2">Kaydet</button>
+    </div>
+    <br><br><br><br><br><br>
+    </div>
+  </form>
+
+  
+</div>
+<!-- /.row -->

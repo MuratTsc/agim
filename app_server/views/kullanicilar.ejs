@@ -1,0 +1,74 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Kullanıcı İşlemleri</h1>
+    </div>
+    <!-- /.col-lg-12 -->
+
+  <% if(mesaj=="ok" ) { %>
+  <div class="alert alert-success">
+    <strong>Kullanıcı silindi.</strong>
+  </div>
+  <% } %>
+  <% if(mesaj=="err" ) { %>
+  <div class="alert alert-danger">
+    <strong>Hata!</strong> 
+  </div>
+  <% } %>
+
+<h3>Kullanıcı Listesi</h3>
+<table class="table table-hover">
+
+    <thead>
+        <tr>
+            <th>Kullanıcı Adı</th>
+            <th>E-mail</th>
+            <th>Yetki</th>
+            <th>İşlemler</th>
+        </tr>
+    </thead>
+
+    <tbody>
+    
+        <% for (var i=0; i<kullanicilar.length; i++) { %>
+            <% if(i%2==0) { %>
+                <tr class="info">
+            <% }else{ %>
+                <tr class="warning">
+            <% } %>
+            <td><%= kullanicilar[i].kullaniciAdi %></td>
+            <td><%= kullanicilar[i].mail %></td>
+            <td><% if(kullanicilar[i].yetki<2){%> Yönetici <%}else{%> Kullanıcı <%}; %></td>
+            <td>
+            <div class="row">
+                <button class="btn btn-danger" type="submit" onclick="sil('<%=kullanicilar[i].id%>', '<%=kullanicilar[i].kullaniciAdi%>');">Sil</button>
+                <a href="/kullanicilar/<%=kullanicilar[i].id%>" class="btn btn-info">Düzenle</a>
+            </div>
+            </td>
+            </tr>
+        <script>
+        function sil(id, kullaniciAdi){
+            $.ajax({
+                url: '/kullanicilar',
+                type: 'DELETE',
+                data: {'kullaniciId': id},
+                success: function(result) {
+                    // Do something with the result
+                    if (result == 'ok'){
+                        console.log(result);
+                        alert(kullaniciAdi + " adlı kullanıcı silindi.");
+                        location.reload();
+                    } else {
+                        alert("Hata! Kayıt silinemedi.");
+                    };
+                }
+            });
+        }
+        </script>
+        <% } %>
+    
+    </tbody>
+
+</table>
+
+</div>
+<!-- /.row -->

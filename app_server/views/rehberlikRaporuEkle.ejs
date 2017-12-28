@@ -1,0 +1,113 @@
+
+
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Rehberlik Raporu Ekleme</h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->
+
+<div class="row">
+
+  <% if(mesaj=="ok" ) { %>
+  <div class="alert alert-success" id="okMesaj" name="okMesaj">
+    <strong>Rehberlik Raporu eklendi.</strong>
+  </div>
+  <% } %>
+  <% if(mesaj=="err" ) { %>
+  <div class="alert alert-danger" id="errMesaj" name="errMesaj">
+    <strong>Hata!</strong> Rapor eklenemedi!
+  </div>
+  <% } %>
+  
+
+<form action="../rehberlikRaporuEkle" method="POST">
+
+    <div class=row>
+        <div class="form-group col-sm-12">
+        <label for="rapor">Rapor:</label>
+        <textarea class="form-control" rows="5" id="rapor" name="rapor" required="true"></textarea>
+        </div>
+    </div>
+
+    <div class=row>
+        <div class="form-group col-sm-6">
+        <label for="seviye">Seviye:</label>
+        <select class="form-control" id="seviye" name="seviye" required="true" onChange="sinifDoldur()">
+            <option value="" selected>Seçiniz</option>
+            <% for (var ii=0; ii < seviye.length; ii++) { %>
+                <option value="<%= seviye[ii].id %>" ><%= seviye[ii].ogrenim_seviyesi %></option>
+            <% } %>
+        </select>
+        </div>
+    </div>
+    
+    <div class=row>
+        <div class="form-group col-sm-6">
+        <label for="sinif">Sınıf:</label>
+        <select class="form-control" id="sinif" name="sinif" required="true" onChange="dersDoldur()">
+            <option value="" selected>Önce Seviye Seçiniz</option>
+        </select>
+        </div>
+    </div>
+    
+    <div class=row>
+        <div class="form-group col-sm-6">
+        <label for="ders">Ders:</label>
+        <select class="form-control" id="ders" name="ders" required="true">
+            <option value="" selected>Önce Sınıf Seçiniz</option>
+        </select>
+        </div>
+    </div>
+    <br><br>
+    <div class=row>
+        <div class="form-group col-sm-6">
+        <input type="submit" class="btn btn-info col-sm-4" value="Kaydet">
+        </div>
+    </div>
+    <script>
+    CKEDITOR.replace( 'rapor', {
+        height: 400
+    } );
+</script>
+  </form>
+
+</div>
+<!-- /.row -->
+
+
+    <script>
+        var seviyeSelect = document.getElementById("seviye");
+        var sinifSelect = document.getElementById("sinif");
+        var dersSelect = document.getElementById("ders");
+
+    function sinifDoldur(){
+
+        var secilenSeviye = seviyeSelect.options[seviyeSelect.selectedIndex].value;
+        var secilenSinif = sinifSelect.options[sinifSelect.selectedIndex].value;
+        var secilenDers = dersSelect.options[dersSelect.selectedIndex].value;
+
+        sinifSelect.options.length = 0;
+        sinifSelect.options[sinifSelect.options.length] = new Option('Seçiniz', '');
+        dersSelect.options.length = 0;
+        dersSelect.options[dersSelect.options.length] = new Option('Önce Sınıf Seçiniz', '');
+        <% for (var i=0; i < sinif.length; i++) { %>
+            if (secilenSeviye == <%= sinif[i].seviye_id %>) { 
+                sinifSelect.options[sinifSelect.options.length] = new Option('<%= sinif[i].sinifi %>', '<%= sinif[i].id %>');
+            }
+        <% } %>
+    }
+    function dersDoldur(){
+        var secilenSinif = sinifSelect.options[sinifSelect.selectedIndex].value;
+
+        dersSelect.options.length = 0;
+        dersSelect.options[dersSelect.options.length] = new Option('Seçiniz', '');
+        
+        <% for (var i=0; i < ders.length; i++) { %>
+            if (secilenSinif == <%= ders[i].sinif_id %>) { 
+                dersSelect.options[dersSelect.options.length] = new Option('<%= ders[i].dersAdi %>', '<%= ders[i].id %>');
+            }
+        <% } %>
+    }
+    </script>

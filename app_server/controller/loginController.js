@@ -5,7 +5,7 @@ var mysql = require('mysql');
 
 module.exports.indexGet = function (req, res) {
     // res.render('login');
-    console.log("session.email --> " + req.session.email);
+    // console.log("session.email --> " + req.session.email);
     if (req.session.email) {
         console.log('daha önce giriş yapılmış anasayfaya gönderildi.');
         res.redirect('/');
@@ -28,8 +28,8 @@ module.exports.testGet = function (req, res, con) {
     //         console.log(fields[2].name);
     //     });
     // });
-    console.log('testGet');
-    console.log(con); // dönen değer --> [Function: next]
+    // console.log('testGet');
+    // console.log(con); // dönen değer --> [Function: next]
     res.send('Test Sayfası');
 
     // con.query( 'SELECT * FROM wp_postmeta', function(err, testimonials) {
@@ -65,8 +65,9 @@ module.exports.indexPost = function (req, res) {
     sqlQuery = mysql.format(sqlQuery, inserts);
     con.query(sqlQuery, function (err, result, fields) {
         if (err) throw err;
-        console.log(result);
+        // console.log(result);
         if (result[0]) {
+            req.session.kullaniciId = result[0].id;
             req.session.kullaniciAdi = result[0].kullaniciAdi;
             req.session.email = result[0].mail;
             req.session.yetki = result[0].yetki;
@@ -76,17 +77,18 @@ module.exports.indexPost = function (req, res) {
             // res.send("Giriş başarılı");
             // res.redirect('/');
         } else {
-            console.log('Hatalı Giriş');
+            // console.log('Hatalı Giriş');
             res.send("Hatalı Giriş. " + '<a href="login">Giriş Yap</a>');
         }
     });
 }
 
 module.exports.logoutGet = function (req, res) {
-    console.log('session silindi');
+    delete req.session.kullaniciId;
     delete req.session.kullaniciAdi;
     delete req.session.email;
     delete req.session.yetki;
+    console.log('session silindi');
     res.redirect('/');
 }
 

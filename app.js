@@ -29,6 +29,7 @@ app.use(ejsLayouts);
 
 //haritalama (kullanıcıya klasör erişim izni verme)
 app.use('/public', express.static(path.join(__dirname, 'public')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 //Yönlendirmeler için routeManager.js sayfası çağırılıyor
 require('./app_server/router/routeManager')(app);

@@ -1,0 +1,87 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Akademik Rapor Ekleme</h1>
+    </div>
+    <!-- /.col-lg-12 -->
+
+  <% if(mesaj=="ok" ) { %>
+  <div class="alert alert-success">
+    <strong>Akademik Rapor Eklendi.</strong>
+  </div>
+  <% } %>
+  <% if(mesaj=="err" ) { %>
+  <div class="alert alert-danger">
+    <strong>Hata!</strong> Rapor kayıt edilemedi!
+  </div>
+  <% } %>
+
+
+  <form action="../akademikRaporEkle" method="POST">
+    <div class=row>
+      <div class="form-group col-sm-4">
+        <label for="donem">Eğitim-Öğretim Dönemi:</label>
+        <select class="form-control" id="donem" name="donem" required="true">
+          <% for (var i = (parseInt(year)-5); i <= (parseInt(year) + 5); i++) { %>
+            <% if ((i+"-"+(i+1)) == akademikRapor.donem) { %>
+              <option selected="true"><%= akademikRapor.donem %></option>
+            <% } else { %>
+              <option><%= i %>-<%=i+1%></option>
+            <% } %>
+          <% } %>
+        </select>
+      </div>
+      <div class="form-group col-sm-4">
+        <label for="raporNo">Rapor No:</label>
+        <input type="number" class="form-control" id="raporNo" name="raporNo" required="true" value="<%= akademikRapor.raporNo %>">
+      </div>
+      <div class="form-group col-sm-4">
+        <label for="raporTarih">Rapor Tarihi:</label>
+        <input type="date" class="form-control" id="raporTarih" name="raporTarih" required="true" value="<%= akademikRapor.raporTarih %>">
+      </div>
+    </div>
+    <div class=row>
+      <div class="form-group col-sm-12">
+        <label for="raporIcerik">Rapor İçeriği:</label>
+        <textarea class="form-control" rows="5" id="raporIcerik" name="raporIcerik" required><%= akademikRapor.raporIcerik %>
+          <p><u><strong>&Uuml;nitede Kullanılan Y&ouml;ntem Teknikler (Turnuva):</strong></u></p>
+          <p>&nbsp;</p>
+          <p><u><strong>&Uuml;nitede Hazırlanan ve Kullanılan &Ouml;ğretim Materyali:</strong></u></p>
+          <p>&nbsp;</p>
+          <p><u><strong>Soru Bankası i&ccedil;in Hazırlanan Sorular:</strong></u></p>
+          <p>&nbsp;</p>
+          <p><u><strong>AGİS (Akademik Gelişim İzleme Sınav Sonu&ccedil;ları ve Tedbirler):</strong></u></p>
+          <p>&nbsp;</p>
+          <p><u><strong>Diğer Faaliyet ve Etkinlikler:</strong></u></p>
+        </textarea>
+      </div>
+    </div>
+    <div class=row>
+      <div class="form-group col-sm-6">
+        <label for="zumreBaskani">Zümre Başkanı:</label>
+        <input type="text" class="form-control" id="zumreBaskani" name="zumreBaskani" required="true" value="<%= akademikRapor.zumreBaskani %>">
+      </div>
+      <div class="form-group col-sm-6">
+        <label for="akademikDanisman">Akademik Danışman:</label>
+        <input type="text" class="form-control" id="akademikDanisman" name="akademikDanisman" required="true" value="<%= akademikRapor.akademikDanisman %>">
+      </div>
+    </div>
+    <div class=row>
+      <div class="form-group col-sm-12">
+      <button type="submit" class="btn btn-info col-sm-2">Kaydet</button>
+    </div>
+    <br><br><br><br><br><br>
+    </div>
+  <script>
+      // Replace the <textarea id="editor1"> with a CKEditor
+      // instance, using default configuration.
+      CKEDITOR.replace( 'raporIcerik', {
+        width: '100%',
+        height: 500
+      } );
+  </script>
+  </form>
+
+  
+</div>
+<!-- /.row -->
+

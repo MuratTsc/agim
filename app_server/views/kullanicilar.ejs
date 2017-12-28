@@ -16,7 +16,7 @@
   <% } %>
 
 <h3>Kullanıcı Listesi</h3>
-<table class="table table-hover">
+<table class="table table-hover table-bordered">
 
     <thead>
         <tr>
@@ -38,11 +38,13 @@
             <td><%= kullanicilar[i].kullaniciAdi %></td>
             <td><%= kullanicilar[i].mail %></td>
             <td><% if(kullanicilar[i].yetki<2){%> Yönetici <%}else{%> Kullanıcı <%}; %></td>
-            <td>
-            <div class="row">
-                <button class="btn btn-danger" type="submit" onclick="sil('<%=kullanicilar[i].id%>', '<%=kullanicilar[i].kullaniciAdi%>');">Sil</button>
+            <td style="text-align:center;">
+                <% if(kullanicilar[i].yetki<2) { %>
+                    <button class="btn btn-danger disabled" type="submit">Sil</button>
+                <% } else { %>
+                    <button class="btn btn-danger" type="submit" onclick="sil('<%=kullanicilar[i].id%>', '<%=kullanicilar[i].kullaniciAdi%>');">Sil</button>
+                <% } %>
                 <a href="/kullanicilar/<%=kullanicilar[i].id%>" class="btn btn-info">Düzenle</a>
-            </div>
             </td>
             </tr>
         <script>
@@ -52,7 +54,6 @@
                 type: 'DELETE',
                 data: {'kullaniciId': id},
                 success: function(result) {
-                    // Do something with the result
                     if (result == 'ok'){
                         console.log(result);
                         alert(kullaniciAdi + " adlı kullanıcı silindi.");

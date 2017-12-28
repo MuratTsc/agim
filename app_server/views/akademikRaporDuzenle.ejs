@@ -41,33 +41,9 @@
       </div>
     </div>
     <div class=row>
-      <div class="form-group col-sm-6">
-        <label for="ukyTeknikler">Ünitede Kullanılan Yöntem Teknikler (Turnuva):</label>
-        <textarea class="form-control" rows="5" id="ukyTeknikler" name="ukyTeknikler" required="true"><%= akademikRapor.ukyTeknikler %></textarea>
-      </div>
-    </div>
-    <div class=row>
-      <div class="form-group col-sm-6">
-        <label for="ogrMateryali">Ünitede Hazırlanan ve Kullanılan Öğretim Materyali:</label>
-        <textarea class="form-control" rows="5" id="ogrMateryali" name="ogrMateryali" required="true"><%= akademikRapor.ogrMateryali %></textarea>
-      </div>
-    </div>
-    <div class=row>
-      <div class="form-group col-sm-6">
-        <label for="hazirlananSorular">Soru Bankası için Hazırlanan Sorular:</label>
-        <textarea class="form-control" rows="5" id="hazirlananSorular" name="hazirlananSorular" required="true"><%= akademikRapor.hazirlananSorular %></textarea>
-      </div>
-    </div>
-    <div class=row>
-      <div class="form-group col-sm-6">
-        <label for="agis">AGİS (Akademik Gelişim İzleme Sınav Sonuçları ve Tedbirler):</label>
-        <textarea class="form-control" rows="5" id="agis" name="agis" required="true"><%= akademikRapor.agis %></textarea>
-      </div>
-    </div>
-    <div class=row>
-      <div class="form-group col-sm-6">
-        <label for="digerEtkinlikler">Diğer Faaliyet ve Etkinlikler:</label>
-        <textarea class="form-control" rows="5" id="digerEtkinlikler" name="digerEtkinlikler" required="true"><%= akademikRapor.digerEtkinlikler %></textarea>
+      <div class="form-group col-sm-12">
+        <label for="raporIcerik">Rapor İçeriği:</label>
+        <textarea class="form-control" rows="5" id="raporIcerik" name="raporIcerik" required="true"><%= akademikRapor.raporIcerik %></textarea>
       </div>
     </div>
     <div class=row>
@@ -86,8 +62,17 @@
     </div>
     <br><br><br><br><br><br>
     </div>
+  <script>
+      // Replace the <textarea id="editor1"> with a CKEditor
+      // instance, using default configuration.
+      CKEDITOR.replace( 'raporIcerik', {
+        width: '100%',
+        height: 500
+      } );
+  </script>
   </form>
 
   
 </div>
 <!-- /.row -->
+

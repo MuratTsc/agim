@@ -1,0 +1,237 @@
+
+
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Materyal Düzenleme</h1>
+    </div>
+    <!-- /.col-lg-12 -->
+
+
+  <% if(mesaj=="ok" ) { %>
+  <div class="alert alert-success" id="okMesaj" name="okMesaj">
+    <strong>Materyal güncellendi.</strong>
+  </div>
+  <% } %>
+  <% if(mesaj=="err" ) { %>
+  <div class="alert alert-danger" id="errMesaj" name="errMesaj">
+    <strong>Hata!</strong> Materyal güncellenemedi!
+  </div>
+  <% } %>
+  
+
+<form action="../materyalDuzenle" method="POST">
+
+    <input type="text" class="hidden" id="materyalId" name="materyalId" value="<%= materyal.id %>">
+
+    <div class=row>
+        <div class="form-group col-sm-6">
+        <label for="materyalAdi">Materyal Adı:</label>
+        <input type="text" class="form-control" id="materyalAdi" placeholder="Materyal Adı" name="materyalAdi" required="true" value="<%= materyal.materyalAdi %>">
+        </div>
+    </div>
+
+    <div class=row>
+        <div class="form-group col-sm-6">
+        <label for="seviye">Seviye:</label>
+        <select class="form-control" id="seviye" name="seviye" required="true" onChange="sinifDoldur()">
+            <% for (var i=0; i < seviye.length; i++) { %>
+                <% if (seviye[i].id == materyal.seviye ) { %>
+                    <option value="<%= seviye[i].id %>" selected><%= seviye[i].ogrenim_seviyesi %></option>
+                <% } else { %>
+                    <option value="<%= seviye[i].id %>" ><%= seviye[i].ogrenim_seviyesi %></option>
+                <% } %>
+            <% } %>
+        </select>
+        </div>
+    </div>
+    
+    <div class=row>
+        <div class="form-group col-sm-6">
+        <label for="sinif">Sınıf:</label>
+        <select class="form-control" id="sinif" name="sinif" required="true" onChange="dersDoldur()">
+            <% for (var i=0; i < sinif.length; i++) { %>
+                <% if (sinif[i].id == materyal.sinif ) { %>
+                    <option value="<%= sinif[i].id %>" selected><%= sinif[i].sinifi %></option>
+                <% } %>
+            <% } %>
+        </select>
+        </div>
+    </div>
+    
+    <div class=row>
+        <div class="form-group col-sm-6">
+        <label for="ders">Ders:</label>
+        <select class="form-control" id="ders" name="ders" required="true" onChange="uniteDoldur()">
+            <% for (var i=0; i < ders.length; i++) { %>
+                <% if (ders[i].id == materyal.ders ) { %>
+                    <option value="<%= ders[i].id %>" selected><%= ders[i].dersAdi %></option>
+                <% } %>
+            <% } %>
+        </select>
+        </div>
+    </div>
+    <div class=row>
+        <div class="form-group col-sm-6">
+        <label for="unite">Ünite:</label>
+        <select class="form-control" id="unite" name="unite" required="true" onChange="konuDoldur()">
+            <% for (var i=0; i < unite.length; i++) { %>
+                <% if (unite[i].id == materyal.unite ) { %>
+                    <option value="<%= unite[i].id %>" selected><%= unite[i].uniteAdi %></option>
+                <% } %>
+            <% } %>
+        </select>
+        </div>
+    </div>
+    
+    <div class=row>
+        <div class="form-group col-sm-6">
+        <label for="konu">Konu:</label>
+        <select class="form-control" id="konu" name="konu" required="true" onChange="kazanimDoldur()">
+            <% for (var i=0; i < konu.length; i++) { %>
+                <% if (konu[i].id == materyal.konu ) { %>
+                    <option value="<%= konu[i].id %>" selected><%= konu[i].konuAdi %></option>
+                <% } %>
+            <% } %>
+        </select>
+        </div>
+    </div>
+    
+    <div class=row>
+        <div class="form-group col-sm-6">
+        <label for="kazanim">Kazanım:</label>
+        <select class="form-control" id="kazanim" name="kazanim" required="true">
+            <% for (var i=0; i < kazanim.length; i++) { %>
+                <% if (kazanim[i].id == materyal.kazanim ) { %>
+                    <option value="<%= kazanim[i].id %>" selected><%= kazanim[i].kazanimAdi %></option>
+                <% } %>
+            <% } %>
+        </select>
+        </div>
+    </div>
+
+    <div class=row>
+        <div class="form-group col-sm-6">
+        <label for="upload">Materyal:</label>
+            <!-- input class="btn btn-info upload-btn" id="upload" type="file" name="upload" -->
+            </br>
+            <% var str = materyal.dosyaYolu %>
+            <% var res = str.split("/");  %>
+            <% var turu = materyal.dosyaTuru %>
+            <% var turuSplit = turu.split("/");  %>
+            <% if (turuSplit[0] == "image") { %>
+                <img width="300" alt="" src=".<%=str%>" />
+            <% } %>
+            </br>
+            &nbsp;&nbsp;Materyal: <%= res[res.length-1] %>
+            </br>
+            &nbsp;&nbsp;Materyal Türü: <%= materyal.dosyaTuru %>
+        </div>
+    </div>
+    
+    <br><br>
+    <div class="row">
+        <div class="form-group col-sm-6">
+        <input type="submit" class="btn btn-info col-sm-4" value="Kaydet">
+        </div>
+    </div>
+  </form>
+
+</div>
+<!-- /.row -->
+
+
+    <script>
+        var seviyeSelect = document.getElementById("seviye");
+        var sinifSelect = document.getElementById("sinif");
+        var dersSelect = document.getElementById("ders");
+        var uniteSelect = document.getElementById("unite");
+        var konuSelect = document.getElementById("konu");
+        var kazanimSelect = document.getElementById("kazanim");
+
+        var okMesaj = document.getElementById("okMesaj");
+        var errMesaj = document.getElementById("errMesaj");
+
+    function sinifDoldur(){
+        // okMesaj.style.visibility='hidden';
+        // errMesaj.style.visibility='hidden';
+
+        var secilenSeviye = seviyeSelect.options[seviyeSelect.selectedIndex].value;
+        var secilenSinif = sinifSelect.options[sinifSelect.selectedIndex].value;
+        var secilenDers = dersSelect.options[dersSelect.selectedIndex].value;
+        var secilenUnite = uniteSelect.options[uniteSelect.selectedIndex].value;
+        var secilenKonu = konuSelect.options[konuSelect.selectedIndex].value;
+        // var kazanimSelect = document.getElementById("kazanim");
+        sinifSelect.options.length = 0;
+        sinifSelect.options[sinifSelect.options.length] = new Option('Seçiniz', '');
+        dersSelect.options.length = 0;
+        dersSelect.options[dersSelect.options.length] = new Option('Önce Sınıf Seçiniz', '');
+        uniteSelect.options.length = 0;
+        uniteSelect.options[uniteSelect.options.length] = new Option('Önce Ders Seçiniz', '');
+        konuSelect.options.length = 0;
+        konuSelect.options[konuSelect.options.length] = new Option('Önce Ünite Seçiniz', '');
+        kazanimSelect.options.length = 0;
+        kazanimSelect.options[kazanimSelect.options.length] = new Option('Önce Konu Seçiniz', '');
+        <% for (var i=0; i < sinif.length; i++) { %>
+            if (secilenSeviye == <%= sinif[i].seviye_id %>) { 
+                sinifSelect.options[sinifSelect.options.length] = new Option('<%= sinif[i].sinifi %>', '<%= sinif[i].id %>');
+            }
+        <% } %>
+    }
+    function dersDoldur(){
+        var secilenSinif = sinifSelect.options[sinifSelect.selectedIndex].value;
+
+        dersSelect.options.length = 0;
+        dersSelect.options[dersSelect.options.length] = new Option('Seçiniz', '');
+        uniteSelect.options.length = 0;
+        uniteSelect.options[uniteSelect.options.length] = new Option('Önce Ders Seçiniz', '');
+        konuSelect.options.length = 0;
+        konuSelect.options[konuSelect.options.length] = new Option('Önce Ünite Seçiniz', '');
+        kazanimSelect.options.length = 0;
+        kazanimSelect.options[kazanimSelect.options.length] = new Option('Önce Konu Seçiniz', '');
+        <% for (var i=0; i < ders.length; i++) { %>
+            if (secilenSinif == <%= ders[i].sinif_id %>) { 
+                dersSelect.options[dersSelect.options.length] = new Option('<%= ders[i].dersAdi %>', '<%= ders[i].id %>');
+            }
+        <% } %>
+    }
+    function uniteDoldur(){ 
+        var secilenDers = dersSelect.options[dersSelect.selectedIndex].value;
+
+        uniteSelect.options.length = 0;
+        uniteSelect.options[uniteSelect.options.length] = new Option('Seçiniz', '');
+        konuSelect.options.length = 0;
+        konuSelect.options[konuSelect.options.length] = new Option('Önce Ünite Seçiniz', '');
+        kazanimSelect.options.length = 0;
+        kazanimSelect.options[kazanimSelect.options.length] = new Option('Önce Konu Seçiniz', '');
+        <% for (var i=0; i < unite.length; i++) { %>
+            if (secilenDers == <%= unite[i].ders_id %>) { 
+                uniteSelect.options[uniteSelect.options.length] = new Option('<%= unite[i].uniteAdi %>', '<%= unite[i].id %>');
+            }
+        <% } %>
+    }
+    function konuDoldur(){
+        var secilenUnite = uniteSelect.options[uniteSelect.selectedIndex].value;
+
+        konuSelect.options.length = 0;
+        konuSelect.options[konuSelect.options.length] = new Option('Seçiniz', '');
+        kazanimSelect.options.length = 0;
+        kazanimSelect.options[kazanimSelect.options.length] = new Option('Önce Konu Seçiniz', '');
+        <% for (var i=0; i < konu.length; i++) { %>
+            if (secilenUnite == <%= konu[i].unite_id %>) { 
+                konuSelect.options[konuSelect.options.length] = new Option('<%= konu[i].konuAdi %>', '<%= konu[i].id %>');
+            }
+        <% } %>
+    }
+    function kazanimDoldur(){
+        var secilenKonu = konuSelect.options[konuSelect.selectedIndex].value;
+
+        kazanimSelect.options.length = 0;
+        kazanimSelect.options[kazanimSelect.options.length] = new Option('Seçiniz', '');
+        <% for (var i=0; i < kazanim.length; i++) { %>
+            if (secilenKonu == <%= kazanim[i].konu_id %>) { 
+                kazanimSelect.options[kazanimSelect.options.length] = new Option('<%= kazanim[i].kazanimAdi %>', '<%= kazanim[i].id %>');
+            }
+        <% } %>
+    }
+
+    </script>

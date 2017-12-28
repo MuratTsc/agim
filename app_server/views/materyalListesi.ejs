@@ -14,10 +14,11 @@
   <% } %>
 
 <h3>Materyal Listesi</h3>
-<table class="table table-hover">
+<table class="table table-hover table-bordered">
 
     <thead>
         <tr>
+            <th>#</th>
             <th>Materyal Adı</th>
             <th>Türü</th>
             <th>Tarih</th>
@@ -28,6 +29,7 @@
             <!--th>Konu</th-->
             <th>Kazanım</th>
             <th>Ekleyen</th>
+            <th>İşlemler</th>
         </tr>
     </thead>
 
@@ -35,15 +37,20 @@
     
         <% for (var i=0; i<materyal.length; i++) { %>
             <% if(i%2==0) { %>
-                <tr class="info">
+                <tr class="info" onclick="document.location = '/materyalListesi/<%= materyal[i].id %>';" style="cursor: pointer;">
             <% }else{ %>
-                <tr class="warning">
+                <tr class="warning" onclick="document.location = '/materyalListesi/<%= materyal[i].id %>';" style="cursor: pointer;">
             <% } %>
+            <td><%= i+1 %></td>
             <td><%= materyal[i].materyalAdi %></td>
             <td><%= materyal[i].dosyaTuru %></td>
             <td><%= materyal[i].tarih.getDate() %>.<%= materyal[i].tarih.getMonth()+1 %>.<%= materyal[i].tarih.getFullYear() %></td>
             <td><%= materyal[i].kazanim %></td>
             <td><%= materyal[i].kullaniciAdi %></td>
+            <td style="text-align:center;">
+                <button class="btn btn-danger" type="submit" onclick="sil('<%=materyal[i].id%>', '<%=materyal[i].materyalAdi%>');">Sil</button>
+                <a href="/materyalDuzenle/<%=materyal[i].id%>" class="btn btn-info">Düzenle</a>
+            </td>
             </tr>
         <% } %>
     </tbody>

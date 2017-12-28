@@ -1,0 +1,203 @@
+
+
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Materyal Ekle</h1>
+    </div>
+    <!-- /.col-lg-12 -->
+
+
+  <% if(mesaj=="ok" ) { %>
+  <div class="alert alert-success" id="okMesaj" name="okMesaj">
+    <strong>Materyal eklendi.</strong>
+  </div>
+  <% } %>
+  <% if(mesaj=="err" ) { %>
+  <div class="alert alert-danger" id="errMesaj" name="errMesaj">
+    <strong>Hata!</strong> Materyal eklenemedi!
+  </div>
+  <% } %>
+  
+
+<form action="../materyalEkle" enctype="multipart/form-data" method="POST">
+
+    <input type="text" class="hidden" id="kullaniciId" name="kullaniciId" value="<%= session.kullaniciId %>">
+
+    <div class=row>
+        <div class="form-group col-sm-6">
+        <label for="materyalAdi">Materyal Adı:</label>
+        <input type="text" class="form-control" id="materyalAdi" placeholder="Materyal Adı" name="materyalAdi" required="true">
+        </div>
+    </div>
+
+    <div class=row>
+        <div class="form-group col-sm-6">
+        <label for="seviye">Seviye:</label>
+        <select class="form-control" id="seviye" name="seviye" required="true" onChange="sinifDoldur()">
+            <option value="" selected>Seçiniz</option>
+            <% for (var ii=0; ii < seviye.length; ii++) { %>
+                <option value="<%= seviye[ii].id %>" ><%= seviye[ii].ogrenim_seviyesi %></option>
+            <% } %>
+        </select>
+        </div>
+    </div>
+    
+    <div class=row>
+        <div class="form-group col-sm-6">
+        <label for="sinif">Sınıf:</label>
+        <select class="form-control" id="sinif" name="sinif" required="true" onChange="dersDoldur()">
+            <option value="" selected>Önce Seviye Seçiniz</option>
+        </select>
+        </div>
+    </div>
+    
+    <div class=row>
+        <div class="form-group col-sm-6">
+        <label for="ders">Ders:</label>
+        <select class="form-control" id="ders" name="ders" required="true" onChange="uniteDoldur()">
+            <option value="" selected>Önce Sınıf Seçiniz</option>
+        </select>
+        </div>
+    </div>
+    <div class=row>
+        <div class="form-group col-sm-6">
+        <label for="unite">Ünite:</label>
+        <select class="form-control" id="unite" name="unite" required="true" onChange="konuDoldur()">
+            <option value="" selected>Önce Ders Seçiniz</option>
+        </select>
+        </div>
+    </div>
+    
+    <div class=row>
+        <div class="form-group col-sm-6">
+        <label for="konu">Konu:</label>
+        <select class="form-control" id="konu" name="konu" required="true" onChange="kazanimDoldur()">
+            <option value="" selected>Önce Ünite Seçiniz</option>
+        </select>
+        </div>
+    </div>
+    
+    <div class=row>
+        <div class="form-group col-sm-6">
+        <label for="kazanim">Kazanım:</label>
+        <select class="form-control" id="kazanim" name="kazanim" required="true">
+            <option value="" selected>Önce Konu Seçiniz</option>
+        </select>
+        </div>
+    </div>
+
+    <div class=row>
+        <div class="form-group col-sm-6">
+        <label for="upload">Materyal:</label>
+            <input class="btn btn-info upload-btn" id="upload" type="file" name="upload">
+            </br>
+        </div>
+    </div>
+    
+    <br><br>
+    <div class=row>
+        <div class="form-group col-sm-6">
+        <input type="submit" class="btn btn-info col-sm-4" value="Kaydet">
+        </div>
+    </div>
+  </form>
+
+</div>
+<!-- /.row -->
+
+
+    <script>
+        var seviyeSelect = document.getElementById("seviye");
+        var sinifSelect = document.getElementById("sinif");
+        var dersSelect = document.getElementById("ders");
+        var uniteSelect = document.getElementById("unite");
+        var konuSelect = document.getElementById("konu");
+        var kazanimSelect = document.getElementById("kazanim");
+
+        var okMesaj = document.getElementById("okMesaj");
+        var errMesaj = document.getElementById("errMesaj");
+
+    function sinifDoldur(){
+        // okMesaj.style.visibility='hidden';
+        // errMesaj.style.visibility='hidden';
+
+        var secilenSeviye = seviyeSelect.options[seviyeSelect.selectedIndex].value;
+        var secilenSinif = sinifSelect.options[sinifSelect.selectedIndex].value;
+        var secilenDers = dersSelect.options[dersSelect.selectedIndex].value;
+        var secilenUnite = uniteSelect.options[uniteSelect.selectedIndex].value;
+        var secilenKonu = konuSelect.options[konuSelect.selectedIndex].value;
+        // var kazanimSelect = document.getElementById("kazanim");
+        sinifSelect.options.length = 0;
+        sinifSelect.options[sinifSelect.options.length] = new Option('Seçiniz', '');
+        dersSelect.options.length = 0;
+        dersSelect.options[dersSelect.options.length] = new Option('Önce Sınıf Seçiniz', '');
+        uniteSelect.options.length = 0;
+        uniteSelect.options[uniteSelect.options.length] = new Option('Önce Ders Seçiniz', '');
+        konuSelect.options.length = 0;
+        konuSelect.options[konuSelect.options.length] = new Option('Önce Ünite Seçiniz', '');
+        kazanimSelect.options.length = 0;
+        kazanimSelect.options[kazanimSelect.options.length] = new Option('Önce Konu Seçiniz', '');
+        <% for (var i=0; i < sinif.length; i++) { %>
+            if (secilenSeviye == <%= sinif[i].seviye_id %>) { 
+                sinifSelect.options[sinifSelect.options.length] = new Option('<%= sinif[i].sinifi %>', '<%= sinif[i].id %>');
+            }
+        <% } %>
+    }
+    function dersDoldur(){
+        var secilenSinif = sinifSelect.options[sinifSelect.selectedIndex].value;
+
+        dersSelect.options.length = 0;
+        dersSelect.options[dersSelect.options.length] = new Option('Seçiniz', '');
+        uniteSelect.options.length = 0;
+        uniteSelect.options[uniteSelect.options.length] = new Option('Önce Ders Seçiniz', '');
+        konuSelect.options.length = 0;
+        konuSelect.options[konuSelect.options.length] = new Option('Önce Ünite Seçiniz', '');
+        kazanimSelect.options.length = 0;
+        kazanimSelect.options[kazanimSelect.options.length] = new Option('Önce Konu Seçiniz', '');
+        <% for (var i=0; i < ders.length; i++) { %>
+            if (secilenSinif == <%= ders[i].sinif_id %>) { 
+                dersSelect.options[dersSelect.options.length] = new Option('<%= ders[i].dersAdi %>', '<%= ders[i].id %>');
+            }
+        <% } %>
+    }
+    function uniteDoldur(){ 
+        var secilenDers = dersSelect.options[dersSelect.selectedIndex].value;
+
+        uniteSelect.options.length = 0;
+        uniteSelect.options[uniteSelect.options.length] = new Option('Seçiniz', '');
+        konuSelect.options.length = 0;
+        konuSelect.options[konuSelect.options.length] = new Option('Önce Ünite Seçiniz', '');
+        kazanimSelect.options.length = 0;
+        kazanimSelect.options[kazanimSelect.options.length] = new Option('Önce Konu Seçiniz', '');
+        <% for (var i=0; i < unite.length; i++) { %>
+            if (secilenDers == <%= unite[i].ders_id %>) { 
+                uniteSelect.options[uniteSelect.options.length] = new Option('<%= unite[i].uniteAdi %>', '<%= unite[i].id %>');
+            }
+        <% } %>
+    }
+    function konuDoldur(){
+        var secilenUnite = uniteSelect.options[uniteSelect.selectedIndex].value;
+
+        konuSelect.options.length = 0;
+        konuSelect.options[konuSelect.options.length] = new Option('Seçiniz', '');
+        kazanimSelect.options.length = 0;
+        kazanimSelect.options[kazanimSelect.options.length] = new Option('Önce Konu Seçiniz', '');
+        <% for (var i=0; i < konu.length; i++) { %>
+            if (secilenUnite == <%= konu[i].unite_id %>) { 
+                konuSelect.options[konuSelect.options.length] = new Option('<%= konu[i].konuAdi %>', '<%= konu[i].id %>');
+            }
+        <% } %>
+    }
+    function kazanimDoldur(){
+        var secilenKonu = konuSelect.options[konuSelect.selectedIndex].value;
+
+        kazanimSelect.options.length = 0;
+        kazanimSelect.options[kazanimSelect.options.length] = new Option('Seçiniz', '');
+        <% for (var i=0; i < kazanim.length; i++) { %>
+            if (secilenKonu == <%= kazanim[i].konu_id %>) { 
+                kazanimSelect.options[kazanimSelect.options.length] = new Option('<%= kazanim[i].kazanimAdi %>', '<%= kazanim[i].id %>');
+            }
+        <% } %>
+    }
+
+    </script>

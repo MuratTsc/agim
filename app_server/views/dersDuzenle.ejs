@@ -1,0 +1,44 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Ders Düzenle</h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->
+
+<div class="row">
+  <% if(mesaj=="ok" ) { %>
+  <div class="alert alert-success">
+    <strong>Ders bilgileri güncellendi.</strong>
+  </div>
+  <% } %>
+  <% if(mesaj=="err" ) { %>
+  <div class="alert alert-danger">
+    <strong>Hata!</strong> Bilgiler güncellenemedi!
+  </div>
+  <% } %>
+
+  <form action="../dersDuzenle" method="POST">
+      <input type="text" class="hidden" id="dersId" name="dersId" value="<%= ders.id%>">
+    <div class="form-group">
+      <label for="sinif">Sınıf:</label>
+      <select class="form-control" id="sinif" name="sinif" required="true">
+        <% for (var i=0; i < sinif.length; i++) { %>
+            <% if (sinif[i].id == ders.sinif_id ) { %>
+                <option value="<%= sinif[i].id %>" selected><%= sinif[i].sinifi %></option>
+            <% } else { %>
+                <option value="<%= sinif[i].id %>" ><%= sinif[i].sinifi %></option>
+            <% } %>
+        <% } %>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="dersAdi">Ders Adı:</label>
+      <input type="text" class="form-control" id="dersAdi" placeholder="Ders Adı" name="dersAdi" required="true" value="<%= ders.dersAdi%>">
+    </div>
+    <p class="text text-danger"><strong>Dikkat: </strong>Yaptığınız değişiklikler bu derse eklenmiş tüm materyal ve soruları etkiler!</p>
+      <button type="submit" class="btn btn-info">Kaydet</button>
+  </form>
+
+</div>
+<!-- /.row -->

@@ -1,11 +1,12 @@
-
-
 <div class="row">
     <div class="col-lg-12">
         <h1 class="page-header">Materyal Ekle</h1>
     </div>
     <!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->
 
+<div class="row">
 
   <% if(mesaj=="ok" ) { %>
   <div class="alert alert-success" id="okMesaj" name="okMesaj">
@@ -89,7 +90,7 @@
     <div class=row>
         <div class="form-group col-sm-6">
         <label for="upload">Materyal:</label>
-            <input class="btn btn-info upload-btn" id="upload" type="file" name="upload">
+            <input class="btn btn-info upload-btn" id="upload" type="file" name="upload" required>
             </br>
         </div>
     </div>

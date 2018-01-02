@@ -1,0 +1,108 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Konu Düzenle</h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->
+
+<div class="row">
+  <% if(mesaj=="ok" ) { %>
+  <div class="alert alert-success">
+    <strong>Konu bilgileri güncellendi.</strong>
+  </div>
+  <% } %>
+  <% if(mesaj=="err" ) { %>
+  <div class="alert alert-danger">
+    <strong>Hata!</strong> Bilgiler güncellenemedi!
+  </div>
+  <% } %>
+
+  <form action="../konuDuzenle" method="POST">
+      <input type="text" class="hidden" id="konuId" name="konuId" value="<%= konu.id%>">
+      
+    <div class="form-group">
+      <label for="konuAdi">Konu Adı:</label>
+      <input type="text" class="form-control" id="konuAdi" placeholder="Konu Adı" name="konuAdi" required value="<%= konu.konuAdi%>">
+    </div>
+    <div class="form-group">
+      <label for="konuNo">Konu No:</label>
+        <input type="number" class="form-control" id="konuNo" placeholder="Konu No" name="konuNo"  min="1" max="99" required value="<%= konu.konuNo%>">
+    </div>
+    <div class="form-group">
+      <label for="sinif">Sınıf:</label>
+      <select class="form-control" id="sinif" name="sinif" onClick="dersDoldur()" required>
+        <option value="" selected>Seçiniz</option>
+        <% for (var i=0; i < sinif.length; i++) { %>
+            <% if (sinif[i].id == konu.sinif_id ) { %>
+                <option value="<%= sinif[i].id %>" selected><%= sinif[i].sinifi %></option>
+            <% } else { %>
+                <option value="<%= sinif[i].id %>" ><%= sinif[i].sinifi %></option>
+            <% } %>
+        <% } %>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="ders">Ders:</label>
+      <select class="form-control" id="ders" name="ders" onChange="uniteDoldur()" required>
+        <option value="" selected>Önce Sınıf Seçiniz</option>
+        <% for (var i=0; i < ders.length; i++) { %>
+          <% if (ders[i].id == konu.ders_id ) { %>
+              <option value="<%= ders[i].id %>" selected><%= ders[i].dersAdi %></option>
+          <% } else if(ders[i].sinif_id == konu.sinif_id) { %>
+              <option value="<%= ders[i].id %>"><%= ders[i].dersAdi %></option>
+          <% } %>
+        <% } %>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="unite">Ünite:</label>
+      <select class="form-control" id="unite" name="unite" required>
+        <option value="" selected>Önce Ders Seçiniz</option>
+        <% for (var i=0; i < unite.length; i++) { %>
+          <% if (unite[i].id == konu.unite_id ) { %>
+            <option value="<%= unite[i].id %>" selected><%= unite[i].uniteAdi %></option>
+          <% } else if(unite[i].ders_id == konu.ders_id) { %>
+              <option value="<%= unite[i].id %>"><%= unite[i].uniteAdi %></option>
+          <% } %>
+        <% } %>
+      </select>
+    </div>
+    <br>
+    <p class="text text-danger"><strong>Dikkat: </strong>Yaptığınız değişiklikler bu üniteye eklenmiş tüm materyal ve soruları etkiler!</p>
+      <button type="submit" class="btn btn-info">Kaydet</button>
+  </form>
+
+</div>
+<!-- /.row -->
+
+<script>
+  var sinifSelect = document.getElementById("sinif");
+  var dersSelect = document.getElementById("ders");
+  var uniteSelect = document.getElementById("unite");
+
+  function dersDoldur(){
+      var secilenSinif = sinifSelect.options[sinifSelect.selectedIndex].value;
+
+      dersSelect.options.length = 0;
+      dersSelect.options[dersSelect.options.length] = new Option('Seçiniz', '');
+      uniteSelect.options.length = 0;
+      uniteSelect.options[uniteSelect.options.length] = new Option('Önce Ders Seçiniz', '');
+      <% for (var i=0; i < ders.length; i++) { %>
+          if (secilenSinif == <%= ders[i].sinif_id %>) { 
+              dersSelect.options[dersSelect.options.length] = new Option('<%= ders[i].dersAdi %>', '<%= ders[i].id %>');
+          }
+      <% } %>
+  }
+  function uniteDoldur(){ 
+      var secilenDers = dersSelect.options[dersSelect.selectedIndex].value;
+
+      uniteSelect.options.length = 0;
+      uniteSelect.options[uniteSelect.options.length] = new Option('Seçiniz', '');
+      <% for (var i=0; i < unite.length; i++) { %>
+          if (secilenDers == <%= unite[i].ders_id %>) { 
+              uniteSelect.options[uniteSelect.options.length] = new Option('<%= unite[i].uniteAdi %>', '<%= unite[i].id %>');
+          }
+      <% } %>
+  }
+</script>

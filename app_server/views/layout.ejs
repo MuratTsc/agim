@@ -14,11 +14,20 @@
     <!-- MetisMenu CSS -->
     <link href="/public/vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
 
-    <!-- Custom CSS -->
-    <link href="/public/dist/css/sb-admin-2.css" rel="stylesheet">
-
     <!-- Morris Charts CSS -->
     <link href="/public/vendor/morrisjs/morris.css" rel="stylesheet">
+
+    <!-- Morris Charts CSS -->
+    <link href="/public/vendor/datatables/css/jquery.dataTables.min.css" rel="stylesheet">
+
+    <!-- DataTables CSS -->
+    <link href="/public/vendor/datatables-plugins/dataTables.bootstrap.css" rel="stylesheet">
+
+    <!-- DataTables Responsive CSS -->
+    <link href="/public/vendor/datatables-responsive/dataTables.responsive.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="/public/dist/css/sb-admin-2.css" rel="stylesheet">
 
     <!-- Custom Fonts -->
     <link href="/public/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -32,6 +41,17 @@
 
     <!-- CKEditor 4 -->
     <script src="/public/ckeditor/ckeditor.js"></script>
+
+    <style type="text/css">
+
+    .table-striped>tbody>tr:nth-of-type(odd){background-color:#d9edf7}
+    .table-striped>tbody>tr:nth-of-type(odd):hover{background-color:#c4e3f3}
+
+    @media print
+    {
+    .noprint {display:none;}
+    }
+    </style>
 
 </head>
 <body>
@@ -59,11 +79,11 @@
                     </a>
                     <ul class="dropdown-menu dropdown-user">
                         <!--% if ( session.logged_in ) { %-->
-                            <li><a href="#"><i class="fa fa-user fa-fw"></i> Profil</a>
-                            </li>
+                            <!-- li><a href="#"><i class="fa fa-user fa-fw"></i> Profil</a>
+                            </li -->
                             <!--li><a href="#"><i class="fa fa-gear fa-fw"></i> Ayarlar</a>
                             </li-->
-                            <li class="divider"></li>
+                            <!-- li class="divider"></li -->
                             <li><a href="../login/logout"><i class="fa fa-sign-out fa-fw"></i> Çıkış</a>
                         <!--% } else { %-->
                         <!--
@@ -121,7 +141,7 @@
 
     <!-- DataTables JavaScript 
     -->
-    <script src="/public/vendor/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="/public/vendor/datatables/js/jquery.dataTables.js"></script>
     <script src="/public/vendor/datatables-plugins/dataTables.bootstrap.min.js"></script>
     <script src="/public/vendor/datatables-responsive/dataTables.responsive.js"></script>
 
@@ -129,8 +149,10 @@
     -->
     <script>
     $(document).ready(function() {
-        $('#dataTables-example').DataTable({
+        $('#dataTable').DataTable({
             responsive: true
+            // "pagingType": "numbers"
+            
         });
     });
     </script>
@@ -143,7 +165,7 @@
 
     <!-- Custom Theme JavaScript -->
     <script src="/public/dist/js/sb-admin-2.js"></script>
-    
+
 
 </body>
 </html>

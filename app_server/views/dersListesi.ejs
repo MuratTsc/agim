@@ -58,11 +58,10 @@
             <h3><%= sinif[i].sinifi %> - Ders Listesi</h3>
         <% } %>
     <% } %>
-    <table class="table table-hover table-bordered table-center">
+    <table width="100%" id="dataTable" class="table table-striped table-bordered table-hover">
 
         <thead>
             <tr>
-                <th>#</th>
                 <th>Ders Adı</th>
                 <th>Sınıfı</th>
                 <th style="text-align:center;">İşlemler</th>
@@ -72,18 +71,17 @@
         <tbody>
         
             <% for (var i=0; i<dersler.length; i++) { %>
-                <% if(i%2==0) { %>
-                    <tr class="info">
-                <% }else{ %>
-                    <tr class="warning">
-                <% } %>
-                <td><%= i+1 %></td>
-                <td><%= dersler[i].dersAdi %></td>
-                <td><%= dersler[i].sinifi %></td>
-                <td style="text-align:center;">
-                    <button class="btn btn-danger" type="submit">Sil</button>
-                    <a href="/dersDuzenle/<%=dersler[i].id%>" class="btn btn-info">Düzenle</a>
-                </td>
+                <tr>
+                    <td><%= dersler[i].dersAdi %></td>
+                    <td><%= dersler[i].sinifi %></td>
+                    <td style="text-align:center;">
+                        <form action="../dersSil" method="POST" style="margin:0px; padding:0px;">
+                            <input type="text" class="hidden" id="dersId" name="dersId" value="<%= dersler[i].id %>">
+                            <input type="text" class="hidden" id="sinifId" name="sinifId" value="<%= secilen %>">
+                            <button class="btn btn-danger" type="submit">Sil</button>
+                            <a href="/dersDuzenle/<%=dersler[i].id%>" class="btn btn-info">Düzenle</a>
+                        </form>
+                    </td>
                 </tr>
             <% } %>
         

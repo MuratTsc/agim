@@ -117,9 +117,7 @@ module.exports.kullaniciEkleGet = function (req, res) {
 
 module.exports.kullaniciSil = function (req, res) {
     if (req.session.email && req.session.yetki < 2) {
-        // console.log('kullaniciSil çalıştı. id= ' + req.body.kullaniciId + "/" + req.params.kullaniciId);
 
-        // var sqlQuery = "DELETE FROM ?? WHERE ?? = ?";
         var sqlQuery = "UPDATE ?? SET ?? = ? WHERE ?? = ?";
         var inserts = ["kullanici", "isDeleted", true, "id", req.body.kullaniciId];
         sqlQuery = mysql.format(sqlQuery, inserts);
@@ -194,16 +192,32 @@ module.exports.akademikRaporDuzenle = function (req, res) {
                     year,
                     mesaj: 'err',
                     akademikRapor: result[0],
+                    inputTarih: "2000-01-01",
                     session: req.session
                 });
                 throw err
             } else {
                 var akademikRaporResult = result[0];
-                akademikRaporResult.raporTarih = result[0].raporTarih.getFullYear() + "-" + (result[0].raporTarih.getMonth() + 1) + "-" + result[0].raporTarih.getDate();
+
+                var yil, ay, gun, inputTarih;
+                yil = result[0].raporTarih.getFullYear();
+                if ((result[0].raporTarih.getMonth() + 1) < 10) {
+                    ay = "0" + (result[0].raporTarih.getMonth() + 1)
+                } else {
+                    ay = (result[0].raporTarih.getMonth() + 1)
+                }
+                if (result[0].raporTarih.getDate() < 10) {
+                    gun = "0" + result[0].raporTarih.getDate()
+                } else {
+                    gun = result[0].raporTarih.getDate()
+                }
+                inputTarih = yil + "-" + ay + "-" + gun;
+                
                 res.render('akademikRaporDuzenle', {
                     year,
                     mesaj: 'no',
                     akademikRapor: akademikRaporResult,
+                    inputTarih: inputTarih,
                     session: req.session
                 });
             };
@@ -241,6 +255,7 @@ module.exports.akademikRaporDuzenlePost = function (req, res) {
                         zumreBaskani: '',
                         akademikDanisman: ''
                     },
+                    inputTarih: "2000-01-01",
                     session: req.session
                 });
                 throw err
@@ -257,6 +272,7 @@ module.exports.akademikRaporDuzenlePost = function (req, res) {
                         zumreBaskani: req.body.zumreBaskani,
                         akademikDanisman: req.body.akademikDanisman
                     },
+                    inputTarih: req.body.raporTarih,
                     session: req.session
                 });
             };
@@ -264,6 +280,36 @@ module.exports.akademikRaporDuzenlePost = function (req, res) {
 
     } else { // if(req.session.email && req.session.yetki < 2)
         res.redirect('/403');
+    }
+}
+
+module.exports.akademikRaporGoruntuleme = function (req, res) {
+    if (req.session.email && req.session.yetki < 2) {
+        con.query("SELECT * FROM akademikRapor WHERE isDeleted = FALSE AND id = " + req.params.akdRaporId, function (err, result, fields) {
+            if (err) throw err;
+            if (result[0]) {
+                res.render('akademikRaporGoruntuleme', {
+                    mesaj: 'no',
+                    akdRapor: result[0],
+                    butonlar: true,
+                    session: req.session
+                });
+            } else {
+                res.render('akademikRaporGoruntuleme', {
+                    mesaj: '<strong>Hata!</strong> Akademik Kurul Raporu Bulunamadı.',
+                    akdRapor: {
+                        donem: "",
+                        raporNo: "",
+                        raporIcerik: "",
+                        raporTarih: new Date(),
+                        zumreBaskani: "",
+                        akademikDanisman: ""
+                    },
+                    butonlar: false,
+                    session: req.session
+                });
+            }
+        });
     }
 }
 
@@ -367,10 +413,510 @@ module.exports.akademikRaporSilPost = function (req, res) {
     }
 }
 
-//Parametre İşlemleri
+//zumre kurul
+module.exports.zumreKurul = function (req, res) {
+    if (req.session.email && req.session.yetki < 2) {
+
+        con.query("SELECT * FROM zumreRapor WHERE isDeleted = FALSE", function (err, result, fields) {
+            if (err) throw err;
+            res.render('zumreKurulu', { mesaj: "no", zumreRaporlar: result, session: req.session });
+        });
+
+    } else {
+        res.redirect('/403');
+    }
+}
+
+module.exports.zumreRaporDuzenle = function (req, res) {
+    if (req.session.email && req.session.yetki < 2) {
+
+        var year = new Date().toISOString().replace(/\-.+/, '');
+
+        var sqlQuery = "SELECT * FROM ?? WHERE ?? = ?";
+        var inserts = ["zumreRapor", "id", req.params.raporId];
+        sqlQuery = mysql.format(sqlQuery, inserts);
+        con.query(sqlQuery, function (err, result, fields) {
+            if (err) {
+                res.render('zumreRaporDuzenle', {
+                    year,
+                    mesaj: 'err',
+                    zumreRapor: result[0],
+                    inputTarih: "2000-01-01",
+                    session: req.session
+                });
+                throw err
+            } else {
+                var zumreRaporResult = result[0];
+
+                var yil, ay, gun, inputTarih;
+                yil = result[0].raporTarih.getFullYear();
+                if ((result[0].raporTarih.getMonth() + 1) < 10) {
+                    ay = "0" + (result[0].raporTarih.getMonth() + 1)
+                } else {
+                    ay = (result[0].raporTarih.getMonth() + 1)
+                }
+                if (result[0].raporTarih.getDate() < 10) {
+                    gun = "0" + result[0].raporTarih.getDate()
+                } else {
+                    gun = result[0].raporTarih.getDate()
+                }
+                inputTarih = yil + "-" + ay + "-" + gun;
+                
+                res.render('zumreRaporDuzenle', {
+                    year,
+                    mesaj: 'no',
+                    zumreRapor: zumreRaporResult,
+                    inputTarih: inputTarih,
+                    session: req.session
+                });
+            };
+        });
+
+    } else { // if (req.session.email && req.session.yetki < 2)
+        res.redirect('/403');
+    }
+}
+
+module.exports.zumreRaporDuzenlePost = function (req, res) {
+    if (req.session.email && req.session.yetki < 2) {
+
+        var year = new Date().toISOString().replace(/\-.+/, '');
+
+        var sqlQuery = "UPDATE zumrerapor SET ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ? WHERE id = ?";
+        var inserts = [
+            "donem", req.body.donem, "raporNo", req.body.raporNo,
+            "raporTarih", req.body.raporTarih, "raporIcerik", req.body.raporIcerik,
+            "zumreBaskani", req.body.zumreBaskani, "akademikDanisman", req.body.akademikDanisman,
+            req.body.raporId
+        ];
+        sqlQuery = mysql.format(sqlQuery, inserts);
+        con.query(sqlQuery, function (err, result, fields) {
+            if (err) {
+                res.render('zumreRaporDuzenle', {
+                    year,
+                    mesaj: 'err',
+                    zumreRapor: {
+                        id: '',
+                        donem: '',
+                        raporNo: '',
+                        raporTarih: '',
+                        raporIcerik: '',
+                        zumreBaskani: '',
+                        akademikDanisman: ''
+                    },
+                    inputTarih: "2000-01-01",
+                    session: req.session
+                });
+                throw err
+            } else {
+                res.render('zumreRaporDuzenle', {
+                    year,
+                    mesaj: 'ok',
+                    zumreRapor: {
+                        id: req.body.id,
+                        donem: req.body.donem,
+                        raporNo: req.body.raporNo,
+                        raporTarih: req.body.raporTarih,
+                        raporIcerik: req.body.raporIcerik,
+                        zumreBaskani: req.body.zumreBaskani,
+                        akademikDanisman: req.body.akademikDanisman
+                    },
+                    inputTarih: req.body.raporTarih,
+                    session: req.session
+                });
+            };
+        });
+
+    } else { // if(req.session.email && req.session.yetki < 2)
+        res.redirect('/403');
+    }
+}
+
+module.exports.zumreRaporGoruntuleme = function (req, res) {
+    if (req.session.email && req.session.yetki < 2) {
+        con.query("SELECT * FROM zumreRapor WHERE isDeleted = FALSE AND id = " + req.params.zumreRaporId, function (err, result, fields) {
+            if (err) throw err;
+            if (result[0]) {
+                res.render('zumreRaporGoruntuleme', {
+                    mesaj: 'no',
+                    zumreRapor: result[0],
+                    butonlar: true,
+                    session: req.session
+                });
+            } else {
+                res.render('zumreRaporGoruntuleme', {
+                    mesaj: '<strong>Hata!</strong> Zumre Akademik Toplantı Kurul Raporu Bulunamadı.',
+                    zumreRapor: {
+                        donem: "",
+                        raporNo: "",
+                        raporIcerik: "",
+                        raporTarih: new Date(),
+                        zumreBaskani: "",
+                        akademikDanisman: ""
+                    },
+                    butonlar: false,
+                    session: req.session
+                });
+            }
+        });
+    }
+}
+
+module.exports.zumreRaporEkleGet = function (req, res) {
+    if (req.session.email && req.session.yetki < 2) {
+        var year = new Date().toISOString().replace(/\-.+/, '');
+        res.render('zumreRaporEkle', {
+            year,
+            mesaj: 'no',
+            zumreRapor: {
+                donem: '',
+                raporNo: '',
+                raporTarih: '',
+                raporIcerik: '',
+                zumreBaskani: '',
+                akademikDanisman: ''
+            },
+            session: req.session
+        });
+    }
+}
+
+module.exports.zumreRaporEklePost = function (req, res) {
+    if (req.session.email && req.session.yetki < 2) {
+
+        var year = new Date().toISOString().replace(/\T.+/, '');
+
+        var sqlQuery = "INSERT INTO zumrerapor (??, ??, ??, ??, ??, ??, ??) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        var inserts = [
+            "donem", "raporNo", "raporTarih",
+            "raporIcerik", "zumreBaskani", "akademikDanisman",
+            "kullanici",
+            req.body.donem, req.body.raporNo, req.body.raporTarih,
+            req.body.raporIcerik, req.body.zumreBaskani, req.body.akademikDanisman,
+            req.session.kullaniciId
+        ];
+        sqlQuery = mysql.format(sqlQuery, inserts);
+        con.query(sqlQuery, function (err, result, fields) {
+            if (err) {
+                res.render('zumreRaporEkle', {
+                    year,
+                    mesaj: 'err',
+                    zumreRapor: {
+                        donem: '',
+                        raporNo: '',
+                        raporTarih: '',
+                        raporIcerik: '',
+                        zumreBaskani: '',
+                        akademikDanisman: ''
+                    },
+                    session: req.session
+                });
+                throw err
+            } else {
+                res.render('zumreRaporEkle', {
+                    year,
+                    mesaj: 'ok',
+                    zumreRapor: {
+                        donem: req.body.donem,
+                        raporNo: req.body.raporNo,
+                        raporTarih: req.body.raporTarih,
+                        raporIcerik: req.body.raporIcerik,
+                        zumreBaskani: req.body.zumreBaskani,
+                        akademikDanisman: req.body.akademikDanisman
+                    },
+                    session: req.session
+                });
+            };
+        });
+
+    } else { // if(req.session.email && req.session.yetki < 2)
+        res.redirect('/403');
+    }
+}
+
+module.exports.zumreRaporSilPost = function (req, res) {
+    if (req.session.email && req.session.yetki < 2) {
+
+        var sqlQuery = "UPDATE zumrerapor SET ?? = ? WHERE id = ?";
+        var inserts = [ "isDeleted", true, req.body.zumreRaporId ];
+        sqlQuery = mysql.format(sqlQuery, inserts);
+        con.query(sqlQuery, function (err, result, fields) {
+            if (err) throw err;
+            if (result.changedRows > 0) {
+            
+                // var raporTarihi = result[0].raporTarih.getDate() + "." + (result[0].raporTarih.getMonth() + 1) + "." + result[0].raporTarih.getFullYear();
+                // var akdRpr = result[0];
+                con.query("SELECT * FROM zumreRapor WHERE isDeleted = FALSE", function (err, result, fields) {
+                    if (err) throw err;
+
+                    res.render('zumreKurulu', {
+                        // mesaj: akdRpr.raporNo + 'nolu, ' + raporTarihi + 'tarihli rapor silindi!',
+                        mesaj: 'Rapor silindi!',
+                        zumreRaporlar: result, session: req.session
+                    });
+                });
+            }
+        });
+
+    } else { // if(req.session.email && req.session.yetki < 2)
+        res.redirect('/403');
+    }
+}
+
+//icra kurul
+module.exports.icraKurul = function (req, res) {
+    if (req.session.email && req.session.yetki < 2) {
+
+        con.query("SELECT * FROM icraRapor WHERE isDeleted = FALSE", function (err, result, fields) {
+            if (err) throw err;
+            res.render('icraKurulu', { mesaj: "no", icraRaporlar: result, session: req.session });
+        });
+
+    } else {
+        res.redirect('/403');
+    }
+}
+
+module.exports.icraRaporDuzenle = function (req, res) {
+    if (req.session.email && req.session.yetki < 2) {
+
+        var year = new Date().toISOString().replace(/\-.+/, '');
+
+        var sqlQuery = "SELECT * FROM ?? WHERE ?? = ?";
+        var inserts = ["icraRapor", "id", req.params.raporId];
+        sqlQuery = mysql.format(sqlQuery, inserts);
+        con.query(sqlQuery, function (err, result, fields) {
+            if (err) {
+                res.render('icraRaporDuzenle', {
+                    year,
+                    mesaj: 'err',
+                    icraRapor: result[0],
+                    inputTarih: "2000-01-01",
+                    session: req.session
+                });
+                throw err
+            } else {
+                var icraRaporResult = result[0];
+
+                var yil, ay, gun, inputTarih;
+                yil = result[0].raporTarih.getFullYear();
+                if ((result[0].raporTarih.getMonth() + 1) < 10) {
+                    ay = "0" + (result[0].raporTarih.getMonth() + 1)
+                } else {
+                    ay = (result[0].raporTarih.getMonth() + 1)
+                }
+                if (result[0].raporTarih.getDate() < 10) {
+                    gun = "0" + result[0].raporTarih.getDate()
+                } else {
+                    gun = result[0].raporTarih.getDate()
+                }
+                inputTarih = yil + "-" + ay + "-" + gun;
+                
+                res.render('icraRaporDuzenle', {
+                    year,
+                    mesaj: 'no',
+                    icraRapor: icraRaporResult,
+                    inputTarih: inputTarih,
+                    session: req.session
+                });
+            };
+        });
+
+    } else { // if (req.session.email && req.session.yetki < 2)
+        res.redirect('/403');
+    }
+}
+
+module.exports.icraRaporDuzenlePost = function (req, res) {
+    if (req.session.email && req.session.yetki < 2) {
+
+        var year = new Date().toISOString().replace(/\-.+/, '');
+
+        var sqlQuery = "UPDATE icrarapor SET ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ? WHERE id = ?";
+        var inserts = [
+            "donem", req.body.donem, "raporNo", req.body.raporNo,
+            "raporTarih", req.body.raporTarih, "raporIcerik", req.body.raporIcerik,
+            "zumreBaskani", req.body.zumreBaskani, "akademikDanisman", req.body.akademikDanisman,
+            req.body.raporId
+        ];
+        sqlQuery = mysql.format(sqlQuery, inserts);
+        con.query(sqlQuery, function (err, result, fields) {
+            if (err) {
+                res.render('icraRaporDuzenle', {
+                    year,
+                    mesaj: 'err',
+                    icraRapor: {
+                        id: '',
+                        donem: '',
+                        raporNo: '',
+                        raporTarih: '',
+                        raporIcerik: '',
+                        zumreBaskani: '',
+                        akademikDanisman: ''
+                    },
+                    inputTarih: "2000-01-01",
+                    session: req.session
+                });
+                throw err
+            } else {
+                res.render('icraRaporDuzenle', {
+                    year,
+                    mesaj: 'ok',
+                    icraRapor: {
+                        id: req.body.id,
+                        donem: req.body.donem,
+                        raporNo: req.body.raporNo,
+                        raporTarih: req.body.raporTarih,
+                        raporIcerik: req.body.raporIcerik,
+                        zumreBaskani: req.body.zumreBaskani,
+                        akademikDanisman: req.body.akademikDanisman
+                    },
+                    inputTarih: req.body.raporTarih,
+                    session: req.session
+                });
+            };
+        });
+
+    } else { // if(req.session.email && req.session.yetki < 2)
+        res.redirect('/403');
+    }
+}
+
+module.exports.icraRaporGoruntuleme = function (req, res) {
+    if (req.session.email && req.session.yetki < 2) {
+        con.query("SELECT * FROM icraRapor WHERE isDeleted = FALSE AND id = " + req.params.icraRaporId, function (err, result, fields) {
+            if (err) throw err;
+            if (result[0]) {
+                res.render('icraRaporGoruntuleme', {
+                    mesaj: 'no',
+                    icraRapor: result[0],
+                    butonlar: true,
+                    session: req.session
+                });
+            } else {
+                res.render('icraRaporGoruntuleme', {
+                    mesaj: '<strong>Hata!</strong> İcra Kurul Raporu Bulunamadı.',
+                    icraRapor: {
+                        donem: "",
+                        raporNo: "",
+                        raporIcerik: "",
+                        raporTarih: new Date(),
+                        zumreBaskani: "",
+                        akademikDanisman: ""
+                    },
+                    butonlar: false,
+                    session: req.session
+                });
+            }
+        });
+    }
+}
+
+module.exports.icraRaporEkleGet = function (req, res) {
+    if (req.session.email && req.session.yetki < 2) {
+        var year = new Date().toISOString().replace(/\-.+/, '');
+        res.render('icraRaporEkle', {
+            year,
+            mesaj: 'no',
+            icraRapor: {
+                donem: '',
+                raporNo: '',
+                raporTarih: '',
+                raporIcerik: '',
+                zumreBaskani: '',
+                akademikDanisman: ''
+            },
+            session: req.session
+        });
+    }
+}
+
+module.exports.icraRaporEklePost = function (req, res) {
+    if (req.session.email && req.session.yetki < 2) {
+
+        var year = new Date().toISOString().replace(/\T.+/, '');
+
+        var sqlQuery = "INSERT INTO icrarapor (??, ??, ??, ??, ??, ??, ??) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        var inserts = [
+            "donem", "raporNo", "raporTarih",
+            "raporIcerik", "zumreBaskani", "akademikDanisman",
+            "kullanici",
+            req.body.donem, req.body.raporNo, req.body.raporTarih,
+            req.body.raporIcerik, req.body.zumreBaskani, req.body.akademikDanisman,
+            req.session.kullaniciId
+        ];
+        sqlQuery = mysql.format(sqlQuery, inserts);
+        con.query(sqlQuery, function (err, result, fields) {
+            if (err) {
+                res.render('icraRaporEkle', {
+                    year,
+                    mesaj: 'err',
+                    icraRapor: {
+                        donem: '',
+                        raporNo: '',
+                        raporTarih: '',
+                        raporIcerik: '',
+                        zumreBaskani: '',
+                        akademikDanisman: ''
+                    },
+                    session: req.session
+                });
+                throw err
+            } else {
+                res.render('icraRaporEkle', {
+                    year,
+                    mesaj: 'ok',
+                    icraRapor: {
+                        donem: req.body.donem,
+                        raporNo: req.body.raporNo,
+                        raporTarih: req.body.raporTarih,
+                        raporIcerik: req.body.raporIcerik,
+                        zumreBaskani: req.body.zumreBaskani,
+                        akademikDanisman: req.body.akademikDanisman
+                    },
+                    session: req.session
+                });
+            };
+        });
+
+    } else { // if(req.session.email && req.session.yetki < 2)
+        res.redirect('/403');
+    }
+}
+
+module.exports.icraRaporSilPost = function (req, res) {
+    if (req.session.email && req.session.yetki < 2) {
+
+        var sqlQuery = "UPDATE icrarapor SET ?? = ? WHERE id = ?";
+        var inserts = [ "isDeleted", true, req.body.icraRaporId ];
+        sqlQuery = mysql.format(sqlQuery, inserts);
+        con.query(sqlQuery, function (err, result, fields) {
+            if (err) throw err;
+            if (result.changedRows > 0) {
+            
+                // var raporTarihi = result[0].raporTarih.getDate() + "." + (result[0].raporTarih.getMonth() + 1) + "." + result[0].raporTarih.getFullYear();
+                // var akdRpr = result[0];
+                con.query("SELECT * FROM icraRapor WHERE isDeleted = FALSE", function (err, result, fields) {
+                    if (err) throw err;
+
+                    res.render('icraKurulu', {
+                        // mesaj: akdRpr.raporNo + 'nolu, ' + raporTarihi + 'tarihli rapor silindi!',
+                        mesaj: 'Rapor silindi!',
+                        icraRaporlar: result, session: req.session
+                    });
+                });
+            }
+        });
+
+    } else { // if(req.session.email && req.session.yetki < 2)
+        res.redirect('/403');
+    }
+}
+
+//<<Parametre İşlemleri
     //<<ders
 module.exports.dersListesi = function (req, res) {
-    if (req.session.email && req.session.yetki < 2) {
+    if (req.session.email && req.session.yetki < 3) {
         // con.query("SELECT ders.id AS id, dersAdi, sinif_id, sinif.sinifi AS sinifi " + 
         // "FROM ders " + 
         // "LEFT JOIN sinif ON ders.sinif_id = sinif.id " + 
@@ -398,7 +944,7 @@ module.exports.dersListesi = function (req, res) {
 }
 
 module.exports.sinifaGoreDersListesiPost = function (req, res) {
-    if (req.session.email && req.session.yetki < 2) {
+    if (req.session.email && req.session.yetki < 3) {
         con.query("SELECT ders.id AS id, dersAdi, sinif_id, sinif.sinifi AS sinifi " + 
         "FROM ders " + 
         "LEFT JOIN sinif ON ders.sinif_id = sinif.id " + 
@@ -428,7 +974,7 @@ module.exports.dersEkleGet = function (req, res) {
 }
 
 module.exports.dersEklePost = function (req, res) {
-    if (req.session.email && req.session.yetki < 2) {
+    if (req.session.email && req.session.yetki < 3) {
 
         var sqlQuery = "INSERT INTO ders (dersAdi, sinif_id) VALUES (?, ?)";
         var inserts = [req.body.dersAdi, req.body.sinif];
@@ -455,7 +1001,7 @@ module.exports.dersEklePost = function (req, res) {
 }
 
 module.exports.dersDuzenleGet = function (req, res) {
-    if (req.session.email && req.session.yetki < 2) {
+    if (req.session.email && req.session.yetki < 3) {
 
         var sqlQuery = "SELECT * FROM ?? WHERE ?? = ?";
         var inserts = ["ders", "id", req.params.dersId];
@@ -479,7 +1025,7 @@ module.exports.dersDuzenleGet = function (req, res) {
 }
 
 module.exports.dersDuzenlePost = function (req, res) {
-    if (req.session.email && req.session.yetki < 2) {
+    if (req.session.email && req.session.yetki < 3) {
 
         var sqlQuery = "UPDATE ders SET ?? = ?, ?? = ? WHERE id = ?";
         var inserts = [
@@ -511,7 +1057,48 @@ module.exports.dersDuzenlePost = function (req, res) {
                     },
                     session: req.session });
                 });
-            };
+            }
+        });
+
+    } else {
+        res.redirect('/403');
+    }
+}
+
+module.exports.dersSilPost = function (req, res) {
+    if (req.session.email && req.session.yetki < 3) {
+
+        var sqlQuery = "UPDATE ders SET ?? = ? WHERE id = ?";
+        var inserts = ["isDeleted", true, req.body.dersId];
+        sqlQuery = mysql.format(sqlQuery, inserts);
+        con.query(sqlQuery, function (err, result, fields) {
+            if (err) {
+                throw err
+            } else if (result.changedRows > 0) {
+                con.query("SELECT ders.id AS id, dersAdi, sinif_id, sinif.sinifi AS sinifi " + 
+                "FROM ders " + 
+                "LEFT JOIN sinif ON ders.sinif_id = sinif.id " + 
+                "WHERE ders.sinif_id = " + req.body.sinifId + " AND ders.isDeleted = false", function (err, result, fields) {
+                    var dersler = result;
+                    if (err) throw err;
+                    con.query("SELECT * FROM sinif WHERE isDeleted = false", function (err, result, fields) {
+                        if (err) throw err;
+                        res.render('dersListesi', { mesaj: 'ok', sinif: result, secilen: req.body.sinifId, dersler: dersler, session: req.session });
+                    });
+                });
+            } else { //silme başarısız
+                con.query("SELECT ders.id AS id, dersAdi, sinif_id, sinif.sinifi AS sinifi " + 
+                "FROM ders " + 
+                "LEFT JOIN sinif ON ders.sinif_id = sinif.id " + 
+                "WHERE ders.sinif_id = " + req.body.sinifId + " AND ders.isDeleted = false", function (err, result, fields) {
+                    var dersler = result;
+                    if (err) throw err;
+                    con.query("SELECT * FROM sinif WHERE isDeleted = false", function (err, result, fields) {
+                        if (err) throw err;
+                        res.render('dersListesi', { mesaj: 'err', sinif: result, secilen: req.body.sinifId, dersler: dersler, session: req.session });
+                    });
+                });
+            }
         });
 
     } else {
@@ -522,7 +1109,7 @@ module.exports.dersDuzenlePost = function (req, res) {
 
     //<<ünite
 module.exports.uniteListesi = function (req, res) {
-    if (req.session.email && req.session.yetki < 2) {
+    if (req.session.email && req.session.yetki < 3) {
         con.query("SELECT * FROM sinif WHERE isDeleted = false", function (err, result, fields) {
             if (err) throw err;
             var sinif = result;
@@ -542,7 +1129,7 @@ module.exports.uniteListesi = function (req, res) {
 }
 
 module.exports.derseGoreUniteListesiPost = function (req, res) {
-    if (req.session.email && req.session.yetki < 2) {
+    if (req.session.email && req.session.yetki < 3) {
         con.query("SELECT unite.id AS id, unite.uniteAdi, unite.uniteNo, unite.sinif_id, unite.ders_id, sinif.sinifi AS sinifi, ders.dersAdi AS dersAdi " + 
         "FROM unite " + 
         "LEFT JOIN ders ON unite.ders_id = ders.id " + 
@@ -565,7 +1152,7 @@ module.exports.derseGoreUniteListesiPost = function (req, res) {
 }
 
 module.exports.uniteEkleGet = function (req, res) {
-    if (req.session.email && req.session.yetki < 2) {
+    if (req.session.email && req.session.yetki < 3) {
         con.query("SELECT * FROM sinif WHERE isDeleted = false", function (err, result, fields) {
             if (err) throw err;
             var sinif = result;
@@ -580,7 +1167,7 @@ module.exports.uniteEkleGet = function (req, res) {
 }
 
 module.exports.uniteEklePost = function (req, res) {
-    if (req.session.email && req.session.yetki < 2) {
+    if (req.session.email && req.session.yetki < 3) {
 
         var uniteAdi = req.body.uniteAdi;
         var uniteNo = req.body.uniteNo;
@@ -629,7 +1216,7 @@ module.exports.uniteEklePost = function (req, res) {
 }
 
 module.exports.uniteDuzenleGet = function (req, res) {
-    if (req.session.email && req.session.yetki < 2) {
+    if (req.session.email && req.session.yetki < 3) {
 
         var sqlQuery = "SELECT * FROM ?? WHERE ?? = ?";
         var inserts = ["unite", "id", req.params.uniteId];
@@ -657,7 +1244,7 @@ module.exports.uniteDuzenleGet = function (req, res) {
 }
 
 module.exports.uniteDuzenlePost = function (req, res) {
-    if (req.session.email && req.session.yetki < 2) {
+    if (req.session.email && req.session.yetki < 3) {
 
         var sqlQuery = "UPDATE unite SET ?? = ?, ?? = ?, ?? = ?, ?? = ? WHERE id = ?";
         var inserts = [
@@ -708,11 +1295,62 @@ module.exports.uniteDuzenlePost = function (req, res) {
         res.redirect('/403');
     }
 }
+
+module.exports.uniteSilPost = function (req, res) {
+    if (req.session.email && req.session.yetki < 3) {
+
+        var sqlQuery = "UPDATE unite SET ?? = ? WHERE id = ?";
+        var inserts = ["isDeleted", true, req.body.uniteId];
+        sqlQuery = mysql.format(sqlQuery, inserts);
+        con.query(sqlQuery, function (err, result, fields) {
+            if (err) {
+                throw err
+            } else if (result.changedRows > 0) {
+                con.query("SELECT unite.id AS id, unite.uniteAdi, unite.uniteNo, unite.sinif_id, unite.ders_id, sinif.sinifi AS sinifi, ders.dersAdi AS dersAdi " + 
+                "FROM unite " + 
+                "LEFT JOIN ders ON unite.ders_id = ders.id " + 
+                "LEFT JOIN sinif ON unite.sinif_id = sinif.id " + 
+                "WHERE unite.ders_id = " + req.body.dersId + " AND unite.isDeleted = false", function (err, result, fields) {
+                    var unite = result;
+                    if (err) throw err;
+                    con.query("SELECT * FROM sinif WHERE isDeleted = false", function (err, result, fields) {
+                        if (err) throw err;
+                        var sinif = result;
+                        con.query("SELECT * FROM ders WHERE isDeleted = false", function (err, result, fields) {
+                            if (err) throw err;
+                            res.render('uniteListesi', { mesaj: 'ok', unite: unite, sinif: sinif, ders: result, secilen: req.body.dersId, session: req.session });
+                        });
+                    });
+                });
+            } else { //silme başarısız
+                con.query("SELECT unite.id AS id, unite.uniteAdi, unite.uniteNo, unite.sinif_id, unite.ders_id, sinif.sinifi AS sinifi, ders.dersAdi AS dersAdi " + 
+                "FROM unite " + 
+                "LEFT JOIN ders ON unite.ders_id = ders.id " + 
+                "LEFT JOIN sinif ON unite.sinif_id = sinif.id " + 
+                "WHERE unite.ders_id = " + req.body.dersId + " AND unite.isDeleted = false", function (err, result, fields) {
+                    var unite = result;
+                    if (err) throw err;
+                    con.query("SELECT * FROM sinif WHERE isDeleted = false", function (err, result, fields) {
+                        if (err) throw err;
+                        var sinif = result;
+                        con.query("SELECT * FROM ders WHERE isDeleted = false", function (err, result, fields) {
+                            if (err) throw err;
+                            res.render('uniteListesi', { mesaj: 'err', unite: unite, sinif: sinif, ders: result, secilen: req.body.dersId, session: req.session });
+                        });
+                    });
+                });
+            }
+        });
+
+    } else {
+        res.redirect('/403');
+    }
+}
     //ünite>>
 
     //<<konu
 module.exports.konuListesi = function (req, res) {
-    if (req.session.email && req.session.yetki < 2) {
+    if (req.session.email && req.session.yetki < 3) {
         con.query("SELECT * FROM sinif WHERE isDeleted = false", function (err, result, fields) {
             if (err) throw err;
             var sinif = result;
@@ -738,7 +1376,7 @@ module.exports.konuListesi = function (req, res) {
 }
 
 module.exports.uniteyeGoreKonuListesiPost = function (req, res) {
-    if (req.session.email && req.session.yetki < 2) {
+    if (req.session.email && req.session.yetki < 3) {
         con.query("SELECT konu.id AS id, konu.konuAdi, konu.konuNo, konu.sinif_id, konu.ders_id , konu.unite_id, " + 
         "sinif.sinifi AS sinifi, ders.dersAdi AS dersAdi, unite.uniteAdi AS uniteAdi " + 
         "FROM konu " + 
@@ -747,7 +1385,7 @@ module.exports.uniteyeGoreKonuListesiPost = function (req, res) {
         "LEFT JOIN unite ON konu.unite_id = unite.id " + 
         "WHERE konu.unite_id = " + req.body.unite + " AND konu.isDeleted = false", function (err, result, fields) {
             var konu = result;
-            console.log(konu);
+            // console.log(konu);
             if (err) throw err;
             con.query("SELECT * FROM sinif WHERE isDeleted = false", function (err, result, fields) {
                 if (err) throw err;
@@ -768,7 +1406,7 @@ module.exports.uniteyeGoreKonuListesiPost = function (req, res) {
 }
 
 module.exports.konuEkleGet = function (req, res) {
-    if (req.session.email && req.session.yetki < 2) {
+    if (req.session.email && req.session.yetki < 3) {
         con.query("SELECT * FROM sinif WHERE isDeleted = false", function (err, result, fields) {
             if (err) throw err;
             var sinif = result;
@@ -787,7 +1425,7 @@ module.exports.konuEkleGet = function (req, res) {
 }
 
 module.exports.konuEklePost = function (req, res) {
-    if (req.session.email && req.session.yetki < 2) {
+    if (req.session.email && req.session.yetki < 3) {
 
         var konuAdi = req.body.konuAdi;
         var konuNo = req.body.konuNo;
@@ -846,7 +1484,7 @@ module.exports.konuEklePost = function (req, res) {
 }
 
 module.exports.konuDuzenleGet = function (req, res) {
-    if (req.session.email && req.session.yetki < 2) {
+    if (req.session.email && req.session.yetki < 3) {
 
         var sqlQuery = "SELECT * FROM ?? WHERE ?? = ?";
         var inserts = ["konu", "id", req.params.konuId];
@@ -878,7 +1516,7 @@ module.exports.konuDuzenleGet = function (req, res) {
 }
 
 module.exports.konuDuzenlePost = function (req, res) {
-    if (req.session.email && req.session.yetki < 2) {
+    if (req.session.email && req.session.yetki < 3) {
 
         var sqlQuery = "UPDATE konu SET ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ? WHERE id = ?";
         var inserts = [
@@ -938,11 +1576,74 @@ module.exports.konuDuzenlePost = function (req, res) {
     }
 }
 
+module.exports.konuSilPost = function (req, res) {
+    if (req.session.email && req.session.yetki < 3) {
+
+        var sqlQuery = "UPDATE konu SET ?? = ? WHERE id = ?";
+        var inserts = ["isDeleted", true, req.body.konuId];
+        sqlQuery = mysql.format(sqlQuery, inserts);
+        con.query(sqlQuery, function (err, result, fields) {
+            if (err) {
+                throw err
+            } else if (result.changedRows > 0) {
+                con.query("SELECT konu.id AS id, konu.konuAdi, konu.konuNo, konu.sinif_id, konu.ders_id , konu.unite_id, " + 
+                "sinif.sinifi AS sinifi, ders.dersAdi AS dersAdi, unite.uniteAdi AS uniteAdi " + 
+                "FROM konu " + 
+                "LEFT JOIN sinif ON konu.sinif_id = sinif.id " + 
+                "LEFT JOIN ders ON konu.ders_id = ders.id " + 
+                "LEFT JOIN unite ON konu.unite_id = unite.id " + 
+                "WHERE konu.unite_id = " + req.body.uniteId + " AND konu.isDeleted = false", function (err, result, fields) {
+                    var konu = result;
+                    if (err) throw err;
+                    con.query("SELECT * FROM sinif WHERE isDeleted = false", function (err, result, fields) {
+                        if (err) throw err;
+                        var sinif = result;
+                        con.query("SELECT * FROM ders WHERE isDeleted = false", function (err, result, fields) {
+                            if (err) throw err;
+                            var ders = result;
+                            con.query("SELECT * FROM unite WHERE isDeleted = false", function (err, result, fields) {
+                                if (err) throw err;
+                                res.render('konuListesi', { mesaj: 'ok', sinif: sinif, ders: ders, unite: result, konu: konu, secilen: req.body.uniteId, session: req.session });
+                            });
+                        });
+                    });
+                });
+            } else { //silme başarısız
+                con.query("SELECT konu.id AS id, konu.konuAdi, konu.konuNo, konu.sinif_id, konu.ders_id , konu.unite_id, " + 
+                "sinif.sinifi AS sinifi, ders.dersAdi AS dersAdi, unite.uniteAdi AS uniteAdi " + 
+                "FROM konu " + 
+                "LEFT JOIN sinif ON konu.sinif_id = sinif.id " + 
+                "LEFT JOIN ders ON konu.ders_id = ders.id " + 
+                "LEFT JOIN unite ON konu.unite_id = unite.id " + 
+                "WHERE konu.unite_id = " + req.body.uniteId + " AND konu.isDeleted = false", function (err, result, fields) {
+                    var konu = result;
+                    if (err) throw err;
+                    con.query("SELECT * FROM sinif WHERE isDeleted = false", function (err, result, fields) {
+                        if (err) throw err;
+                        var sinif = result;
+                        con.query("SELECT * FROM ders WHERE isDeleted = false", function (err, result, fields) {
+                            if (err) throw err;
+                            var ders = result;
+                            con.query("SELECT * FROM unite WHERE isDeleted = false", function (err, result, fields) {
+                                if (err) throw err;
+                                res.render('konuListesi', { mesaj: 'err', sinif: sinif, ders: ders, unite: result, konu: konu, secilen: req.body.uniteId, session: req.session });
+                            });
+                        });
+                    });
+                });
+            }
+        });
+
+    } else {
+        res.redirect('/403');
+    }
+}
+
     //konu>>
 
     //<<kazanim
 module.exports.kazanimListesi = function (req, res) {
-    if (req.session.email && req.session.yetki < 2) {
+    if (req.session.email && req.session.yetki < 3) {
         con.query("SELECT * FROM sinif WHERE isDeleted = false", function (err, result, fields) {
             if (err) throw err;
             var sinif = result;
@@ -973,7 +1674,7 @@ module.exports.kazanimListesi = function (req, res) {
 }
 
 module.exports.konuyaGoreKazanimListesiPost = function (req, res) {
-    if (req.session.email && req.session.yetki < 2) {
+    if (req.session.email && req.session.yetki < 3) {
         con.query("SELECT kazanim.id AS id, kazanim.kazanimAdi, kazanim.kazanimNo, kazanim.sinif_id, kazanim.ders_id , kazanim.unite_id, " + 
         "sinif.sinifi AS sinifi, ders.dersAdi AS dersAdi, unite.uniteAdi AS uniteAdi, konu.konuAdi AS konuAdi " + 
         "FROM kazanim " + 
@@ -1008,7 +1709,7 @@ module.exports.konuyaGoreKazanimListesiPost = function (req, res) {
 }
 
 module.exports.kazanimEkleGet = function (req, res) {
-    if (req.session.email && req.session.yetki < 2) {
+    if (req.session.email && req.session.yetki < 3) {
         con.query("SELECT * FROM sinif WHERE isDeleted = false", function (err, result, fields) {
             if (err) throw err;
             var sinif = result;
@@ -1031,7 +1732,7 @@ module.exports.kazanimEkleGet = function (req, res) {
 }
 
 module.exports.kazanimEklePost = function (req, res) {
-    if (req.session.email && req.session.yetki < 2) {
+    if (req.session.email && req.session.yetki < 3) {
 
         var kazanimAdi = req.body.kazanimAdi;
         var kazanimNo = req.body.kazanimNo;
@@ -1094,7 +1795,7 @@ module.exports.kazanimEklePost = function (req, res) {
 }
 
 module.exports.kazanimDuzenleGet = function (req, res) {
-    if (req.session.email && req.session.yetki < 2) {
+    if (req.session.email && req.session.yetki < 3) {
 
         var sqlQuery = "SELECT * FROM ?? WHERE ?? = ?";
         var inserts = ["kazanim", "id", req.params.kazanimId];
@@ -1130,7 +1831,7 @@ module.exports.kazanimDuzenleGet = function (req, res) {
 }
 
 module.exports.kazanimDuzenlePost = function (req, res) {
-    if (req.session.email && req.session.yetki < 2) {
+    if (req.session.email && req.session.yetki < 3) {
 
         var sqlQuery = "UPDATE kazanim SET ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ? WHERE id = ?";
         var inserts = [
@@ -1198,20 +1899,156 @@ module.exports.kazanimDuzenlePost = function (req, res) {
         res.redirect('/403');
     }
 }
+
+module.exports.kazanimSilPost = function (req, res) {
+    if (req.session.email && req.session.yetki < 3) {
+
+        var sqlQuery = "UPDATE kazanim SET ?? = ? WHERE id = ?";
+        var inserts = ["isDeleted", true, req.body.kazanimId];
+        sqlQuery = mysql.format(sqlQuery, inserts);
+        con.query(sqlQuery, function (err, result, fields) {
+            if (err) {
+                throw err
+            } else if (result.changedRows > 0) {
+                con.query("SELECT kazanim.id AS id, kazanim.kazanimAdi, kazanim.kazanimNo, kazanim.sinif_id, kazanim.ders_id , kazanim.unite_id, " + 
+                "sinif.sinifi AS sinifi, ders.dersAdi AS dersAdi, unite.uniteAdi AS uniteAdi, konu.konuAdi AS konuAdi " + 
+                "FROM kazanim " + 
+                "LEFT JOIN sinif ON kazanim.sinif_id = sinif.id " + 
+                "LEFT JOIN ders ON kazanim.ders_id = ders.id " + 
+                "LEFT JOIN unite ON kazanim.unite_id = unite.id " + 
+                "LEFT JOIN konu ON kazanim.konu_id = konu.id " + 
+                "WHERE kazanim.konu_id = " + req.body.konuId + " AND kazanim.isDeleted = false", function (err, result, fields) {
+                    var kazanim = result;
+                    if (err) throw err;
+                    con.query("SELECT * FROM sinif WHERE isDeleted = false", function (err, result, fields) {
+                        if (err) throw err;
+                        var sinif = result;
+                        con.query("SELECT * FROM ders WHERE isDeleted = false", function (err, result, fields) {
+                            if (err) throw err;
+                            var ders = result;
+                            con.query("SELECT * FROM unite WHERE isDeleted = false", function (err, result, fields) {
+                                if (err) throw err;
+                                var unite = result;
+                                con.query("SELECT * FROM konu WHERE isDeleted = false", function (err, result, fields) {
+                                    if (err) throw err;
+                                    res.render('kazanimListesi', { mesaj: 'ok', sinif: sinif, ders: ders, unite: unite, konu: result,
+                                    kazanim: kazanim, secilen: req.body.konuId, session: req.session });
+                                });
+                            });
+                        });
+                    });
+                });
+            } else { //silme başarısız
+                con.query("SELECT kazanim.id AS id, kazanim.kazanimAdi, kazanim.kazanimNo, kazanim.sinif_id, kazanim.ders_id , kazanim.unite_id, " + 
+                "sinif.sinifi AS sinifi, ders.dersAdi AS dersAdi, unite.uniteAdi AS uniteAdi, konu.konuAdi AS konuAdi " + 
+                "FROM kazanim " + 
+                "LEFT JOIN sinif ON kazanim.sinif_id = sinif.id " + 
+                "LEFT JOIN ders ON kazanim.ders_id = ders.id " + 
+                "LEFT JOIN unite ON kazanim.unite_id = unite.id " + 
+                "LEFT JOIN konu ON kazanim.konu_id = konu.id " + 
+                "WHERE kazanim.konu_id = " + req.body.konuId + " AND kazanim.isDeleted = false", function (err, result, fields) {
+                    var kazanim = result;
+                    if (err) throw err;
+                    con.query("SELECT * FROM sinif WHERE isDeleted = false", function (err, result, fields) {
+                        if (err) throw err;
+                        var sinif = result;
+                        con.query("SELECT * FROM ders WHERE isDeleted = false", function (err, result, fields) {
+                            if (err) throw err;
+                            var ders = result;
+                            con.query("SELECT * FROM unite WHERE isDeleted = false", function (err, result, fields) {
+                                if (err) throw err;
+                                var unite = result;
+                                con.query("SELECT * FROM konu WHERE isDeleted = false", function (err, result, fields) {
+                                    if (err) throw err;
+                                    res.render('kazanimListesi', { mesaj: 'err', sinif: sinif, ders: ders, unite: unite, konu: result,
+                                    kazanim: kazanim, secilen: req.body.konuId, session: req.session });
+                                });
+                            });
+                        });
+                    });
+                });
+            }
+        });
+
+    } else {
+        res.redirect('/403');
+    }
+}
+
     //kazanim>>
+//Parametre İşlemleri>>
 
 //materyal bankası
 module.exports.materyalListesi = function (req, res) {
     if (req.session.email && req.session.yetki < 3) {
-        con.query("SELECT materyal.id AS id, materyalAdi, dosyaYolu, dosyaTuru, tarih, kazanim, " +
-        "kullanici.id AS kullanici, kullanici.kullaniciAdi AS kullaniciAdi FROM materyal " + 
-        "LEFT JOIN kullanici ON materyal.kullanici = kullanici.id WHERE materyal.isDeleted = false", function (err, result, fields) {
+        con.query("SELECT * FROM sinif WHERE isDeleted = false", function (err, result, fields) {
+            if (err) throw err;
+            var sinif = result;
+            con.query("SELECT * FROM ders WHERE isDeleted = false", function (err, result, fields) {
+                if (err) throw err;
+                res.render('materyalListesi', {
+                    mesaj: 'no',
+                    materyal: {
+                        id: 0, materyalAdi: "", dosyaYolu: "", dosyaTuru: "", tarih: "", seviye: "", sinif: "",
+                        ders: "", unite: "", konu: "", kazanim: "", kullanici: ""
+                    },
+                    sinif: sinif,
+                    ders: result,
+                    secilen: 0,
+                    session: req.session 
+                });
+            });
+        });
+    //     con.query("SELECT materyal.id AS id, materyalAdi, dosyaYolu, dosyaTuru, tarih, unite, konu, " + 
+    //     "kazanim.id AS kazanim, kazanim.kazanimAdi AS kazanimAdi, " +
+    //     "kullanici.id AS kullanici, kullanici.kullaniciAdi AS kullaniciAdi FROM materyal " + 
+    //     "LEFT JOIN kullanici ON materyal.kullanici = kullanici.id " + 
+    //     "LEFT JOIN kazanim ON materyal.kazanim = kazanim.id " + 
+    //     "WHERE materyal.isDeleted = false", function (err, result, fields) {
+    //         if (err) {
+    //             res.render('materyalListesi', { mesaj: 'Materyaller listelenemedi!', materyal: result, session: req.session });
+    //             throw err;
+    //         } else {
+    //             // console.log(result[0]);
+    //             res.render('materyalListesi', { mesaj: 'no', materyal: result, session: req.session });
+    //         }
+    //     });
+    } else {
+        res.redirect('/403');
+    }
+}
+
+module.exports.materyalListesiPost = function (req, res) {
+    if (req.session.email && req.session.yetki < 3) {
+        con.query("SELECT materyal.id AS id, materyalAdi, dosyaYolu, dosyaTuru, tarih, " + 
+            "kazanim.id AS kazanim, unite.id AS unite, konu.id AS konu, " +
+            "unite.uniteNo, konu.konuNo, kazanim.kazanimNo, kazanim.kazanimAdi, " + 
+            "kullanici.id AS kullanici, kullanici.kullaniciAdi AS kullaniciAdi FROM materyal " + 
+            "LEFT JOIN unite ON materyal.unite = unite.id " + 
+            "LEFT JOIN konu ON materyal.konu = konu.id " + 
+            "LEFT JOIN kazanim ON materyal.kazanim = kazanim.id " + 
+            "LEFT JOIN kullanici ON materyal.kullanici = kullanici.id " + 
+            "WHERE materyal.isDeleted = false AND materyal.ders = " + req.body.ders, function (err, result, fields) {
             if (err) {
                 res.render('materyalListesi', { mesaj: 'Materyaller listelenemedi!', materyal: result, session: req.session });
                 throw err;
             } else {
-                // console.log(result[0]);
-                res.render('materyalListesi', { mesaj: 'no', materyal: result, session: req.session });
+                var materyal = result;
+                con.query("SELECT * FROM sinif WHERE isDeleted = false", function (err, result, fields) {
+                    if (err) throw err;
+                    var sinif = result;
+                    con.query("SELECT * FROM ders WHERE isDeleted = false", function (err, result, fields) {
+                        if (err) throw err;
+                        res.render('materyalListesi', {
+                            mesaj: 'no',
+                            materyal: materyal,
+                            sinif: sinif,
+                            ders: result,
+                            secilen: req.body.ders,
+                            session: req.session 
+                        });
+                    });
+                });
             }
         });
     } else {
@@ -1430,23 +2267,208 @@ module.exports.materyalDuzenlePost = function (req, res) {
     }
 }
 
-module.exports.materyal = function (req, res) {
+module.exports.materyalSilPost = function (req, res) {
+    if (req.session.email && req.session.yetki < 3) {
+        var sqlQuery = "UPDATE materyal SET ?? = ? WHERE ?? = ?";
+        var inserts = ["isDeleted", true, "id", req.body.materyalId];
+        sqlQuery = mysql.format(sqlQuery, inserts);
+        con.query(sqlQuery, function (err, result, fields) {
+            if (err) {
+                throw err;
+            } else if (result.changedRows > 0) {
+                con.query("SELECT materyal.id AS id, materyalAdi, dosyaYolu, dosyaTuru, tarih, " + 
+                    "kazanim.id AS kazanim, unite.id AS unite, konu.id AS konu, " +
+                    "unite.uniteNo, konu.konuNo, kazanim.kazanimNo, kazanim.kazanimAdi, " + 
+                    "kullanici.id AS kullanici, kullanici.kullaniciAdi AS kullaniciAdi FROM materyal " + 
+                    "LEFT JOIN unite ON materyal.unite = unite.id " + 
+                    "LEFT JOIN konu ON materyal.konu = konu.id " + 
+                    "LEFT JOIN kazanim ON materyal.kazanim = kazanim.id " + 
+                    "LEFT JOIN kullanici ON materyal.kullanici = kullanici.id " + 
+                    "WHERE materyal.isDeleted = false AND materyal.ders = " + req.body.dersId, function (err, result, fields) {
+                    if (err) {
+                        throw err;
+                    } else if (result) {
+                        var materyal = result;
+                        con.query("SELECT * FROM sinif WHERE isDeleted = false", function (err, result, fields) {
+                            if (err) throw err;
+                            var sinif = result;
+                            con.query("SELECT * FROM ders WHERE isDeleted = false", function (err, result, fields) {
+                                if (err) throw err;
+                                res.render('materyalListesi', {
+                                    mesaj: '<strong>Materyal silindi!</strong>',
+                                    materyal: materyal,
+                                    sinif: sinif,
+                                    ders: result,
+                                    secilen: req.body.dersId,
+                                    session: req.session 
+                                });
+                            });
+                        });
+                    } else {
+                        res.render('materyalListesi', {
+                            mesaj: '<strong>Materyal silindi!*</strong>', //*Listeleme hatası
+                            materyal: {
+                                id: 0,
+                                materyalAdi: "",
+                                dosyaYolu: "",
+                                dosyaTuru: "",
+                                tarih: new Date(),
+                                seviye: "",
+                                sinif: "",
+                                ders: "",
+                                unite: "",
+                                konu: "",
+                                kazanim: "",
+                                kullanici: ""
+                            },
+                            sinif: {id: 0, sinifi: ""},
+                            ders: {id: 0, dersAdi: ""},
+                            secilen: req.body.dersId,
+                            session: req.session 
+                        });
+                    }
+                });
+            } else {
+                res.render('materyalListesi', {
+                    mesaj: '<strong>Materyal silme başarısız!</strong>',
+                    materyal: {
+                        id: 0,
+                        materyalAdi: "",
+                        dosyaYolu: "",
+                        dosyaTuru: "",
+                        tarih: new Date(),
+                        seviye: "",
+                        sinif: "",
+                        ders: "",
+                        unite: "",
+                        konu: "",
+                        kazanim: "",
+                        kullanici: ""
+                    },
+                    sinif: {id: 0, sinifi: ""},
+                    ders: {id: 0, dersAdi: ""},
+                    secilen: req.body.dersId,
+                    session: req.session 
+                });
+            }
+        });
+    } else {
+        res.redirect('/403');
+    }
 }
 
 //rehberlik
 module.exports.rehberlikRaporListesi = function (req, res) {
     if (req.session.email && req.session.yetki < 3) {
-        con.query("SELECT * FROM rehberlik " + 
+        // con.query("SELECT * FROM rehberlik " + 
+        // "LEFT JOIN seviye ON rehberlik.seviye = seviye.id " + 
+        // "LEFT JOIN sinif ON rehberlik.sinif = sinif.id " + 
+        // "LEFT JOIN ders ON rehberlik.ders = ders.id " + 
+        // "LEFT JOIN kullanici ON rehberlik.kullanici = kullanici.id " + 
+        // "WHERE rehberlik.isDeleted = false LIMIT 50", function (err, result, fields) {
+        //     if (err) {
+        //         res.render('rehberlikRaporListesi', { mesaj: 'Rehberlik Raporları listelenemedi!', rehberlik: result, session: req.session });
+        //         throw err;
+        //     } else {
+        //         var rehberlik = result;
+                con.query("SELECT * FROM sinif WHERE isDeleted = false", function (err, result, fields) {
+                    if (err) throw err;
+                    var sinif = result;
+                    con.query("SELECT * FROM ders WHERE isDeleted = false", function (err, result, fields) {
+                        if (err) throw err;
+                        res.render('rehberlikRaporListesi', {
+                            mesaj: 'no',
+                            rehberlik: {
+                                id: 0,
+                                rapor: "",
+                                tarih: "",
+                                seviye: "",
+                                sinif: "",
+                                ders: "",
+                                kullanici: ""
+                            },
+                            sinif: sinif,
+                            ders: result,
+                            secilen: 0,
+                            session: req.session 
+                        });
+                    });
+                });
+        //     }
+        // });
+    } else {
+        res.redirect('/403');
+    }
+}
+
+module.exports.derseGoreRehberlikRaporListesiPost = function (req, res) {
+    if (req.session.email && req.session.yetki < 3) {
+        con.query("SELECT rehberlik.id AS id, rehberlik.rapor, rehberlik.tarih, rehberlik.seviye, rehberlik.sinif, " + 
+        "rehberlik.ders, rehberlik.kullanici, seviye.ogrenim_seviyesi AS ogrenim_seviyesi, sinif.sinifi AS sinifi, " + 
+        "kullanici.kullaniciAdi AS kullaniciAdi, ders.dersAdi AS dersAdi " + 
+        "FROM rehberlik " + 
         "LEFT JOIN seviye ON rehberlik.seviye = seviye.id " + 
         "LEFT JOIN sinif ON rehberlik.sinif = sinif.id " + 
         "LEFT JOIN ders ON rehberlik.ders = ders.id " + 
         "LEFT JOIN kullanici ON rehberlik.kullanici = kullanici.id " + 
-        "WHERE rehberlik.isDeleted = false LIMIT 50", function (err, result, fields) {
+        "WHERE rehberlik.ders = " + req.body.ders + " AND rehberlik.isDeleted = false", function (err, result, fields) {
+            var rehberlik = result;
+            if (err) throw err;
+            con.query("SELECT * FROM seviye WHERE isDeleted = false", function (err, result, fields) {
+                if (err) throw err;
+                var seviye = result;
+                con.query("SELECT * FROM sinif WHERE isDeleted = false", function (err, result, fields) {
+                    if (err) throw err;
+                    var sinif = result;
+                    con.query("SELECT * FROM ders WHERE isDeleted = false", function (err, result, fields) {
+                    if (err) throw err;
+                        res.render('rehberlikRaporListesi', {
+                            mesaj: 'no',
+                            rehberlik: rehberlik,
+                            seviye: seviye,
+                            sinif: sinif,
+                            ders: result,
+                            secilen: req.body.ders,
+                            session: req.session
+                        });
+                    });
+                });
+            });
+        });
+    } else {
+        res.redirect('/403');
+    }
+}
+
+module.exports.rehberlikRaporGoruntuleme = function (req, res) {
+    if (req.session.email && req.session.yetki < 3) {
+        con.query("SELECT rehberlik.id AS id, rehberlik.rapor, rehberlik.tarih, rehberlik.seviye, " + 
+        "rehberlik.sinif, rehberlik.ders, rehberlik.kullanici, " +
+        "sinif.sinifi AS sinifi, ders.dersAdi AS dersAdi, kullanici.kullaniciAdi AS kullaniciAdi " +
+        "FROM rehberlik " + 
+        "LEFT JOIN sinif ON rehberlik.sinif = sinif.id " + 
+        "LEFT JOIN ders ON rehberlik.ders = ders.id " + 
+        "LEFT JOIN kullanici ON rehberlik.kullanici = kullanici.id " + 
+        "WHERE rehberlik.isDeleted = false AND rehberlik.id = " + req.params.rehberlikId, function (err, result, fields) {
             if (err) {
-                res.render('rehberlikRaporListesi', { mesaj: 'Rehberlik Raporları listelenemedi!', rehberlik: result, session: req.session });
                 throw err;
+            } else if (result[0]) {
+                res.render('rehberlikRaporGoruntuleme', {
+                    mesaj: 'no',
+                    rehberlik: result[0],
+                    butonlar: true,
+                    session: req.session 
+                });
             } else {
-                res.render('rehberlikRaporListesi', { mesaj: 'no', rehberlik: result, session: req.session });
+                res.render('rehberlikRaporGoruntuleme', {
+                    mesaj: '<strong>Hata!</strong> Rehberlik raporu bulunamadı.',
+                    rehberlik: {
+                        id: 0, rapor: "", tarih: new Date(), seviye: "", sinif: "",
+                        ders: "", kullanici: ""
+                    },
+                    butonlar: false,
+                    session: req.session 
+                });
             }
         });
     } else {
@@ -1513,12 +2535,177 @@ module.exports.rehberlikRaporEklePost = function (req, res) {
     }
 }
 
+module.exports.rehberlikRaporDuzenleGet = function (req, res) {
+    if (req.session.email && req.session.yetki < 3) {
+        var rehberlik, seviye, sinif, ders;
+        con.query("SELECT * FROM rehberlik " + 
+        "WHERE rehberlik.isDeleted = false AND rehberlik.id = " + req.params.rehberlikId, function (err, result, fields) {
+            if (err) {
+                throw err;
+            } else if (result[0]) {
+                rehberlik = result[0];
+                con.query("SELECT * FROM seviye WHERE isDeleted = false", function (err, result, fields) {
+                    if (err) { throw err; } else { seviye = result; }
+                    con.query("SELECT * FROM sinif WHERE isDeleted = false", function (err, result, fields) {
+                        if (err) { throw err; } else { sinif = result; }
+                        con.query("SELECT * FROM ders WHERE isDeleted = false", function (err, result, fields) {
+                            if (err) { throw err; } else { ders = result; }
+                            res.render('rehberlikRaporDuzenle', {
+                                mesaj: 'no',
+                                rehberlik: rehberlik,
+                                seviye, sinif, ders,
+                                session: req.session 
+                            });
+                        });
+                    });
+                });
+            } else {
+                res.render('rehberlikRaporDuzenle', {
+                    mesaj: '<strong>Hata!</strong> Rehberlik Raporu bulunamadı.',
+                    rehberlik: {
+                        id: 0, rapor: "", tarih: new Date(), seviye: "", sinif: "",
+                        ders: "", kullanici: ""
+                    },
+                    seviye, sinif, ders,
+                    session: req.session 
+                });
+            }
+        });
+    } else {
+        res.redirect('/403');
+    }
+}
+
+module.exports.rehberlikRaporDuzenlePost = function (req, res) {
+    if (req.session.email && req.session.yetki < 3) {
+
+        var sqlQuery = "UPDATE rehberlik SET ?? = ?, ?? = ?, ?? = ?, ?? = ? WHERE ?? = ?";
+        var inserts = ["rapor", req.body.rapor, "seviye", req.body.seviye, "sinif", req.body.sinif,
+        "ders", req.body.ders, "id", req.body.rehberlikId];
+        sqlQuery = mysql.format(sqlQuery, inserts);
+        con.query(sqlQuery, function (err, result, fields) {
+            if (err) {
+                throw err;
+            } else if (result.changedRows > 0) {
+                var seviye, sinif, ders;
+                con.query("SELECT * FROM seviye WHERE isDeleted = false", function (err, result, fields) {
+                    if (err) { throw err; } else { seviye = result; }
+                    con.query("SELECT * FROM sinif WHERE isDeleted = false", function (err, result, fields) {
+                        if (err) { throw err; } else { sinif = result; }
+                        con.query("SELECT * FROM ders WHERE isDeleted = false", function (err, result, fields) {
+                            if (err) { throw err; } else { ders = result; }
+                            res.render('rehberlikRaporDuzenle', {
+                                mesaj: 'ok',
+                                rehberlik: {
+                                    id: req.body.rehberlikId,
+                                    rapor: req.body.rapor,
+                                    seviye: req.body.seviye,
+                                    sinif: req.body.sinif,
+                                    ders: req.body.ders,
+                                },
+                                seviye, sinif, ders,
+                                session: req.session 
+                            });
+                        });
+                    });
+                });
+            }
+        });
+    } else {
+        res.redirect('/403');
+    }
+}
+
+module.exports.rehberlikRaporSilPost = function (req, res) {
+    if (req.session.email && req.session.yetki < 3) {
+        var sqlQuery = "UPDATE rehberlik SET ?? = ? WHERE ?? = ?";
+        var inserts = ["isDeleted", true, "id", req.body.rehberlikId];
+        sqlQuery = mysql.format(sqlQuery, inserts);
+        con.query(sqlQuery, function (err, result, fields) {
+            if (err) {
+                throw err;
+            } else if (result.changedRows > 0) {
+            
+                con.query("SELECT rehberlik.id AS id, rehberlik.rapor, rehberlik.tarih, rehberlik.seviye, " + 
+                    "rehberlik.sinif, rehberlik.ders, rehberlik.kullanici, " +
+                    "sinif.sinifi AS sinifi, ders.dersAdi AS dersAdi, kullanici.kullaniciAdi AS kullaniciAdi " +
+                    "FROM rehberlik " + 
+                    "LEFT JOIN sinif ON rehberlik.sinif = sinif.id " + 
+                    "LEFT JOIN ders ON rehberlik.ders = ders.id " + 
+                    "LEFT JOIN kullanici ON rehberlik.kullanici = kullanici.id " + 
+                    "WHERE rehberlik.id = " + req.body.rehberlikId, function (err, result, fields) {
+                    if (err) {
+                        throw err;
+                    } else if (result[0]) {
+                        res.render('rehberlikRaporGoruntuleme', {
+                            mesaj: '<strong>Rehberlik Raporu silindi!</strong>',
+                            butonlar: false,
+                            rehberlik: result[0],
+                            session: req.session 
+                        });
+                    } else {
+                        res.render('rehberlikRaporGoruntuleme', {
+                            mesaj: '<strong>Rehberlik Raporu silme başarısız!</strong>',
+                            rehberlik: {
+                                id: 0, rapor: "", tarih: new Date(), seviye: "", sinif: "",
+                                ders: "", kullanici: ""
+                            },
+                            butonlar: false,
+                            session: req.session 
+                        });
+                    }
+                });
+            } else {
+                res.render('rehberlikRaporGoruntuleme', {
+                    mesaj: '<strong>Rehberlik Raporu silme başarısız!</strong>',
+                    rehberlik: {
+                        id: 0, rapor: "", tarih: new Date(), seviye: "", sinif: "",
+                        ders: "", kullanici: ""
+                    },
+                    butonlar: false,
+                    session: req.session 
+                });
+            }
+        });
+    } else {
+        res.redirect('/403');
+    }
+}
+
+
 //soru bankası
 module.exports.soruListesi = function (req, res) {
     if (req.session.email && req.session.yetki < 3) {
-        con.query("SELECT * " + //"sorular.id AS id, sinif.sinifi AS sinifi, ders.dersAdi AS dersAdi " + 
-        //"materyalAdi, dosyaYolu, dosyaTuru, tarih, kazanim, " +
-        //"kullanici.id AS kullanici, kullanici.kullaniciAdi AS kullaniciAdi " + 
+        con.query("SELECT * FROM sinif WHERE isDeleted = false", function (err, result, fields) {
+            if (err) throw err;
+            var sinif = result;
+            con.query("SELECT * FROM ders WHERE isDeleted = false", function (err, result, fields) {
+                if (err) throw err;
+                res.render('soruListesi', {
+                    mesaj: 'no',
+                    sorular: {
+                        id: 0, soru: "", cevap: "", zorluk: "", tarih: "", seviye: "", sinif: "",
+                        ders: "", unite: "", konu: "", kazanim: "", kullanici: ""
+                    },
+                    sinif: sinif,
+                    ders: result,
+                    secilen: 0,
+                    session: req.session 
+                });
+            });
+        });
+    } else {
+        res.redirect('/403');
+    }
+}
+
+module.exports.soruListesiPost = function (req, res) {
+    if (req.session.email && req.session.yetki < 3) {
+        con.query("SELECT sorular.id AS id, sorular.soru, sorular.soruTipi, sorular.testCevap, sorular.yaziliCevap, sorular.zorluk, sorular.tarih, " + 
+        "sorular.seviye, sorular.sinif, sorular.ders, sorular.unite, sorular.konu, sorular.kazanim, sorular.kullanici, " +
+        "sinif.sinifi AS sinifi, ders.dersAdi AS dersAdi, unite.id AS unite, konu.id AS konu, kazanim.id AS kazanim, " +
+        "unite.uniteNo, konu.konuNo, kazanim.kazanimNo, kazanim.kazanimAdi, " + 
+        "kullanici.id AS kullanici, kullanici.kullaniciAdi AS kullaniciAdi " + 
         "FROM sorular " + 
         "LEFT JOIN sinif ON sorular.sinif = sinif.id " + 
         "LEFT JOIN ders ON sorular.ders = ders.id " + 
@@ -1526,13 +2713,66 @@ module.exports.soruListesi = function (req, res) {
         "LEFT JOIN konu ON sorular.konu = konu.id " + 
         "LEFT JOIN kazanim ON sorular.kazanim = kazanim.id " + 
         "LEFT JOIN kullanici ON sorular.kullanici = kullanici.id " + 
-        "WHERE sorular.isDeleted = false", function (err, result, fields) {
+        "WHERE sorular.isDeleted = false AND sorular.ders = " + req.body.ders, function (err, result, fields) {
             if (err) {
                 res.render('soruListesi', { mesaj: 'Sorular listelenemedi!', sorular: result, session: req.session });
                 throw err;
             } else {
-                // console.log(result[0]);
-                res.render('soruListesi', { mesaj: 'no', sorular: result, session: req.session });
+                var sorular = result;
+                con.query("SELECT * FROM sinif WHERE isDeleted = false", function (err, result, fields) {
+                    if (err) throw err;
+                    var sinif = result;
+                    con.query("SELECT * FROM ders WHERE isDeleted = false", function (err, result, fields) {
+                        if (err) throw err;
+                        res.render('soruListesi', {
+                            mesaj: 'no',
+                            sorular: sorular,
+                            sinif: sinif,
+                            ders: result,
+                            secilen: req.body.ders,
+                            session: req.session 
+                        });
+                    });
+                });
+            }
+        });
+    } else {
+        res.redirect('/403');
+    }
+}
+
+module.exports.soruGoruntuleme = function (req, res) {
+    if (req.session.email && req.session.yetki < 3) {
+        con.query("SELECT sorular.id AS id, sorular.soru, sorular.soruTipi, sorular.testCevap, sorular.yaziliCevap, sorular.zorluk, sorular.tarih, " + 
+        "sorular.seviye, sorular.sinif, sorular.ders, sorular.unite, sorular.konu, sorular.kazanim, sorular.kullanici, " +
+        "sinif.sinifi AS sinifi, ders.dersAdi AS dersAdi, unite.id AS unite, konu.id AS konu, kazanim.id AS kazanim, " +
+        "unite.uniteNo, konu.konuNo, kazanim.kazanimNo, kazanim.kazanimAdi " + 
+        "FROM sorular " + 
+        "LEFT JOIN sinif ON sorular.sinif = sinif.id " + 
+        "LEFT JOIN ders ON sorular.ders = ders.id " + 
+        "LEFT JOIN unite ON sorular.unite = unite.id " + 
+        "LEFT JOIN konu ON sorular.konu = konu.id " + 
+        "LEFT JOIN kazanim ON sorular.kazanim = kazanim.id " + 
+        "WHERE sorular.isDeleted = false AND sorular.id = " + req.params.soruId, function (err, result, fields) {
+            if (err) {
+                throw err;
+            } else if (result[0]) {
+                res.render('soruGoruntuleme', {
+                    mesaj: 'no',
+                    sorular: result[0],
+                    butonlar: true,
+                    session: req.session 
+                });
+            } else {
+                res.render('soruGoruntuleme', {
+                    mesaj: '<strong>Hata!</strong> Soru bulunamadı.',
+                    sorular: {
+                        id: 0, soru: "", soruTipi: 0, testCevap: "", yaziliCevap: "", zorluk: "", tarih: new Date(), seviye: "", sinif: "",
+                        ders: "", unite: "", konu: "", kazanim: "", kullanici: ""
+                    },
+                    butonlar: false,
+                    session: req.session 
+                });
             }
         });
     } else {
@@ -1572,7 +2812,12 @@ module.exports.soruEklePost = function (req, res) {
     if (req.session.email && req.session.yetki < 3) {
 
         var soru = req.body.soru;
-        var cevap = req.body.cevap;
+        var soruTipi = req.body.soruTipi;
+        if (soruTipi == 1){
+            var testCevap = req.body.testCevap;
+        } else {
+            var yaziliCevap = req.body.yaziliCevap;
+        }
         var zorluk = req.body.zorluk;
         var tarih = new Date().toISOString().replace(/\T.+/, '');
         var seviye = req.body.seviye;
@@ -1583,15 +2828,16 @@ module.exports.soruEklePost = function (req, res) {
         var kazanim = req.body.kazanim;
         var kullanici = req.session.kullaniciId;
 
-        var sqlQuery = "INSERT INTO sorular (soru, cevap, zorluk, tarih, seviye, sinif, ders, unite, konu, kazanim, kullanici) " + 
-        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        var inserts = [soru, cevap, zorluk, tarih, seviye, sinif, ders, unite, konu, kazanim, kullanici];
+        var sqlQuery = "INSERT INTO sorular (soru, soruTipi, testCevap, yaziliCevap, zorluk, tarih, seviye, sinif, ders, unite, konu, kazanim, kullanici) " + 
+        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        var inserts = [soru, soruTipi, testCevap, yaziliCevap, zorluk, tarih, seviye, sinif, ders, unite, konu, kazanim, kullanici];
         sqlQuery = mysql.format(sqlQuery, inserts);
         con.query(sqlQuery, function (err, result, fields) {
             if (err) {
                 res.render('soruEkle', {
                     mesaj: 'err',
-                    soru: soru, cevap: cevap,
+                    soru: soru, soruTipi: soruTipi,
+                    testCevap: testCevap, yaziliCevap: yaziliCevap,
                     zorluk: zorluk, tarih: tarih,
                     kullanici: kullanici, seviye: seviye,
                     sinif: sinif, ders: ders,
@@ -1623,6 +2869,175 @@ module.exports.soruEklePost = function (req, res) {
             };
         });
 
+    } else {
+        res.redirect('/403');
+    }
+}
+
+module.exports.soruDuzenleGet = function (req, res) {
+    if (req.session.email && req.session.yetki < 3) {
+        var sorular, seviye, sinif, ders, unite, konu, kazanim;
+        con.query("SELECT * FROM sorular " + 
+        "WHERE sorular.isDeleted = false AND sorular.id = " + req.params.soruId, function (err, result, fields) {
+            if (err) {
+                throw err;
+            } else if (result[0]) {
+                sorular = result[0];
+                con.query("SELECT * FROM seviye WHERE isDeleted = false", function (err, result, fields) {
+                    if (err) { throw err; } else { seviye = result; }
+                    con.query("SELECT * FROM sinif WHERE isDeleted = false", function (err, result, fields) {
+                        if (err) { throw err; } else { sinif = result; }
+                        con.query("SELECT * FROM ders WHERE isDeleted = false", function (err, result, fields) {
+                            if (err) { throw err; } else { ders = result; }
+                            con.query("SELECT * FROM unite WHERE isDeleted = false", function (err, result, fields) {
+                                if (err) { throw err; } else { unite = result; }
+                                con.query("SELECT * FROM konu WHERE isDeleted = false", function (err, result, fields) {
+                                    if (err) { throw err; } else { konu = result; }
+                                    con.query("SELECT * FROM kazanim WHERE isDeleted = false", function (err, result, fields) {
+                                        if (err) { throw err; } else { kazanim = result; }
+                                        res.render('soruDuzenle', {
+                                            mesaj: 'no',
+                                            sorular: sorular,
+                                            seviye, sinif, ders,
+                                            unite, konu, kazanim,
+                                            session: req.session 
+                                        });
+                                    });
+                                });
+                            });
+                        });
+                    });
+                });
+            } else {
+                res.render('soruDuzenle', {
+                    mesaj: '<strong>Hata!</strong> Soru bulunamadı.',
+                    sorular: {
+                        id: 0, soru: "", soruTipi: 0, testCevap: "", yaziliCevap: "", zorluk: "", tarih: "", seviye: "", sinif: "",
+                        ders: "", unite: "", konu: "", kazanim: "", kullanici: ""
+                    },
+                    seviye, sinif, ders,
+                    unite, konu, kazanim,
+                    session: req.session 
+                });
+            }
+        });
+    } else {
+        res.redirect('/403');
+    }
+}
+
+module.exports.soruDuzenlePost = function (req, res) {
+    if (req.session.email && req.session.yetki < 3) {
+
+        var sqlQuery = "UPDATE sorular SET ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ? " + 
+        "WHERE ?? = ?";
+        var inserts = ["soru", req.body.soru, "soruTipi", req.body.soruTipi, "testCevap", req.body.testCevap, "yaziliCevap", req.body.yaziliCevap,
+        "zorluk", req.body.zorluk, "seviye", req.body.seviye, "sinif", req.body.sinif, 
+        "ders", req.body.ders, "unite", req.body.unite, "konu", req.body.konu, "kazanim", req.body.kazanim,
+        "id", req.body.soruId];
+        sqlQuery = mysql.format(sqlQuery, inserts);
+        con.query(sqlQuery, function (err, result, fields) {
+            if (err) { throw err; }
+
+            var seviye, sinif, ders, unite, konu, kazanim;
+            con.query("SELECT * FROM seviye WHERE isDeleted = false", function (err, result, fields) {
+                if (err) { throw err; } else { seviye = result; }
+                con.query("SELECT * FROM sinif WHERE isDeleted = false", function (err, result, fields) {
+                    if (err) { throw err; } else { sinif = result; }
+                    con.query("SELECT * FROM ders WHERE isDeleted = false", function (err, result, fields) {
+                        if (err) { throw err; } else { ders = result; }
+                        con.query("SELECT * FROM unite WHERE isDeleted = false", function (err, result, fields) {
+                            if (err) { throw err; } else { unite = result; }
+                            con.query("SELECT * FROM konu WHERE isDeleted = false", function (err, result, fields) {
+                                if (err) { throw err; } else { konu = result; }
+                                con.query("SELECT * FROM kazanim WHERE isDeleted = false", function (err, result, fields) {
+                                    if (err) { throw err; } else { kazanim = result; }
+                                    res.render('soruDuzenle', {
+                                        mesaj: 'ok',
+                                        sorular: {
+                                            id: req.body.soruId,
+                                            soru: req.body.soru,
+                                            soruTipi: req.body.soruTipi,
+                                            testCevap: req.body.testCevap,
+                                            yaziliCevap: req.body.yaziliCevap,
+                                            zorluk: req.body.zorluk,
+                                            seviye: req.body.seviye,
+                                            sinif: req.body.sinif,
+                                            ders: req.body.ders,
+                                            unite: req.body.unite,
+                                            konu: req.body.konu,
+                                            kazanim: req.body.kazanim
+                                        },
+                                        seviye, sinif, ders,
+                                        unite, konu, kazanim,
+                                        session: req.session 
+                                    });
+                                });
+                            });
+                        });
+                    });
+                });
+            });
+        });
+    } else {
+        res.redirect('/403');
+    }
+}
+
+module.exports.soruSilPost = function (req, res) {
+    if (req.session.email && req.session.yetki < 3) {
+        var sqlQuery = "UPDATE sorular SET ?? = ? WHERE ?? = ?";
+        var inserts = ["isDeleted", true, "id", req.body.soruId];
+        sqlQuery = mysql.format(sqlQuery, inserts);
+        con.query(sqlQuery, function (err, result, fields) {
+            if (err) {
+                throw err;
+            } else if (result.changedRows > 0) {
+            
+                con.query("SELECT sorular.id AS id, sorular.soru, sorular.soruTipi, sorular.testCevap, sorular.yaziliCevap, sorular.zorluk, sorular.tarih, " + 
+                "sorular.seviye, sorular.sinif, sorular.ders, sorular.unite, sorular.konu, sorular.kazanim, sorular.kullanici, " +
+                "sinif.sinifi AS sinifi, ders.dersAdi AS dersAdi, unite.id AS unite, konu.id AS konu, kazanim.id AS kazanim, " +
+                "unite.uniteNo, konu.konuNo, kazanim.kazanimNo, kazanim.kazanimAdi " + 
+                "FROM sorular " + 
+                "LEFT JOIN sinif ON sorular.sinif = sinif.id " + 
+                "LEFT JOIN ders ON sorular.ders = ders.id " + 
+                "LEFT JOIN unite ON sorular.unite = unite.id " + 
+                "LEFT JOIN konu ON sorular.konu = konu.id " + 
+                "LEFT JOIN kazanim ON sorular.kazanim = kazanim.id " + 
+                "WHERE sorular.id = " + req.body.soruId, function (err, result, fields) {
+                    if (err) {
+                        throw err;
+                    } else if (result[0]) {
+                        res.render('soruGoruntuleme', {
+                            mesaj: '<strong>Soru silindi!</strong>',
+                            butonlar: false,
+                            sorular: result[0],
+                            session: req.session 
+                        });
+                    } else {
+                        res.render('soruGoruntuleme', {
+                            mesaj: '<strong>Soru silindi!*</strong>',//*Listeleme hatası
+                            sorular: {
+                                id: 0, soru: "", soruTipi: 0, testCevap: "", yaziliCevap: "", zorluk: "", tarih: new Date(), seviye: "", sinif: "",
+                                ders: "", unite: "", konu: "", kazanim: "", kullanici: ""
+                            },
+                            butonlar: false,
+                            session: req.session 
+                        });
+                    }
+                });
+            } else {
+                res.render('soruGoruntuleme', {
+                    mesaj: '<strong>Soru silme başarısız!</strong>',
+                    sorular: {
+                        id: 0, soru: "", soruTipi: 0, testCevap: "", yaziliCevap: "", zorluk: "", tarih: new Date(), seviye: "", sinif: "",
+                        ders: "", unite: "", konu: "", kazanim: "", kullanici: ""
+                    },
+                    butonlar: false,
+                    session: req.session 
+                });
+            }
+        });
     } else {
         res.redirect('/403');
     }

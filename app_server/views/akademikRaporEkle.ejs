@@ -43,15 +43,17 @@
       <div class="form-group col-sm-12">
         <label for="raporIcerik">Rapor İçeriği:</label>
         <textarea class="form-control" rows="5" id="raporIcerik" name="raporIcerik" required><%= akademikRapor.raporIcerik %>
-          <p><u><strong>&Uuml;nitede Kullanılan Y&ouml;ntem Teknikler (Turnuva):</strong></u></p>
-          <p>&nbsp;</p>
-          <p><u><strong>&Uuml;nitede Hazırlanan ve Kullanılan &Ouml;ğretim Materyali:</strong></u></p>
-          <p>&nbsp;</p>
-          <p><u><strong>Soru Bankası i&ccedil;in Hazırlanan Sorular:</strong></u></p>
-          <p>&nbsp;</p>
-          <p><u><strong>AGİS (Akademik Gelişim İzleme Sınav Sonu&ccedil;ları ve Tedbirler):</strong></u></p>
-          <p>&nbsp;</p>
-          <p><u><strong>Diğer Faaliyet ve Etkinlikler:</strong></u></p>
+          <% if(akademikRapor.raporIcerik == "" ) { %>
+            <p><u><strong>&Uuml;nitede Kullanılan Y&ouml;ntem Teknikler (Turnuva):</strong></u></p>
+            <p>&nbsp;</p>
+            <p><u><strong>&Uuml;nitede Hazırlanan ve Kullanılan &Ouml;ğretim Materyali:</strong></u></p>
+            <p>&nbsp;</p>
+            <p><u><strong>Soru Bankası i&ccedil;in Hazırlanan Sorular:</strong></u></p>
+            <p>&nbsp;</p>
+            <p><u><strong>AGİS (Akademik Gelişim İzleme Sınav Sonu&ccedil;ları ve Tedbirler):</strong></u></p>
+            <p>&nbsp;</p>
+            <p><u><strong>Diğer Faaliyet ve Etkinlikler:</strong></u></p>
+          <% } %>
         </textarea>
       </div>
     </div>

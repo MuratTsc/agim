@@ -41,6 +41,7 @@
         <div class=row>
             <div class="form-group col-sm-6">
                 <select class="form-control" id="ders" name="ders" onChange="uniteDoldur()" required>
+                    <option value="" selected>Önce Sınıf Seçiniz</option>
                     <% for (var i=0; i < ders.length; i++) { %>
                         <% if (ders[i].id == konu.ders_id ) { %>
                             <option value="<%= ders[i].id %>" selected><%= ders[i].dersAdi %></option>
@@ -53,6 +54,7 @@
         <div class=row>
             <div class="form-group col-sm-6">
                 <select class="form-control" id="unite" name="unite" required>
+                    <option value="" selected>Önce Ders Seçiniz</option>
                     <% for (var i=0; i < unite.length; i++) { %>
                         <% if (unite[i].id == konu.unite_id ) { %>
                             <option value="<%= unite[i].id %>" selected><%= unite[i].uniteAdi %></option>
@@ -81,11 +83,10 @@
             <h3><%= unite[i].uniteAdi %> - Konu Listesi</h3>
         <% } %>
     <% } %>
-    <table class="table table-hover table-bordered table-center">
+    <table width="100%" id="dataTable" class="table table-striped table-bordered table-hover">
 
         <thead>
             <tr>
-                <th>#</th>
                 <th>Konu Adı</th>
                 <th>Konu No</th>
                 <th>Sınıf</th>
@@ -98,21 +99,20 @@
         <tbody>
         
             <% for (var i=0; i<konu.length; i++) { %>
-                <% if(i%2==0) { %>
-                    <tr class="info">
-                <% }else{ %>
-                    <tr class="warning">
-                <% } %>
-                <td><%= i+1 %></td>
-                <td><%= konu[i].konuAdi %></td>
-                <td><%= konu[i].konuNo %></td>
-                <td><%= konu[i].sinifi %></td>
-                <td><%= konu[i].dersAdi %></td>
-                <td><%= konu[i].uniteAdi %></td>
-                <td style="text-align:center;">
-                    <button class="btn btn-danger" type="submit">Sil</button>
-                    <a href="/konuDuzenle/<%=konu[i].id%>" class="btn btn-info">Düzenle</a>
-                </td>
+                <tr>
+                    <td><%= konu[i].konuAdi %></td>
+                    <td><%= konu[i].konuNo %></td>
+                    <td><%= konu[i].sinifi %></td>
+                    <td><%= konu[i].dersAdi %></td>
+                    <td><%= konu[i].uniteAdi %></td>
+                    <td style="text-align:center;">
+                        <form action="../konuSil" method="POST" style="margin:0px; padding:0px;">
+                            <input type="text" class="hidden" id="konuId" name="konuId" value="<%= konu[i].id %>">
+                            <input type="text" class="hidden" id="uniteId" name="uniteId" value="<%= secilen %>">
+                            <button class="btn btn-danger" type="submit">Sil</button>
+                            <a href="/konuDuzenle/<%=konu[i].id%>" class="btn btn-info">Düzenle</a>
+                        </form>
+                    </td>
                 </tr>
             <% } %>
         

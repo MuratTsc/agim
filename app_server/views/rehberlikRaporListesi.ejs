@@ -3,80 +3,108 @@
         <h1 class="page-header">Rehberlik Rapor Listesi</h1>
     </div>
     <!-- /.col-lg-12 -->
-
-  <!-- div class="alert alert-success">
-  </div -->
-  <% if (mesaj == "no") { %>
-  <% } else { %>
-  <div class="alert alert-danger">
-    <strong><%= mesaj %></strong> 
-  </div>
-  <% } %>
-
 </div>
+<!-- /.row -->
 
-<div class="panel panel-default">
-  <div class="panel-heading">
-    <a data-toggle="collapse" href="#col1"><h3 class="panel-title">Detaylı Listeleme</h3></a>
-  </div>
-  <div class="panel-collapse collapse" id="col1">
-    <div class="panel-body">
-        Panel content
-        Burada butonlar olacak. Sınıfa göre sorular, derse göre sorular v.s
-        <button class="btn btn-warning">Sınıfa göre</button>
-        <button class="btn btn-danger">Derse göre</button>
-        <br>
-        <br>
-        <div class="row">
-            <div class="col-sm-10">
-            <select class="form-control">
-                <option value="">Sınıf seç</option>
-                <option value="9">9. Sınıf</option>
-                <option value="10">10. Sınıf</option>
-            </select>
-            </div>
-            <div class="col-sm-2">
-            <button class="btn btn-warning">Sınıfa göre</button>
-            </div>
-        </div>
+<div class="row">
+
+    <!-- div class="alert alert-success">
+    </div -->
+    <% if (mesaj == "no") { %>
+    <% } else { %>
+    <div class="alert alert-danger">
+        <strong><%= mesaj %></strong> 
     </div>
-  </div>
-</div>
-<!-- panel -->
+    <% } %>
 
-<h3>Rehberlik Rapor Listesi</h3>
-<table class="table table-hover table-bordered">
 
-    <thead>
-        <tr>
-            <th>#</th>
-            <th>Seviye</th>
-            <th>Sınıf</th>
-            <th>Ders</th>
-            <th>Tarih</th>
-            <th>Ekleyen</th>
-        </tr>
-    </thead>
+        <form action="../rehberlikRaporListesi" method="POST">
 
-    <tbody>
-    
-        <% for (var i=0; i<rehberlik.length; i++) { %>
-            <% if(i%2==0) { %>
-                <tr class="info">
-            <% }else{ %>
-                <tr class="warning">
-            <% } %>
-            <td><%= i+1 %></td>
-            <td><%= rehberlik[i].ogrenim_seviyesi %></td>
-            <td><%= rehberlik[i].sinifi %></td>
-            <td><%= rehberlik[i].dersAdi %></td>
-            <td><%= rehberlik[i].tarih.getDate() %>.<%= rehberlik[i].tarih.getMonth()+1 %>.<%= rehberlik[i].tarih.getFullYear() %></td>
-            <td><%= rehberlik[i].kullaniciAdi %></td>
-            </tr>
-        <% } %>
-    </tbody>
+            <label for="sinif">Sınıfı:</label>
+            <div class=row>
+                <div class="form-group col-sm-6">
+                    <select class="form-control" id="sinif" name="sinif" onChange="dersDoldur()" required>
+                    <option value="">Sınıf Seçiniz</option>
+                    <% for (var i=0; i < sinif.length; i++) { %>
+                        <option value="<%= sinif[i].id %>" ><%= sinif[i].sinifi %></option>
+                    <% } %>
+                </select>
+                </div>
+            </div>
+            <label for="ders">Ders:</label>
+            <div class=row>
+                <div class="form-group col-sm-6">
+                    <select class="form-control" id="ders" name="ders" required>
+                        <option value="" selected>Önce Sınıf Seçiniz</option>
+                </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-sm-4">
+                    <input type="submit" class="btn btn-info col-sm-3" value="Listele">
+                </div>
+            </div>
+        </form>
 
-</table>
 
 </div>
 <!-- /.row -->
+
+<% if (secilen == 0) { %>
+    <div class="row hidden">
+<% } else { %>
+    <div class="row">
+<% } %>
+
+        <% for (var i=0; i < ders.length; i++) { %>
+            <% if (secilen == ders[i].id ) { %>
+                <h3><%= ders[i].dersAdi %> - Rehberlik Rapor Listesi</h3>
+            <% } %>
+        <% } %>
+
+        <table width="100%" id="dataTable" class="table table-striped table-bordered table-hover">
+
+            <thead>
+                <tr>
+                    <th>Seviye</th>
+                    <th>Sınıf</th>
+                    <th>Ders</th>
+                    <th>Tarih</th>
+                    <th>Ekleyen</th>
+                </tr>
+            </thead>
+
+            <tbody>
+            
+                <% for (var i=0; i<rehberlik.length; i++) { %>
+                    <tr onclick="document.location = '/rehberlikRaporListesi/<%= rehberlik[i].id %>';" style="cursor: pointer;">
+                    <td><%= rehberlik[i].ogrenim_seviyesi %></td>
+                    <td><%= rehberlik[i].sinifi %></td>
+                    <td><%= rehberlik[i].dersAdi %></td>
+                    <td><%= rehberlik[i].tarih.getDate() %>.<%= rehberlik[i].tarih.getMonth()+1 %>.<%= rehberlik[i].tarih.getFullYear() %></td>
+                    <td><%= rehberlik[i].kullaniciAdi %></td>
+                    </tr>
+                <% } %>
+            </tbody>
+
+        </table>
+
+    </div>
+    <!-- /.row -->
+
+
+<script>
+    var sinifSelect = document.getElementById("sinif");
+    var dersSelect = document.getElementById("ders");
+function dersDoldur(){
+    var secilenSinif = sinifSelect.options[sinifSelect.selectedIndex].value;
+
+    dersSelect.options.length = 0;
+    dersSelect.options[dersSelect.options.length] = new Option('Seçiniz', '');
+    <% for (var i=0; i < ders.length; i++) { %>
+        if (secilenSinif == <%= ders[i].sinif_id %>) { 
+            dersSelect.options[dersSelect.options.length] = new Option('<%= ders[i].dersAdi %>', '<%= ders[i].id %>');
+        }
+    <% } %>
+}
+</script>

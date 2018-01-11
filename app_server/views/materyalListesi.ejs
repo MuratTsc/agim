@@ -3,59 +3,128 @@
         <h1 class="page-header">Materyal Listesi</h1>
     </div>
     <!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->
+
+<div class="row">
 
   <!-- div class="alert alert-success">
   </div -->
   <% if (mesaj == "no") { %>
   <% } else { %>
-  <div class="alert alert-danger">
-    <strong><%= mesaj %></strong> 
-  </div>
+    <div class="alert alert-danger">
+        <%- mesaj %>
+    </div>
   <% } %>
 
-<h3>Materyal Listesi</h3>
-<table class="table table-hover table-bordered">
+    <form action="../materyalListesi" method="POST">
 
-    <thead>
-        <tr>
-            <th>#</th>
-            <th>Materyal Adı</th>
-            <th>Türü</th>
-            <th>Tarih</th>
-            <!--th>Seviye(gerek yok)</th-->
-            <!--th>Sınıf</th-->
-            <!--th>Ders</th-->
-            <!--th>Ünite</th-->
-            <!--th>Konu</th-->
-            <th>Kazanım</th>
-            <th>Ekleyen</th>
-            <th>İşlemler</th>
-        </tr>
-    </thead>
+        <label for="sinif">Sınıfı:</label>
+        <div class=row>
+            <div class="form-group col-sm-6">
+                <select class="form-control" id="sinif" name="sinif" onChange="dersDoldur()" required>
+                <option value="">Sınıf Seçiniz</option>
+                <% for (var i=0; i < sinif.length; i++) { %>
+                    <option value="<%= sinif[i].id %>" ><%= sinif[i].sinifi %></option>
+                <% } %>
+            </select>
+            </div>
+        </div>
+        <label for="ders">Ders:</label>
+        <div class=row>
+            <div class="form-group col-sm-6">
+                <select class="form-control" id="ders" name="ders" required>
+                    <option value="" selected>Önce Sınıf Seçiniz</option>
+            </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-sm-4">
+                <input type="submit" class="btn btn-info col-sm-3" value="Listele">
+            </div>
+        </div>
+    </form>
 
-    <tbody>
-    
-        <% for (var i=0; i<materyal.length; i++) { %>
-            <% if(i%2==0) { %>
-                <tr class="info" onclick="document.location = '/materyalListesi/<%= materyal[i].id %>';" style="cursor: pointer;">
-            <% }else{ %>
-                <tr class="warning" onclick="document.location = '/materyalListesi/<%= materyal[i].id %>';" style="cursor: pointer;">
-            <% } %>
-            <td><%= i+1 %></td>
-            <td><%= materyal[i].materyalAdi %></td>
-            <td><%= materyal[i].dosyaTuru %></td>
-            <td><%= materyal[i].tarih.getDate() %>.<%= materyal[i].tarih.getMonth()+1 %>.<%= materyal[i].tarih.getFullYear() %></td>
-            <td><%= materyal[i].kazanim %></td>
-            <td><%= materyal[i].kullaniciAdi %></td>
-            <td style="text-align:center;">
-                <button class="btn btn-danger" type="submit" onclick="sil('<%=materyal[i].id%>', '<%=materyal[i].materyalAdi%>');">Sil</button>
-                <a href="/materyalDuzenle/<%=materyal[i].id%>" class="btn btn-info">Düzenle</a>
-            </td>
-            </tr>
-        <% } %>
-    </tbody>
 
-</table>
 
 </div>
 <!-- /.row -->
+
+<% if (secilen == 0) { %>
+    <div class="row hidden">
+<% } else { %>
+    <div class="row">
+<% } %>
+
+    <% for (var i=0; i < ders.length; i++) { %>
+        <% if (secilen == ders[i].id ) { %>
+            <% for (var j=0; j < sinif.length; j++) { %>
+                <% if (sinif[j].id == ders[i].sinif_id ) { %>
+                    <h3><%= sinif[j].sinifi %>, <%= ders[i].dersAdi %> - Materyal Listesi</h3>
+                <% } %>
+            <% } %>
+        <% } %>
+    <% } %>
+
+    <table width="100%" id="dataTable" class="table table-striped table-bordered table-hover">
+
+        <thead>
+            <tr>
+                <th>Materyal Adı</th>
+                <th>Tarih</th>
+                <th>Kazanım</th>
+                <th>Ekleyen</th>
+                <th>İşlemler</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        
+            <% for (var i=0; i<materyal.length; i++) { %>
+                <tr>
+                <td>
+                    <a href=".<%=materyal[i].dosyaYolu%>" title="İndirmek için tıklayın." style="text-decoration: none;" download>
+                    <% if (materyal[i].dosyaTuru.search("image") > -1) { %>
+                    <img src=".<%=materyal[i].dosyaYolu%>" height="50px" width="50px">&nbsp;&nbsp;</img>
+                    <% } else {%>
+                    <i class="fa fa-download fa-fw" style="font-size: 50px;"></i>
+                    <% } %>
+                    <%= materyal[i].materyalAdi %>
+                    </a>
+                    </td>
+                <td><%= materyal[i].tarih.getDate() %>.<%= materyal[i].tarih.getMonth()+1 %>.<%= materyal[i].tarih.getFullYear() %></td>
+                <td><%= materyal[i].uniteNo %>.<%= materyal[i].konuNo %>.<%= materyal[i].kazanimNo %> <%= materyal[i].kazanimAdi %></td>
+                <td><%= materyal[i].kullaniciAdi %></td>
+                <td style="text-align:center;">
+                    <form action="../materyalSil" method="POST" style="margin:0px; padding:0px;">
+                        <input type="text" class="hidden" id="materyalId" name="materyalId" value="<%= materyal[i].id %>">
+                        <input type="text" class="hidden" id="dersId" name="dersId" value="<%= secilen %>">
+                        <button class="btn btn-danger" type="submit">Sil</button>
+                        <a href="/materyalDuzenle/<%=materyal[i].id%>" class="btn btn-info">Düzenle</a>
+                    </form>
+                </td>
+                </tr>
+            <% } %>
+        </tbody>
+
+    </table>
+<br><br><br>
+</div>
+<!-- /.row -->
+
+<script>
+    var sinifSelect = document.getElementById("sinif");
+    var dersSelect = document.getElementById("ders");
+    
+    function dersDoldur(){
+    var secilenSinif = sinifSelect.options[sinifSelect.selectedIndex].value;
+
+    dersSelect.options.length = 0;
+    dersSelect.options[dersSelect.options.length] = new Option('Seçiniz', '');
+    <% for (var i=0; i < ders.length; i++) { %>
+        if (secilenSinif == <%= ders[i].sinif_id %>) { 
+            dersSelect.options[dersSelect.options.length] = new Option('<%= ders[i].dersAdi %>', '<%= ders[i].id %>');
+        }
+    <% } %>
+    }
+</script>

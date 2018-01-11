@@ -23,6 +23,12 @@ app.set('views', path.join(__dirname, '/app_server/views'));
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+// Add this code for maximun 150mb 
+// app.use(bodyParser.json({limit: '150mb'}));
+// app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+// limit: '150mb',
+// extended: true
+// }));
 
 //modülü ektif ediyoruz
 app.use(ejsLayouts);

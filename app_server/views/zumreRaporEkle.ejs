@@ -1,37 +1,34 @@
 <div class="row">
     <div class="col-lg-12">
-        <h1 class="page-header">Akademik Kurul</h1>
+        <h1 class="page-header">Zümre Raporu Ekleme</h1>
     </div>
-    <!-- /.col-lg-12 -->
+    <!-- /.col-lg-12 --> 
 </div>
 <!-- /.row -->
 
 <div class="row">
   <% if(mesaj=="ok" ) { %>
   <div class="alert alert-success">
-    <strong>Akademik Rapor güncellendi.</strong>
+    <strong>Zümre Raporu Eklendi.</strong>
   </div>
   <% } %>
   <% if(mesaj=="err" ) { %>
   <div class="alert alert-danger">
-    <strong>Hata!</strong> Bilgiler güncellenemedi!
+    <strong>Hata!</strong> Rapor kayıt edilemedi!
   </div>
   <% } %>
-</div>
+ </div>
 <!-- /.row -->
 
-
-
 <div class="row">
-  <form action="../akademikKurul" method="POST">
-    <input type="text" class="hidden" id="raporId" name="raporId" value="<%= akademikRapor.id %>">
+  <form action="../zumreRaporEkle" method="POST">
     <div class=row>
       <div class="form-group col-sm-4">
         <label for="donem">Eğitim-Öğretim Dönemi:</label>
         <select class="form-control" id="donem" name="donem" required="true">
           <% for (var i = (parseInt(year)-5); i <= (parseInt(year) + 5); i++) { %>
-            <% if ((i+"-"+(i+1)) == akademikRapor.donem) { %>
-              <option selected="true"><%= akademikRapor.donem %></option>
+            <% if ((i+"-"+(i+1)) == zumreRapor.donem) { %>
+              <option selected="true"><%= zumreRapor.donem %></option>
             <% } else { %>
               <option><%= i %>-<%=i+1%></option>
             <% } %>
@@ -40,27 +37,39 @@
       </div>
       <div class="form-group col-sm-4">
         <label for="raporNo">Rapor No:</label>
-        <input type="number" class="form-control" id="raporNo" name="raporNo" required="true" value="<%= akademikRapor.raporNo %>">
+        <input type="number" class="form-control" id="raporNo" name="raporNo" required="true" value="<%= zumreRapor.raporNo %>">
       </div>
       <div class="form-group col-sm-4">
         <label for="raporTarih">Rapor Tarihi:</label>
-        <input type="date" class="form-control" id="raporTarih" name="raporTarih" required="true" value="<%= inputTarih %>">
+        <input type="date" class="form-control" id="raporTarih" name="raporTarih" required="true" value="<%= zumreRapor.raporTarih %>">
       </div>
     </div>
     <div class=row>
       <div class="form-group col-sm-12">
         <label for="raporIcerik">Rapor İçeriği:</label>
-        <textarea class="form-control" rows="5" id="raporIcerik" name="raporIcerik" required="true"><%= akademikRapor.raporIcerik %></textarea>
+        <textarea class="form-control" rows="5" id="raporIcerik" name="raporIcerik" required><%= zumreRapor.raporIcerik %>
+          <% if(zumreRapor.raporIcerik == "" ) { %>
+            <p><u><strong>&Uuml;nitede Kullanılan Y&ouml;ntem Teknikler (Turnuva):</strong></u></p>
+            <p>&nbsp;</p>
+            <p><u><strong>&Uuml;nitede Hazırlanan ve Kullanılan &Ouml;ğretim Materyali:</strong></u></p>
+            <p>&nbsp;</p>
+            <p><u><strong>Soru Bankası i&ccedil;in Hazırlanan Sorular:</strong></u></p>
+            <p>&nbsp;</p>
+            <p><u><strong>AGİS (Akademik Gelişim İzleme Sınav Sonu&ccedil;ları ve Tedbirler):</strong></u></p>
+            <p>&nbsp;</p>
+            <p><u><strong>Diğer Faaliyet ve Etkinlikler:</strong></u></p>
+          <% } %>
+        </textarea>
       </div>
     </div>
     <div class=row>
       <div class="form-group col-sm-6">
         <label for="zumreBaskani">Zümre Başkanı:</label>
-        <input type="text" class="form-control" id="zumreBaskani" name="zumreBaskani" required="true" value="<%= akademikRapor.zumreBaskani %>">
+        <input type="text" class="form-control" id="zumreBaskani" name="zumreBaskani" required="true" value="<%= zumreRapor.zumreBaskani %>">
       </div>
       <div class="form-group col-sm-6">
         <label for="akademikDanisman">Akademik Danışman:</label>
-        <input type="text" class="form-control" id="akademikDanisman" name="akademikDanisman" required="true" value="<%= akademikRapor.akademikDanisman %>">
+        <input type="text" class="form-control" id="akademikDanisman" name="akademikDanisman" required="true" value="<%= zumreRapor.akademikDanisman %>">
       </div>
     </div>
     <div class=row>

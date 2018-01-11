@@ -61,11 +61,10 @@
             <h3><%= ders[i].dersAdi %> - Ünite Listesi</h3>
         <% } %>
     <% } %>
-    <table class="table table-hover table-bordered table-center">
+    <table width="100%" id="dataTable" class="table table-striped table-bordered table-hover">
 
         <thead>
             <tr>
-                <th>#</th>
                 <th>Ünite Adı</th>
                 <th>Ünite No</th>
                 <th>Sınıf</th>
@@ -77,20 +76,19 @@
         <tbody>
         
             <% for (var i=0; i<unite.length; i++) { %>
-                <% if(i%2==0) { %>
-                    <tr class="info">
-                <% }else{ %>
-                    <tr class="warning">
-                <% } %>
-                <td><%= i+1 %></td>
-                <td><%= unite[i].uniteAdi %></td>
-                <td><%= unite[i].uniteNo %></td>
-                <td><%= unite[i].sinifi %></td>
-                <td><%= unite[i].dersAdi %></td>
-                <td style="text-align:center;">
-                    <button class="btn btn-danger" type="submit">Sil</button>
-                    <a href="/uniteDuzenle/<%=unite[i].id%>" class="btn btn-info">Düzenle</a>
-                </td>
+                <tr>
+                    <td><%= unite[i].uniteAdi %></td>
+                    <td><%= unite[i].uniteNo %></td>
+                    <td><%= unite[i].sinifi %></td>
+                    <td><%= unite[i].dersAdi %></td>
+                    <td style="text-align:center;">
+                        <form action="../uniteSil" method="POST" style="margin:0px; padding:0px;">
+                            <input type="text" class="hidden" id="uniteId" name="uniteId" value="<%= unite[i].id %>">
+                            <input type="text" class="hidden" id="dersId" name="dersId" value="<%= secilen %>">
+                            <button class="btn btn-danger" type="submit">Sil</button>
+                            <a href="/uniteDuzenle/<%=unite[i].id%>" class="btn btn-info">Düzenle</a>
+                        </form>
+                    </td>
                 </tr>
             <% } %>
         

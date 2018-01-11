@@ -1,0 +1,61 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Rehberlik</h1>
+    </div>
+    <!-- /.col-lg-12 -->
+
+</div>
+<!-- /.row -->
+
+
+<div class="row">
+    <% if (mesaj == "no") { %>
+    <% } else { %>
+    <div class="alert alert-danger">
+        <%- mesaj %>
+    </div>
+    <% } %>
+</div>
+
+<div class="row">
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <div class="row">
+                <div class="col-xs-12 col-md-4">
+                    <strong>Sınıf:</strong> <%= rehberlik.sinifi %>
+                </div>
+                <div class="col-xs-12 col-md-4">
+                    <strong>Ders:</strong> <%= rehberlik.dersAdi %>
+                </div>
+                <div class="col-xs-12 col-md-4">
+                    <strong>Eklenme Tarihi:</strong> <%= rehberlik.tarih.getDate() %>.<%= rehberlik.tarih.getMonth()+1 %>.<%= rehberlik.tarih.getFullYear() %>
+                </div>
+                <div class="col-xs-12 col-md-4">
+                    <strong>Ekleyen:</strong> <%= rehberlik.kullaniciAdi %>
+                </div>
+            </div>
+        </div>
+        <div class="panel-body">
+            <%- rehberlik.rapor %>
+        </div>
+        <div class="panel-footer noprint">
+            <div class="row">
+                <div class="col-xs-6 col-md-9">
+                    &nbsp;
+                </div>
+                <div class="col-xs-6 col-md-3">
+                    <% if(butonlar) { %>
+                    <form action="../rehberlikRaporSil" method="POST" style="margin:0px; padding:0px;">
+                        <input type="text" class="hidden" id="rehberlikId" name="rehberlikId" value="<%= rehberlik.id %>">
+                        <button class="btn btn-danger" type="submit">Sil</button>
+                        <a href="/rehberlikRaporDuzenle/<%=rehberlik.id%>" class="btn btn-info">Düzenle</a>
+                    </form>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<br><br>

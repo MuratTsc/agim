@@ -2741,6 +2741,108 @@ module.exports.soruListesiPost = function (req, res) {
     }
 }
 
+module.exports.soruListesiSilPost = function (req, res) {
+    if (req.session.email && req.session.yetki < 3) {
+        if (req.body.cb) {
+            var secilenler = req.body.cb;
+            var idler = "";
+            for (var i = 0; i < secilenler.length; i++) {
+                idler += "id = " + secilenler[i];
+                if (i+1 < secilenler.length) {
+                    idler += " OR ";
+                }
+            }
+            console.log(idler);
+            var sqlQuery = "UPDATE sorular SET isDeleted = true WHERE " + idler;
+            con.query(sqlQuery, function (err, result, fields) {
+                if (err) {
+                    throw err;
+                } else if (result.changedRows > 0) {
+                    console.log(idler + "update başarılı...................");
+                    con.query("SELECT sorular.id AS id, sorular.soru, sorular.soruTipi, sorular.testCevap, sorular.yaziliCevap, sorular.zorluk, sorular.tarih, " + 
+                    "sorular.seviye, sorular.sinif, sorular.ders, sorular.unite, sorular.konu, sorular.kazanim, sorular.kullanici, " +
+                    "sinif.sinifi AS sinifi, ders.dersAdi AS dersAdi, unite.id AS unite, konu.id AS konu, kazanim.id AS kazanim, " +
+                    "unite.uniteNo, konu.konuNo, kazanim.kazanimNo, kazanim.kazanimAdi, " + 
+                    "kullanici.id AS kullanici, kullanici.kullaniciAdi AS kullaniciAdi " + 
+                    "FROM sorular " + 
+                    "LEFT JOIN sinif ON sorular.sinif = sinif.id " + 
+                    "LEFT JOIN ders ON sorular.ders = ders.id " + 
+                    "LEFT JOIN unite ON sorular.unite = unite.id " + 
+                    "LEFT JOIN konu ON sorular.konu = konu.id " + 
+                    "LEFT JOIN kazanim ON sorular.kazanim = kazanim.id " + 
+                    "LEFT JOIN kullanici ON sorular.kullanici = kullanici.id " + 
+                    "WHERE sorular.isDeleted = false AND sorular.ders = " + req.body.dersId, function (err, result, fields) {
+                        if (err) {
+                            res.render('soruListesi', { mesaj: '<strong>Seçilen sorular silindi.</strong> Yeniden listelenirken hata oluştu!', sorular: result, session: req.session });
+                            throw err;
+                        } else {
+                            console.log("derstes soru bulma başarılı");
+                            var sorular = result;
+                            con.query("SELECT * FROM sinif WHERE isDeleted = false", function (err, result, fields) {
+                                if (err) throw err;
+                                var sinif = result;
+                                console.log("sinif başarılı");
+                                con.query("SELECT * FROM ders WHERE isDeleted = false", function (err, result, fields) {
+                                    if (err) throw err;
+                                    console.log("ders başarılı");
+                                    res.render('soruListesi', {
+                                        mesaj: '<strong>Seçilen sorular silindi.</strong>',
+                                        sorular: sorular,
+                                        sinif: sinif,
+                                        ders: result,
+                                        secilen: req.body.dersId,
+                                        session: req.session 
+                                    });
+                                });
+                            });
+                        }
+                    });
+                }
+            });
+            // res.send("POST başarılı<br>" + req.body.toplam + " - " + req.body.cb);
+        } else {
+            // res.send("POST başarılı<br>Ama seçim yapılmadı");
+            con.query("SELECT sorular.id AS id, sorular.soru, sorular.soruTipi, sorular.testCevap, sorular.yaziliCevap, sorular.zorluk, sorular.tarih, " + 
+            "sorular.seviye, sorular.sinif, sorular.ders, sorular.unite, sorular.konu, sorular.kazanim, sorular.kullanici, " +
+            "sinif.sinifi AS sinifi, ders.dersAdi AS dersAdi, unite.id AS unite, konu.id AS konu, kazanim.id AS kazanim, " +
+            "unite.uniteNo, konu.konuNo, kazanim.kazanimNo, kazanim.kazanimAdi, " + 
+            "kullanici.id AS kullanici, kullanici.kullaniciAdi AS kullaniciAdi " + 
+            "FROM sorular " + 
+            "LEFT JOIN sinif ON sorular.sinif = sinif.id " + 
+            "LEFT JOIN ders ON sorular.ders = ders.id " + 
+            "LEFT JOIN unite ON sorular.unite = unite.id " + 
+            "LEFT JOIN konu ON sorular.konu = konu.id " + 
+            "LEFT JOIN kazanim ON sorular.kazanim = kazanim.id " + 
+            "LEFT JOIN kullanici ON sorular.kullanici = kullanici.id " + 
+            "WHERE sorular.isDeleted = false AND sorular.ders = " + req.body.dersId, function (err, result, fields) {
+                if (err) {
+                    res.render('soruListesi', { mesaj: '1- Silmek için soru seçmediniz.<br>2- Yeniden listelenirken hata oluştu!', sorular: result, session: req.session });
+                    throw err;
+                } else {
+                    var sorular = result;
+                    con.query("SELECT * FROM sinif WHERE isDeleted = false", function (err, result, fields) {
+                        if (err) throw err;
+                        var sinif = result;
+                        con.query("SELECT * FROM ders WHERE isDeleted = false", function (err, result, fields) {
+                            if (err) throw err;
+                            res.render('soruListesi', {
+                                mesaj: '<strong>Hiç soru seçmediniz!</strong> Silmek istediğiniz soruların önündeki kutucuğu işaretlemelisiniz.',
+                                sorular: sorular,
+                                sinif: sinif,
+                                ders: result,
+                                secilen: req.body.dersId,
+                                session: req.session 
+                            });
+                        });
+                    });
+                }
+            });
+        }
+    } else {
+        res.redirect('/403');
+    }
+}
+
 module.exports.soruGoruntuleme = function (req, res) {
     if (req.session.email && req.session.yetki < 3) {
         con.query("SELECT sorular.id AS id, sorular.soru, sorular.soruTipi, sorular.testCevap, sorular.yaziliCevap, sorular.zorluk, sorular.tarih, " + 

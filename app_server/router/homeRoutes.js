@@ -93,6 +93,7 @@ router.post('/rehberlikRaporSil', ctrlHome.rehberlikRaporSilPost);
 router.get('/soruListesi', ctrlHome.soruListesi);
 router.get('/soruListesi/:soruId', ctrlHome.soruGoruntuleme);
 router.post('/soruListesi', ctrlHome.soruListesiPost);
+router.post('/soruListesiSil', ctrlHome.soruListesiSilPost);
 router.get('/soruEkle', ctrlHome.soruEkleGet);
 router.post('/soruEkle', ctrlHome.soruEklePost);
 router.get('/soruDuzenle/:soruId', ctrlHome.soruDuzenleGet);

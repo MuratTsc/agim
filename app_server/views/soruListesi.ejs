@@ -57,54 +57,72 @@
     <div class="row">
 <% } %>
 
-    <% for (var i=0; i < ders.length; i++) { %>
-        <% if (secilen == ders[i].id ) { %>
-            <h3><%= ders[i].dersAdi %> - Soru Listesi</h3>
-        <% } %>
-    <% } %>
+    <form action="../soruListesiSil" method="POST">
 
-    <table width="100%" id="dataTable" class="table table-striped table-bordered table-hover">
-
-        <thead>
-            <tr>
-                <th>Sınıf</th>
-                <th>Ders</th>
-                <th>Zorluk</th>
-                <th>Soru Tipi</th>
-                <th>Kazanım</th>
-                <th>Tarih</th>
-                <th>Ekleyen</th>
-            </tr>
-        </thead>
-
-        <tbody>
-        
-            <% for (var i=0; i<sorular.length; i++) { %>
-                <tr onclick="document.location = '/soruListesi/<%= sorular[i].id %>';" style="cursor: pointer;">
-                <td><%= sorular[i].sinifi %></td>
-                <td><%= sorular[i].dersAdi %></td>
-                <% if (sorular[i].zorluk == 1) { %>
-                    <td>Kolay</td>
-                <% } else if (sorular[i].zorluk == 2) { %>
-                    <td>Orta</td>
-                <% } else if (sorular[i].zorluk == 3) { %>
-                    <td>Zor</td>
-                <% } %>
-                <% if (sorular[i].soruTipi == 1) { %>
-                    <td>Çoktan Seçmeli</td>
-                <% } else if (sorular[i].soruTipi == 2) { %>
-                    <td>Klasik</td>
-                <% } else if (sorular[i].soruTipi == 3) { %>
-                    <td>Boşluk Doldurma</td>
-                <% } %>
-                <td><%= sorular[i].uniteNo %>.<%= sorular[i].konuNo %>.<%= sorular[i].kazanimNo %> <%= sorular[i].kazanimAdi %></td>
-                <td><%= sorular[i].tarih.getDate() %>.<%= sorular[i].tarih.getMonth()+1 %>.<%= sorular[i].tarih.getFullYear() %></td>
-                <td><%= sorular[i].kullaniciAdi %></td>
-                </tr>
+        <% for (var i=0; i < ders.length; i++) { %>
+            <% if (secilen == ders[i].id ) { %>
+                <h3><%= ders[i].dersAdi %> - Soru Listesi</h3>
             <% } %>
-        </tbody>
+        <% } %>
+        <!-- : -->
 
-    </table>
+        <table width="100%" id="dataTable" class="table table-striped table-bordered table-hover">
+
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Sınıf</th>
+                    <th>Ders</th>
+                    <th>Zorluk</th>
+                    <th>Soru Tipi</th>
+                    <th>Kazanım</th>
+                    <th>Tarih</th>
+                    <th>Ekleyen</th>
+                </tr>
+            </thead>
+
+            <tbody>
+            
+                <% for (var i=0; i<sorular.length; i++) { %>
+                    <tr>
+                    <td><input type="checkbox" id="cb<%= sorular[i].id %>" name="cb" value="<%= sorular[i].id %>" class="form-control"></td>
+                    <td onclick="document.location = '/soruListesi/<%= sorular[i].id %>';" style="cursor: pointer;"><%= sorular[i].sinifi %></td>
+                    <td onclick="document.location = '/soruListesi/<%= sorular[i].id %>';" style="cursor: pointer;"><%= sorular[i].dersAdi %></td>
+                    <% if (sorular[i].zorluk == 1) { %>
+                        <td onclick="document.location = '/soruListesi/<%= sorular[i].id %>';" style="cursor: pointer;">Kolay</td>
+                    <% } else if (sorular[i].zorluk == 2) { %>
+                        <td onclick="document.location = '/soruListesi/<%= sorular[i].id %>';" style="cursor: pointer;">Orta</td>
+                    <% } else if (sorular[i].zorluk == 3) { %>
+                        <td onclick="document.location = '/soruListesi/<%= sorular[i].id %>';" style="cursor: pointer;">Zor</td>
+                    <% } %>
+                    <% if (sorular[i].soruTipi == 1) { %>
+                        <td onclick="document.location = '/soruListesi/<%= sorular[i].id %>';" style="cursor: pointer;">Çoktan Seçmeli</td>
+                    <% } else if (sorular[i].soruTipi == 2) { %>
+                        <td onclick="document.location = '/soruListesi/<%= sorular[i].id %>';" style="cursor: pointer;">Klasik</td>
+                    <% } else if (sorular[i].soruTipi == 3) { %>
+                        <td onclick="document.location = '/soruListesi/<%= sorular[i].id %>';" style="cursor: pointer;">Boşluk Doldurma</td>
+                    <% } %>
+                    <td onclick="document.location = '/soruListesi/<%= sorular[i].id %>';" style="cursor: pointer;"><%= sorular[i].uniteNo %>.<%= sorular[i].konuNo %>.<%= sorular[i].kazanimNo %> <%= sorular[i].kazanimAdi %></td>
+                    <td onclick="document.location = '/soruListesi/<%= sorular[i].id %>';" style="cursor: pointer;"><%= sorular[i].tarih.getDate() %>.<%= sorular[i].tarih.getMonth()+1 %>.<%= sorular[i].tarih.getFullYear() %></td>
+                    <td onclick="document.location = '/soruListesi/<%= sorular[i].id %>';" style="cursor: pointer;"><%= sorular[i].kullaniciAdi %></td>
+                    </tr>
+                <% } %>
+            </tbody>
+
+        </table>
+    
+                <layer for="cbHepsiniSec">&nbsp; <input type="checkbox" id="cbHepsiniSec" name="cbHepsiniSec" onclick="hepsiniSec()">&nbsp;&nbsp;Tümünü Seç</layer>
+                <input type="number" class="hidden" id="dersId" name="dersId" value="<%= secilen %>">
+                <input type="number" class="hidden" id="toplam" name="toplam" value="<%= sorular.length %>">
+        <br>
+        <div class="row">
+            <div class="form-group col-sm-4">
+                <input type="submit" class="btn btn-danger col-sm-4" value="Seçilenleri Sil">
+            </div>
+        </div>
+        <br>
+
+    </form>
 
 </div>
 <!-- /.row -->
@@ -113,15 +131,30 @@
 <script>
     var sinifSelect = document.getElementById("sinif");
     var dersSelect = document.getElementById("ders");
-function dersDoldur(){
-    var secilenSinif = sinifSelect.options[sinifSelect.selectedIndex].value;
+    function dersDoldur(){
+        var secilenSinif = sinifSelect.options[sinifSelect.selectedIndex].value;
 
-    dersSelect.options.length = 0;
-    dersSelect.options[dersSelect.options.length] = new Option('Seçiniz', '');
-    <% for (var i=0; i < ders.length; i++) { %>
-        if (secilenSinif == <%= ders[i].sinif_id %>) { 
-            dersSelect.options[dersSelect.options.length] = new Option('<%= ders[i].dersAdi %>', '<%= ders[i].id %>');
+        dersSelect.options.length = 0;
+        dersSelect.options[dersSelect.options.length] = new Option('Seçiniz', '');
+        <% for (var i=0; i < ders.length; i++) { %>
+            if (secilenSinif == <%= ders[i].sinif_id %>) { 
+                dersSelect.options[dersSelect.options.length] = new Option('<%= ders[i].dersAdi %>', '<%= ders[i].id %>');
+            }
+        <% } %>
+    }
+
+        var hepSec = document.getElementById("cbHepsiniSec");
+    function hepsiniSec(){
+        var cb = document.getElementsByName("cb");
+        for (i = 0; i < cb.length; i++) {
+            if (cb[i].type == "checkbox") {
+                if(hepSec.checked) {
+                    cb[i].checked = true;
+                } else {
+                    cb[i].checked = false;
+                }
+            }
         }
-    <% } %>
-}
+    }
+
 </script>

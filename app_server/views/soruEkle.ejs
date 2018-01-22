@@ -35,22 +35,36 @@
         </div>
 
         <div class="row">
-            <div class="form-group col-sm-6">
+            <div class="form-group col-sm-12">
                 <label>Soru Tipi: </label><br>
                 <label class="radio-inline">
-                    <input type="radio" name="soruTipi" id="soruTipi" value="1" required onclick="cevapSec()">Çoktan Seçmeli
+                    <input type="radio" name="soruTipi" id="soruTipi" value="1" required onclick="cevapSec()" checked>Çoktan Seçmeli
                 </label>
                 <label class="radio-inline">
-                    <input type="radio" name="soruTipi" id="soruTipi" value="2" onclick="cevap2Sec()">Klasik
+                    <input type="radio" name="soruTipi" id="soruTipi" value="2" onclick="cevap2Sec()">Açık Uçlu
                 </label>
                 <label class="radio-inline">
                     <input type="radio" name="soruTipi" id="soruTipi" value="3" onclick="cevap2Sec()">Boşluk Doldurma
                 </label>
             </div>
         </div>
+        
         <div class="row">
-            <div class="form-group col-sm-6" id="cvp1Div" style="display:none">
-                <label for="testCevap">Doğru cevap:</label>
+            <div class="form-group col-sm-12" id="cvp1Div" style="display:block">
+                <div class="row">
+                    <div class="col-sm-12">
+                    </div>
+                    <div class="form-group col-sm-12">
+                        <label>Cevap Tipi: </label><br>
+                        <label class="radio-inline" title="Seçeneklerden yalnızca biri doğru ise seçiniz.">
+                            <input type="radio" name="cevapTipi" id="cevapTipiTek" value="1" required onclick="cvpTipiTek()" title="Seçeneklerden yalnızca biri doğru ise seçiniz." checked>Tek Doğru Cevap
+                        </label>
+                        <label class="radio-inline" title="Birden fazla doğru seçenek varsa seçiniz.">
+                            <input type="radio" name="cevapTipi" id="cevapTipiCok" value="2" onclick="cvpTipiCok()" title="Birden fazla doğru seçenek varsa seçiniz.">Çoklu Doğru Cevap
+                        </label>
+                    </div>
+                </div>
+                <!-- label for="testCevap">Doğru cevap:</label>
                 <select class="form-control" id="testCevap" name="testCevap" required>
                     <option value="" selected>Seçiniz</option>
                     <option value="A">A</option>
@@ -58,11 +72,86 @@
                     <option value="C">C</option>
                     <option value="D">D</option>
                     <option value="E">E</option>
-                </select>
+                </select -->
+                <div class="col-sm-12">
+                <hr>
+                </div>
+                    <div class="col-sm-1">
+                        <div style="margin: 45%;" id="rdDivA">
+                            A <input type="radio" id="testTekCevap" name="testTekCevap" value="A" required>
+                        </div>
+                        <div style="margin: 45%; display:none;" id="cbDivA">
+                            A <input type="checkbox" id="testCevapA" name="testCevap" value="A">
+                        </div>
+                    </div>
+                    <div class="col-sm-11">
+                        <textarea class="form-control" rows="1" id="testCevapTextA" name="testCevapTextA" required></textarea>
+                    </div>
+                <div class="col-sm-12">
+                <hr>
+                </div>
+
+                    <div class="col-sm-1">
+                        <div style="margin: 45%;" id="rdDivB">
+                            B <input type="radio" id="testTekCevap"  name="testTekCevap" value="B">
+                        </div>
+                        <div style="margin: 45%; display:none;" id="cbDivB">
+                            B <input type="checkbox" id="testCevapB"  name="testCevap" value="B">
+                        </div>
+                    </div>
+                    <div class="col-sm-11">
+                        <textarea class="form-control" rows="1" id="testCevapTextB" name="testCevapTextB" required></textarea>
+                    </div>
+                <div class="col-sm-12">
+                <hr>
+                </div>
+
+                <div class="col-sm-1">
+                    <div style="margin: 45%;" id="rdDivC">
+                        C <input type="radio" id="testTekCevap"  name="testTekCevap" value="C">
+                    </div>
+                    <div style="margin: 45%; display:none;" id="cbDivC">
+                        C <input type="checkbox" id="testCevapC"  name="testCevap" value="C">
+                    </div>
+                </div>
+                <div class="col-sm-11">
+                    <textarea class="form-control" rows="1" id="testCevapTextC" name="testCevapTextC" required></textarea>
+                </div>
+                <div class="col-sm-12">
+                <hr>
+                </div>
+                
+                <div class="col-sm-1">
+                    <div style="margin: 45%;" id="rdDivD">
+                        D <input type="radio" id="testTekCevap"  name="testTekCevap" value="D">
+                    </div>
+                    <div style="margin: 45%; display:none;" id="cbDivD">
+                        D <input type="checkbox" id="testCevapD"  name="testCevap" value="D">
+                    </div>
+                </div>
+                <div class="col-sm-11">
+                    <textarea class="form-control" rows="1" id="testCevapTextD" name="testCevapTextD" required></textarea>
+                </div>
+                <div class="col-sm-12">
+                <hr>
+                </div>
+                
+                <div class="col-sm-1">
+                    <div style="margin: 45%;" id="rdDivE">
+                        E <input type="radio" id="testTekCevap"  name="testTekCevap" value="E">
+                    </div>
+                    <div style="margin: 45%; display:none;" id="cbDivE">
+                        E <input type="checkbox" id="testCevapE"  name="testCevap" value="E">
+                    </div>
+                </div>
+                <div class="col-sm-11">
+                    <textarea class="form-control" rows="1" id="testCevapTextE" name="testCevapTextE" required></textarea>
+                </div>
             </div>
         </div>
+        
         <div class="row">
-            <div class="form-group col-sm-6" id="cvp2Div" style="display:none">
+            <div class="form-group col-sm-12" id="cvp2Div" style="display:none">
             <label for="yaziliCevap">Doğru cevap:</label>
             <textarea class="form-control" rows="3" id="yaziliCevap" name="yaziliCevap" required></textarea>
             </div>
@@ -141,7 +230,8 @@
         <br><br>
         <div class="row">
             <div class="form-group col-sm-6">
-            <input type="submit" class="btn btn-info col-sm-4" value="Kaydet">
+            <input type="button" onClick="cbKontrol()" class="btn btn-info col-sm-4" value="Kaydet">
+            <input type="submit" id="submitButton" class="btn btn-info col-sm-4 hidden" value="Kaydet">
             </div>
         </div>
 
@@ -248,22 +338,77 @@
     /*
     * cevap seçenekleri
     */
-    function cevapSec() {
+    function cevapSec() { //soruTipi çoktan seçmeli
         document.getElementById('cvp1Div').style.display = 'block';
         document.getElementById('cvp2Div').style.display = 'none';
         // document.getElementById('bd').style.display = 'none';
-        document.getElementById('testCevap').setAttribute("required","");
+        // document.getElementById('testCevap').setAttribute("required","");
+        document.getElementById('testTekCevap').setAttribute("required","");
+        document.getElementById('testCevap').removeAttribute("required");
         document.getElementById('yaziliCevap').removeAttribute("required");
         // document.getElementById('bd').removeAttribute("required");
         
     }
-    function cevap2Sec() {
+    function cevap2Sec() { //soruTipi açık uçlu veya boşluk doldurma
         document.getElementById('cvp1Div').style.display = 'none';
         document.getElementById('cvp2Div').style.display = 'block';
         // document.getElementById('bd').style.display = 'none';
-        document.getElementById('testCevap').removeAttribute("required");
+        document.getElementById('testTekCevap').removeAttribute("required");
+        document.getElementById('testCevap').setAttribute("required",""); //cbKontrol
         document.getElementById('yaziliCevap').setAttribute("required","");
         // document.getElementById('bd').removeAttribute("required");
+    }
+
+    function cvpTipiTek() {
+        document.getElementById('rdDivA').style.display = 'block';
+        document.getElementById('rdDivB').style.display = 'block';
+        document.getElementById('rdDivC').style.display = 'block';
+        document.getElementById('rdDivD').style.display = 'block';
+        document.getElementById('rdDivE').style.display = 'block';
+        document.getElementById('cbDivA').style.display = 'none';
+        document.getElementById('cbDivB').style.display = 'none';
+        document.getElementById('cbDivC').style.display = 'none';
+        document.getElementById('cbDivD').style.display = 'none';
+        document.getElementById('cbDivE').style.display = 'none';
+        document.getElementById('testTekCevap').setAttribute("required","");
+        // document.getElementById('testCevapA').removeAttribute("required");
+    }
+    function cvpTipiCok() {
+        document.getElementById('rdDivA').style.display = 'none';
+        document.getElementById('rdDivB').style.display = 'none';
+        document.getElementById('rdDivC').style.display = 'none';
+        document.getElementById('rdDivD').style.display = 'none';
+        document.getElementById('rdDivE').style.display = 'none';
+        document.getElementById('cbDivA').style.display = 'block';
+        document.getElementById('cbDivB').style.display = 'block';
+        document.getElementById('cbDivC').style.display = 'block';
+        document.getElementById('cbDivD').style.display = 'block';
+        document.getElementById('cbDivE').style.display = 'block';
+        // document.getElementById('testCevapA').setAttribute("required","");
+        document.getElementById('testTekCevap').removeAttribute("required");
+    }
+
+    function cbKontrol(){
+        if(document.getElementById('cevapTipiCok').checked){
+            var tca = document.getElementById('testCevapA').checked;
+            var tcb = document.getElementById('testCevapB').checked;
+            var tcc = document.getElementById('testCevapC').checked;
+            var tcd = document.getElementById('testCevapD').checked;
+            var tce = document.getElementById('testCevapE').checked;
+            if (tca == false && tcb == false && tcc == false && tcd == false && tce == false){
+            // tca.setAttribute("required",""); //veya alert yazılabilir çünkü sadece A işaretlenmeli gibi uyarı geliyor
+                // document.getElementById('testCevapA').required = true;
+                // document.getElementByName('testCevap').required = true;
+                alert("\nCevaplardan en az birini doğru olarak işaretlemelisiniz.");
+            //submit
+            } else {
+                submitButton.click();
+            // tca.removeAttribute("required");
+            //submit
+            }
+        }else{
+            submitButton.click();
+        }
     }
 
     </script>
@@ -272,4 +417,10 @@
         CKEDITOR.replace( 'soru', {
             height: 400
         } );
+        CKEDITOR.replace( 'yaziliCevap', {} );
+        CKEDITOR.replace( 'testCevapTextA', {} );
+        CKEDITOR.replace( 'testCevapTextB', {} );
+        CKEDITOR.replace( 'testCevapTextC', {} );
+        CKEDITOR.replace( 'testCevapTextD', {} );
+        CKEDITOR.replace( 'testCevapTextE', {} );
     </script>

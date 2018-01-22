@@ -5,15 +5,19 @@
 //kütüphaneler import ediliyor
 var fs = require('fs'); //filesystem kütüphanesi
 
+// var subdomain = require('express-subdomain');
 var express = require('express');
 var session = require('express-session');
 var path = require('path');
-var app = express();    //express kütüphanesinin nesnesi
-app.use(session({ secret: 'agimSecretValueForSession', resave: false, saveUninitialized: true }));
+var app = express();
+app.use(session({
+    secret: 'agimSecretValueForSession',
+    resave: false,
+    saveUninitialized: true
+}));
 var ejsLayouts = require('express-ejs-layouts');
 var bodyParser = require('body-parser');
 var db = require('./app_server/model/db');
-// var ElektronikRoute
 
 
 //ejs tanımları

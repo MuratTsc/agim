@@ -7,12 +7,11 @@ var util = require('util');
 
 module.exports.index = function (req, res) {
     if (req.session.email) {
-        con.query("SELECT * FROM seviye", function (err, result, fields) {
-            if (err) throw err;
-        });
         res.render('home', { session: req.session });
     } else {
-        res.render('login', { layout: 'login' });
+        console.log(req.subdomains[0])
+        res.render('main', { layout: 'main' });
+        // res.render('login', { layout: 'login' });
     }
 }
 
@@ -2752,13 +2751,11 @@ module.exports.soruListesiSilPost = function (req, res) {
                     idler += " OR ";
                 }
             }
-            console.log(idler);
             var sqlQuery = "UPDATE sorular SET isDeleted = true WHERE " + idler;
             con.query(sqlQuery, function (err, result, fields) {
                 if (err) {
                     throw err;
                 } else if (result.changedRows > 0) {
-                    console.log(idler + "update başarılı...................");
                     con.query("SELECT sorular.id AS id, sorular.soru, sorular.soruTipi, sorular.testCevap, sorular.yaziliCevap, sorular.zorluk, sorular.tarih, " + 
                     "sorular.seviye, sorular.sinif, sorular.ders, sorular.unite, sorular.konu, sorular.kazanim, sorular.kullanici, " +
                     "sinif.sinifi AS sinifi, ders.dersAdi AS dersAdi, unite.id AS unite, konu.id AS konu, kazanim.id AS kazanim, " +
@@ -2776,15 +2773,12 @@ module.exports.soruListesiSilPost = function (req, res) {
                             res.render('soruListesi', { mesaj: '<strong>Seçilen sorular silindi.</strong> Yeniden listelenirken hata oluştu!', sorular: result, session: req.session });
                             throw err;
                         } else {
-                            console.log("derstes soru bulma başarılı");
                             var sorular = result;
                             con.query("SELECT * FROM sinif WHERE isDeleted = false", function (err, result, fields) {
                                 if (err) throw err;
                                 var sinif = result;
-                                console.log("sinif başarılı");
                                 con.query("SELECT * FROM ders WHERE isDeleted = false", function (err, result, fields) {
                                     if (err) throw err;
-                                    console.log("ders başarılı");
                                     res.render('soruListesi', {
                                         mesaj: '<strong>Seçilen sorular silindi.</strong>',
                                         sorular: sorular,
@@ -2845,7 +2839,9 @@ module.exports.soruListesiSilPost = function (req, res) {
 
 module.exports.soruGoruntuleme = function (req, res) {
     if (req.session.email && req.session.yetki < 3) {
-        con.query("SELECT sorular.id AS id, sorular.soru, sorular.soruTipi, sorular.testCevap, sorular.yaziliCevap, sorular.zorluk, sorular.tarih, " + 
+        con.query("SELECT sorular.id AS id, sorular.soru, sorular.soruTipi, sorular.testSecenekA, sorular.testSecenekB, " +
+        " sorular.testSecenekC, sorular.testSecenekD, sorular.testSecenekE, " +
+        "sorular.testCevap, sorular.yaziliCevap, sorular.zorluk, sorular.tarih, " + 
         "sorular.seviye, sorular.sinif, sorular.ders, sorular.unite, sorular.konu, sorular.kazanim, sorular.kullanici, " +
         "sinif.sinifi AS sinifi, ders.dersAdi AS dersAdi, unite.id AS unite, konu.id AS konu, kazanim.id AS kazanim, " +
         "unite.uniteNo, konu.konuNo, kazanim.kazanimNo, kazanim.kazanimAdi " + 
@@ -2869,7 +2865,8 @@ module.exports.soruGoruntuleme = function (req, res) {
                 res.render('soruGoruntuleme', {
                     mesaj: '<strong>Hata!</strong> Soru bulunamadı.',
                     sorular: {
-                        id: 0, soru: "", soruTipi: 0, testCevap: "", yaziliCevap: "", zorluk: "", tarih: new Date(), seviye: "", sinif: "",
+                        id: 0, soru: "", soruTipi: 0, testSecenekA: "", testSecenekB: "", testSecenekC: "", testSecenekD: "", testSecenekE: "",
+                        testCevap: "", yaziliCevap: "", zorluk: "", tarih: new Date(), seviye: "", sinif: "",
                         ders: "", unite: "", konu: "", kazanim: "", kullanici: ""
                     },
                     butonlar: false,
@@ -2915,10 +2912,30 @@ module.exports.soruEklePost = function (req, res) {
 
         var soru = req.body.soru;
         var soruTipi = req.body.soruTipi;
-        if (soruTipi == 1){
-            var testCevap = req.body.testCevap;
-        } else {
-            var yaziliCevap = req.body.yaziliCevap;
+        var testCevap = "";
+        var cevapTipi, yaziliCevap,
+            testCevapTextA, testCevapTextB, testCevapTextC, testCevapTextD, testCevapTextE;
+        if (soruTipi == 1){ //çoktan seçmeli
+            cevapTipi = req.body.cevapTipi;
+            testCevapTextA = req.body.testCevapTextA;
+            testCevapTextB = req.body.testCevapTextB;
+            testCevapTextC = req.body.testCevapTextC;
+            testCevapTextD = req.body.testCevapTextD;
+            testCevapTextE = req.body.testCevapTextE;
+            if (cevapTipi == 1 ) { //tek doğru seçenekliyse
+                testCevap = req.body.testTekCevap;
+            } else { //birden fazla doğru seçenek varsa
+                var testCevaplar = req.body.testCevap;
+                for (let i = 0; i < testCevaplar.length; i++) {
+                    if(i+1 < testCevaplar.length){
+                        testCevap += testCevaplar[i] + "-";
+                    } else {
+                        testCevap += testCevaplar[i];
+                    }
+                }
+            }
+        } else { //açık uçlu veya boşluk doldurma
+            yaziliCevap = req.body.yaziliCevap;
         }
         var zorluk = req.body.zorluk;
         var tarih = new Date().toISOString().replace(/\T.+/, '');
@@ -2930,15 +2947,23 @@ module.exports.soruEklePost = function (req, res) {
         var kazanim = req.body.kazanim;
         var kullanici = req.session.kullaniciId;
 
-        var sqlQuery = "INSERT INTO sorular (soru, soruTipi, testCevap, yaziliCevap, zorluk, tarih, seviye, sinif, ders, unite, konu, kazanim, kullanici) " + 
-        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        var inserts = [soru, soruTipi, testCevap, yaziliCevap, zorluk, tarih, seviye, sinif, ders, unite, konu, kazanim, kullanici];
+        var sqlQuery = "INSERT INTO sorular (soru, soruTipi, testSecenekA, testSecenekB, testSecenekC, testSecenekD, testSecenekE, testCevapTipi, " +
+            "testCevap, yaziliCevap, zorluk, tarih, seviye, sinif, ders, unite, konu, kazanim, kullanici) " + 
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+            // Error: ER_WRONG_VALUE_COUNT_ON_ROW: Column count doesn't match value count at row 1
+            
+        var inserts = [soru, soruTipi, testCevapTextA, testCevapTextB, testCevapTextC, testCevapTextD, testCevapTextE, cevapTipi, 
+                        testCevap, yaziliCevap, zorluk, tarih, seviye, sinif, ders, unite, konu, kazanim, kullanici];
+                        console.log(sqlQuery + "\n---------------------\n" + inserts);
         sqlQuery = mysql.format(sqlQuery, inserts);
         con.query(sqlQuery, function (err, result, fields) {
             if (err) {
                 res.render('soruEkle', {
                     mesaj: 'err',
                     soru: soru, soruTipi: soruTipi,
+                    testCevapTextA, testCevapTextB, testCevapTextC, 
+                    testCevapTextD, testCevapTextE, cevapTipi,
                     testCevap: testCevap, yaziliCevap: yaziliCevap,
                     zorluk: zorluk, tarih: tarih,
                     kullanici: kullanici, seviye: seviye,
@@ -3014,7 +3039,8 @@ module.exports.soruDuzenleGet = function (req, res) {
                 res.render('soruDuzenle', {
                     mesaj: '<strong>Hata!</strong> Soru bulunamadı.',
                     sorular: {
-                        id: 0, soru: "", soruTipi: 0, testCevap: "", yaziliCevap: "", zorluk: "", tarih: "", seviye: "", sinif: "",
+                        id: 0, soru: "", soruTipi: 0, testSecenekA: "", testSecenekB: "", testSecenekC: "", testSecenekD: "", testSecenekE: "", 
+                        testCevapTipi: 0, testCevap: "", yaziliCevap: "", zorluk: "", tarih: "", seviye: "", sinif: "",
                         ders: "", unite: "", konu: "", kazanim: "", kullanici: ""
                     },
                     seviye, sinif, ders,
@@ -3030,17 +3056,46 @@ module.exports.soruDuzenleGet = function (req, res) {
 
 module.exports.soruDuzenlePost = function (req, res) {
     if (req.session.email && req.session.yetki < 3) {
+        
+        var soru = req.body.soru;
+        var soruTipi = req.body.soruTipi;
+        var testCevap = "";
+        var cevapTipi = 0, yaziliCevap = "",
+            testCevapTextA, testCevapTextB, testCevapTextC, testCevapTextD, testCevapTextE;
+        if (soruTipi == 1){ //çoktan seçmeli
+            cevapTipi = req.body.cevapTipi;
+            testCevapTextA = req.body.testCevapTextA;
+            testCevapTextB = req.body.testCevapTextB;
+            testCevapTextC = req.body.testCevapTextC;
+            testCevapTextD = req.body.testCevapTextD;
+            testCevapTextE = req.body.testCevapTextE;
+            if (cevapTipi == 1 ) { //tek doğru seçenekliyse
+                testCevap = req.body.testTekCevap;
+            } else { //birden fazla doğru seçenek varsa
+                var testCevaplar = req.body.testCevap;
+                for (let i = 0; i < testCevaplar.length; i++) {
+                    if(i+1 < testCevaplar.length){
+                        testCevap += testCevaplar[i] + "-";
+                    } else {
+                        testCevap += testCevaplar[i];
+                    }
+                }
+            }
+        } else { //açık uçlu veya boşluk doldurma
+            yaziliCevap = req.body.yaziliCevap;
+        }
 
-        var sqlQuery = "UPDATE sorular SET ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ? " + 
-        "WHERE ?? = ?";
-        var inserts = ["soru", req.body.soru, "soruTipi", req.body.soruTipi, "testCevap", req.body.testCevap, "yaziliCevap", req.body.yaziliCevap,
-        "zorluk", req.body.zorluk, "seviye", req.body.seviye, "sinif", req.body.sinif, 
+        var sqlQuery = "UPDATE sorular SET ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ?, " +
+        "?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ?, ?? = ? WHERE ?? = ?";
+        var inserts = ["soru", soru, "soruTipi", soruTipi, "testSecenekA", testCevapTextA, "testSecenekB", testCevapTextB,
+        "testSecenekC", testCevapTextC, "testSecenekD", testCevapTextD, "testSecenekE", testCevapTextE,
+        "testCevapTipi", cevapTipi, "testCevap", testCevap, "yaziliCevap", req.body.yaziliCevap,
+        "zorluk", req.body.zorluk, "seviye", req.body.seviye, "sinif", req.body.sinif,
         "ders", req.body.ders, "unite", req.body.unite, "konu", req.body.konu, "kazanim", req.body.kazanim,
         "id", req.body.soruId];
         sqlQuery = mysql.format(sqlQuery, inserts);
         con.query(sqlQuery, function (err, result, fields) {
             if (err) { throw err; }
-
             var seviye, sinif, ders, unite, konu, kazanim;
             con.query("SELECT * FROM seviye WHERE isDeleted = false", function (err, result, fields) {
                 if (err) { throw err; } else { seviye = result; }
@@ -3058,9 +3113,15 @@ module.exports.soruDuzenlePost = function (req, res) {
                                         mesaj: 'ok',
                                         sorular: {
                                             id: req.body.soruId,
-                                            soru: req.body.soru,
-                                            soruTipi: req.body.soruTipi,
-                                            testCevap: req.body.testCevap,
+                                            soru: soru,
+                                            soruTipi: soruTipi,
+                                            testSecenekA: testCevapTextA,
+                                            testSecenekB: testCevapTextB,
+                                            testSecenekC: testCevapTextC,
+                                            testSecenekD: testCevapTextD,
+                                            testSecenekE: testCevapTextE,
+                                            testCevapTipi: cevapTipi,
+                                            testCevap: testCevap,
                                             yaziliCevap: req.body.yaziliCevap,
                                             zorluk: req.body.zorluk,
                                             seviye: req.body.seviye,

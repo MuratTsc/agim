@@ -104,5 +104,6 @@ router.get('/403', ctrlHome.yasak);
 router.get('/hata', ctrlHome.hata);
 
 router.get('/:404', ctrlHome.sayfaYok);
+router.get('/*', ctrlHome.sayfaYok);
 
 module.exports = router;

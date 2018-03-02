@@ -1,0 +1,114 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Kurum Düzenle</h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->
+
+<div class="row">
+  <% if(mesaj=="ok" ) { %>
+  <div class="alert alert-success" id="okMesaj" name="okMesaj">
+    <strong>Kurum güncellendi.</strong>
+  </div>
+  <% } else if(mesaj == "no") { %>
+  <% } else { %>
+  <div class="alert alert-danger" id="errMesaj" name="errMesaj">
+    <%- mesaj %>
+  </div>
+  <% } %>
+  
+
+<form action="/admin/kurumDuzenle/<%= kurum.id %>" enctype="multipart/form-data" method="POST">
+
+    <input type="text" class="hidden" id="kurumId" name="kurumId" value="<%= kurum.id %>">
+
+    <div class=row>
+        <div class="form-group col-sm-6">
+        <label for="kurumAdi">Kurum Adı:</label>
+        <input type="text" class="form-control" id="kurumAdi" placeholder="Kurum Adı" name="kurumAdi" value="<%= kurum.kurum_adi %>" required>
+        </div>
+    </div>
+    
+    <div class=row>
+        <div class="form-group col-sm-6">
+        <label for="kurumSubdomain">Subdomain:</label>
+        <i class="fa fa-question-circle fa-fw" title="Kurumun sisteme giriş yapacağı alt alan adını ifade eder. Bu alan değiştirilirse kurumun kullanıcıları yeni adrese giriş yapamaz ve kurum panelinde görülmez, kullanıcılar yeniden eklenmelidir."></i>
+        <input type="text" class="form-control" id="kurumSubdomain" placeholder="Kurum Subdomain" name="kurumSubdomain" value="<%= kurum.subdomain %>" required>
+        </div>
+    </div>
+    
+    <div class=row>
+        <div class="form-group col-sm-6">
+        <label for="kurumSlogan">Slogan:</label>
+        <input type="text" class="form-control" id="kurumSlogan" placeholder="Kurum Slogan" name="kurumSlogan" value="<%= kurum.slogan %>">
+        </div>
+    </div>
+    
+    <div class=row>
+        <div class="form-group col-sm-6">
+        <label for="kurumAdres">Adres:</label>
+        <textarea type="text" class="form-control" id="kurumAdres" placeholder="Kurum Adres" name="kurumAdres"><%- kurum.adres %></textarea>
+        </div>
+    </div>
+    
+    <div class=row>
+        <div class="form-group col-sm-6">
+        <label for="kurumTelefon1">Telefon 1:</label>
+        <input type="tel" class="form-control" id="kurumTelefon1" placeholder="Kurum Telefon" name="kurumTelefon1" value="<%= kurum.telefon1 %>">
+        </div>
+    </div>
+    
+    <div class=row>
+        <div class="form-group col-sm-6">
+        <label for="kurumTelefon2">Telefon 2:</label>
+        <input type="tel" class="form-control" id="kurumTelefon2" placeholder="Kurum Telefon 2" name="kurumTelefon2" value="<%= kurum.telefon2 %>">
+        </div>
+    </div>
+    
+    <div class=row>
+        <div class="form-group col-sm-6">
+        <label for="kurumFax">Fax:</label>
+        <input type="tel" class="form-control" id="kurumFax" placeholder="Kurum Fax" name="kurumFax" value="<%= kurum.fax %>">
+        </div>
+    </div>
+    
+    <div class=row>
+        <div class="form-group col-sm-6">
+        <label for="kurumWebsite">Web Site:</label>
+        <input type="text" class="form-control" id="kurumWebsite" placeholder="Kurum Website" name="kurumWebsite" value="<%= kurum.website %>">
+        </div>
+    </div>
+    
+    <div class=row>
+        <div class="form-group col-sm-6">
+        <label for="kurumMail">E-Posta:</label>
+        <input type="mail" class="form-control" id="kurumMail" placeholder="Kurum E-Posta" name="kurumMail" value="<%= kurum.mail %>">
+        </div>
+    </div>
+
+
+    <div class=row>
+        <div class="form-group col-sm-6">
+        <label>Kurum Logo:</label>
+            </br>
+            <input type="text" class="hidden" id="dosyaYolu" name="dosyaYolu" value="<%= kurum.logo %>">
+            <img width="300" alt="" src="../../<%= kurum.logo%>" />
+            </br>
+            <label for="upload">Logo Güncelle:</label>
+            <i class="fa fa-question-circle fa-fw" title="Buradan yeni logo yükleyebilirsiniz. Eski logo silinecektir. Logoyu değiştirmek istemiyorsanız bu adımı atlayın."></i>
+            <input class="btn btn-info upload-btn" id="upload" type="file" accept="image/*" name="upload">
+            </br>
+        </div>
+    </div>
+    
+    <br><br>
+    <div class="row">
+        <div class="form-group col-sm-6">
+        <input type="submit" class="btn btn-info col-sm-4" value="Kaydet">
+        </div>
+    </div>
+  </form>
+
+</div>
+<!-- /.row -->

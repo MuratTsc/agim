@@ -1,0 +1,197 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Anasayfa - Hakkımızda Bölümü Ayarları
+            <label class="switch" title="Bu bölümün aktif olup olmadığını seçin">
+            <% if (about.isActive) { %>
+                <input type="checkbox" id="isActive" name="isActive" checked>
+            <% } else { %>
+                <input type="checkbox" id="isActive" name="isActive">
+            <% } %>
+                <span class="slider round"></span>
+            </label>
+        </h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->
+
+
+<div class="row">
+
+    <% if (mesaj == "no") { %>
+    <% } else if (mesaj == "ok") { %>
+    <div class="alert alert-success">
+    <strong>Bilgiler kayıt edildi.</strong> 
+    </div>
+    <% } else { %>
+    <div class="alert alert-danger">
+    <strong><%- mesaj %></strong> 
+    </div>
+    <% } %>
+
+</div>
+
+<div class="row">
+
+    <form action="/admin/mpAbout" method="POST">
+
+        <div class="container col-md-12">
+
+            <!-- Üst Bölüm -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3 class="page-header">Üst Bölüm</h3>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                    <label for="headerTitle">Bölüm Başlığı:</label>
+                    <input type="text" class="form-control" id="headerTitle" placeholder="Bölüm Başlığı" name="headerTitle" value="<%= about.header.title %>">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                    <label for="headerDesc">Bölüm Açıklaması:</label>
+                    <textarea class="form-control" id="headerDesc" placeholder="Bölüm Açıklaması" name="headerDesc"><%= about.header.description %></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sol Bölüm -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3 class="page-header">Sol Bölüm</h3>
+                </div>
+                
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                        <input type="text" class="hidden" id="dosyaYolu1" name="dosyaYolu1" value="<%= about.item1.img.src %>">
+                        <img class="col-xs-12" alt="" src="<%= about.item1.img.src %>" />
+                        <label for="upload1" style="margin-top: 10px;">Görüntü Değiştir:</label>
+                        <i class="fa fa-info-circle fa-fw" title="Aynı görüntü kullanılacaksa tekrar seçim yapmanız gerekmez."></i>
+                        <input class="btn btn-info upload-btn col-xs-12" id="upload1" type="file" accept="image/*" name="upload1">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                        <div class="form-group col-xs-12 text-center">
+                            <i class="<%= about.item1.icon %>" style="font-size: 50px;"></i>
+                        </div>
+                            <label for="icon1">Simge Değiştir:</label>
+                            <i class="fa fa-info-circle fa-fw" title="Değiştirmek istediğiniz simgenin ion veya fa class değerini girmelisiniz."></i>
+                            <input type="text" class="form-control" id="icon1" name="icon1" value="<%= about.item1.icon %>">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                    <label for="itemTitle1">Bölüm Başlığı:</label>
+                    <input type="text" class="form-control" id="itemTitle1" placeholder="Bölüm Başlığı" name="itemTitle1" value="<%= about.item1.title %>">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                    <label for="itemDesc1">Bölüm Açıklaması:</label>
+                    <textarea class="form-control" id="itemDesc1" placeholder="Bölüm Açıklaması" name="itemDesc1"><%= about.item1.description %></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Orta Bölüm -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3 class="page-header">Orta Bölüm</h3>
+                </div>
+                
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                        <input type="text" class="hidden" id="dosyaYolu2" name="dosyaYolu2" value="<%= about.item2.img.src %>">
+                        <img class="col-xs-12" alt="" src="<%= about.item2.img.src %>" />
+                        <label for="upload2" style="margin-top: 10px;">Görüntü Değiştir:</label>
+                        <i class="fa fa-info-circle fa-fw" title="Aynı görüntü kullanılacaksa tekrar seçim yapmanız gerekmez."></i>
+                        <input class="btn btn-info upload-btn col-xs-12" id="upload2" type="file" accept="image/*" name="upload2">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                        <div class="form-group col-xs-12 text-center">
+                            <i class="<%= about.item2.icon %>" style="font-size: 50px;"></i>
+                        </div>
+                        <label for="icon2">Simge Değiştir:</label>
+                        <i class="fa fa-info-circle fa-fw" title="Değiştirmek istediğiniz simgenin ion veya fa class değerini girmelisiniz."></i>
+                        <input type="text" class="form-control" id="icon2" name="icon2" value="<%= about.item2.icon %>">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                    <label for="itemTitle2">Bölüm Başlığı:</label>
+                    <input type="text" class="form-control" id="itemTitle2" placeholder="Bölüm Başlığı" name="itemTitle2" value="<%= about.item2.title %>">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                    <label for="itemDesc2">Bölüm Açıklaması:</label>
+                    <textarea class="form-control" id="itemDesc2" placeholder="Bölüm Açıklaması" name="itemDesc2"><%= about.item2.description %></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sağ Bölüm -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3 class="page-header">Sağ Bölüm</h3>
+                </div>
+                
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                        <input type="text" class="hidden" id="dosyaYolu3" name="dosyaYolu3" value="<%= about.item3.img.src %>">
+                        <img class="col-xs-12" alt="" src="<%= about.item1.img.src %>" />
+                        <label for="upload3" style="margin-top: 10px;">Görüntü Değiştir:</label>
+                        <i class="fa fa-info-circle fa-fw" title="Aynı görüntü kullanılacaksa tekrar seçim yapmanız gerekmez."></i>
+                        <input class="btn btn-info upload-btn col-xs-12" id="upload3" type="file" accept="image/*" name="upload3">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                        <div class="form-group col-xs-12 text-center">
+                            <i class="<%= about.item3.icon %>" style="font-size: 50px;"></i>
+                        </div>
+                        <label for="icon3">Simge Değiştir:</label>
+                        <i class="fa fa-info-circle fa-fw" title="Değiştirmek istediğiniz simgenin ion veya fa class değerini girmelisiniz."></i>
+                        <input type="text" class="form-control" id="icon3" name="icon3" value="<%= about.item3.icon %>">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                    <label for="itemTitle3">Bölüm Başlığı:</label>
+                    <input type="text" class="form-control" id="itemTitle3" placeholder="Bölüm Başlığı" name="itemTitle3" value="<%= about.item3.title %>">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                    <label for="itemDesc3">Bölüm Açıklaması:</label>
+                    <textarea class="form-control" id="itemDesc3" placeholder="Bölüm Açıklaması" name="itemDesc3"><%= about.item3.description %></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <br><br>
+            <div class="row">
+                <input type="submit" class="btn btn-info col-sm-6 col-xs-12" value="Kaydet">
+            </div>
+            <br><br>
+        </div>
+
+    </form>
+
+</div>
+<!-- /.row -->

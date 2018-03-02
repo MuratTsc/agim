@@ -1,11 +1,10 @@
 var routeHome = require('./homeRoutes');
 var routeLogin = require('./loginRoutes');
-// var routeApi = require('../model/dbManager');
-
+var routeAdmin = require('./adminRoutes');
 
 module.exports = function(app){
     
-    // app.use('/', routeApi);
+    app.use('/admin', routeAdmin);
     app.use('/login', routeLogin);
     app.use('/', routeHome);
     

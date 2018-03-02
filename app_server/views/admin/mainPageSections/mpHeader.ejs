@@ -1,0 +1,88 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Anasayfa - Menü Ayarları</h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->
+
+
+<div class="row">
+
+    <% if (mesaj == "no") { %>
+    <% } else if (mesaj == "ok") { %>
+    <div class="alert alert-success">
+    <strong>Bilgiler kayıt edildi.</strong> 
+    </div>
+    <% } else { %>
+    <div class="alert alert-danger">
+    <strong><%- mesaj %></strong> 
+    </div>
+    <% } %>
+
+</div>
+
+<div class="row">
+
+    <form action="/admin/mpHeader" method="POST">
+
+        <div class="row">
+            <div class="form-group col-sm-6">
+            <label for="logoTitle">Logo Yazısı:</label>
+            <i class="fa fa-info-circle fa-fw" title="Sayfanın sol üst köşesinde, logo alanında görünecek olan yazı"></i>
+            <input type="text" class="form-control" id="logoTitle" placeholder="Logo Yazısı" name="logoTitle" value="<%= header.logo.title %>" required>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="form-group col-sm-6">
+            <label for="menuItem1">1. Menü Başlığı:</label>
+            <i class="fa fa-info-circle fa-fw" title="Sağ üst köşede görünen, sayfanın ana menüsü"></i>
+            <input type="text" class="form-control" id="menuItem1" placeholder="1. Menü Başlığı" name="menuItem1" value="<%= header.menu.item1 %>" required>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-sm-6">
+            <label for="menuItem2">2. Menü Başlığı:</label>
+            <i class="fa fa-info-circle fa-fw" title="Sağ üst köşede görünen, sayfanın ana menüsü"></i>
+            <input type="text" class="form-control" id="menuItem2" placeholder="2. Menü Başlığı" name="menuItem2" value="<%= header.menu.item2 %>" required>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="form-group col-sm-6">
+            <label for="menuItem3">3. Menü Başlığı:</label>
+            <i class="fa fa-info-circle fa-fw" title="Sağ üst köşede görünen, sayfanın ana menüsü"></i>
+            <input type="text" class="form-control" id="menuItem3" placeholder="3. Menü Başlığı" name="menuItem3" value="<%= header.menu.item3 %>" required>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="form-group col-sm-6">
+            <label for="menuItem4">4. Menü Başlığı:</label>
+            <i class="fa fa-info-circle fa-fw" title="Sağ üst köşede görünen, sayfanın ana menüsü"></i>
+            <input type="text" class="form-control" id="menuItem4" placeholder="4. Menü Başlığı" name="menuItem4" value="<%= header.menu.item4 %>" required>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="form-group col-sm-6">
+            <label for="menuItem5">5. Menü Başlığı:</label>
+            <i class="fa fa-info-circle fa-fw" title="Sağ üst köşede görünen, sayfanın ana menüsü"></i>
+            <input type="text" class="form-control" id="menuItem5" placeholder="5. Menü Başlığı" name="menuItem5" value="<%= header.menu.item5 %>" required>
+            </div>
+        </div>
+
+        <br><br>
+        <div class="row">
+            <div class="form-group col-sm-6">
+                <input type="submit" class="btn btn-info col-xs-12" value="Kaydet">
+            </div>
+        </div>
+        <br><br>
+        
+    </form>
+
+</div>
+<!-- /.row -->

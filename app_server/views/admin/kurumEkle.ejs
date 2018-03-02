@@ -1,0 +1,114 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Kurum Ekle</h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->
+
+<div class="row">
+  <% if(mesaj=="ok" ) { %>
+  <div class="alert alert-success" id="okMesaj" name="okMesaj">
+    <strong>Kurum eklendi.</strong> Kuruma kullanıcı eklemeyi unutmayın!<br>
+    Kurum Adı: <strong><%= kurum.kurumAdi %></strong><br>
+    Alt alan adı: <strong><%= kurum.subdomain %></strong><br>
+    <br>
+    <a href="/admin/kullaniciEkle" class="btn btn-info">Kullanıcı Ekle</a>
+  </div>
+  <% } else if(mesaj == "no") { %>
+  <% } else { %>
+  <div class="alert alert-danger" id="errMesaj" name="errMesaj">
+    <%- mesaj %>
+  </div>
+  <% } %>
+  
+
+<form action="/admin/kurumEkle" enctype="multipart/form-data" method="POST">
+
+    <div class="row">
+        <div class="form-group col-sm-6">
+        <label for="kurumAdi">Kurum Adı:</label>
+        <input type="text" class="form-control" id="kurumAdi" placeholder="Kurum Adı" name="kurumAdi" required>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="form-group col-sm-6">
+        <label for="kurumSubdomain">Subdomain:</label>
+        <input type="text" class="form-control" id="kurumSubdomain" placeholder="Kurum Subdomain" name="kurumSubdomain" required>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="form-group col-sm-6">
+        <label for="kurumSlogan">Slogan:</label>
+        <input type="text" class="form-control" id="kurumSlogan" placeholder="Kurum Slogan" name="kurumSlogan">
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="form-group col-sm-6">
+        <label for="kurumAdres">Adres:</label>
+        <textarea type="text" class="form-control" id="kurumAdres" placeholder="Kurum Adres" name="kurumAdres"></textarea>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="form-group col-sm-6">
+        <label for="kurumTelefon1">Telefon 1:</label>
+        <input type="tel" class="form-control" id="kurumTelefon1" placeholder="Kurum Telefon" name="kurumTelefon1">
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="form-group col-sm-6">
+        <label for="kurumTelefon2">Telefon 2:</label>
+        <input type="tel" class="form-control" id="kurumTelefon2" placeholder="Kurum Telefon 2" name="kurumTelefon2">
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="form-group col-sm-6">
+        <label for="kurumFax">Fax:</label>
+        <input type="tel" class="form-control" id="kurumFax" placeholder="Kurum Fax" name="kurumFax">
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="form-group col-sm-6">
+        <label for="kurumWebsite">Web Site:</label>
+        <input type="text" class="form-control" id="kurumWebsite" placeholder="Kurum Website" name="kurumWebsite">
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="form-group col-sm-6">
+        <label for="kurumMail">E-Posta:</label>
+        <input type="mail" class="form-control" id="kurumMail" placeholder="Kurum E-Posta" name="kurumMail">
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="form-group col-sm-6">
+            </br>
+            <input type="text" class="hidden" id="dosyaYolu" name="dosyaYolu" value="./uploads/logo/logo_default.png">
+            <img width="300" alt="" src="../../uploads/logo/logo_default.png" />
+            </br>
+            <label for="upload">Kurum Logosu:</label>
+            <i class="fa fa-info-circle fa-fw" title="Eklenen logo Anasayfada gösterilecek."></i>
+            <input class="btn btn-info upload-btn" id="upload" type="file" accept="image/*" name="upload">
+            </br>
+        </div>
+    </div>
+    
+    <br><br>
+    <div class="row">
+        <div class="form-group col-sm-6">
+        <input type="submit" class="btn btn-info col-sm-4" value="Kaydet">
+        </div>
+    </div>
+  </form>
+
+</div>
+<!-- /.row -->

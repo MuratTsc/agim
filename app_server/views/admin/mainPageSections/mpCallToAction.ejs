@@ -1,0 +1,84 @@
+    <form action="/admin/mpCallToAction" method="POST">
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Anasayfa - Davet Bölümü Ayarları
+            <label class="switch" title="Bu Davetın aktif olup olmadığını seçin">
+            <% if (callToAction.isActive) { %>
+                <input type="checkbox" id="isActive" name="isActive" checked>
+            <% } else { %>
+                <input type="checkbox" id="isActive" name="isActive">
+            <% } %>
+                <span class="slider round"></span>
+            </label>
+        </h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->
+
+
+<div class="row">
+
+    <% if (mesaj == "no") { %>
+    <% } else if (mesaj == "ok") { %>
+    <div class="alert alert-success">
+    <strong>Bilgiler kayıt edildi.</strong> 
+    </div>
+    <% } else { %>
+    <div class="alert alert-danger">
+    <strong><%- mesaj %></strong> 
+    </div>
+    <% } %>
+
+</div>
+
+<div class="row">
+
+
+        <div class="container col-md-12">
+            
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                    <label for="callToActionTitle">Davet Başlığı:</label>
+                    <i class="fa fa-info-circle fa-fw" title="Davet görüntüsü üzerine yazılacak olan başlık yazısı"></i>
+                    <input type="text" class="form-control" id="callToActionTitle" placeholder="Davet Başlığı" name="callToActionTitle" value="<%= callToAction.title %>">
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                    <label for="callToActionDesc">Davet Açıklaması:</label>
+                    <i class="fa fa-info-circle fa-fw" title="Davet görüntüsü üzerine yazılacak olan açıklama yazısı"></i>
+                    <textarea class="form-control" id="callToActionDesc" placeholder="Davet Açıklaması" name="callToActionDesc"><%= callToAction.description %></textarea>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                    <label for="btnTitle">Davet Butonu Başlığı:</label>
+                    <i class="fa fa-info-circle fa-fw" title="Davet görüntüsü üzerine eklenecek olan butonun üzerindeki yazı"></i>
+                    <input type="text" class="form-control" id="btnTitle" placeholder="Davet Butonu Başlığı" name="btnTitle" value="<%= callToAction.button.title %>">
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                    <label for="btnHref">Davet Butonu Hedefi:</label>
+                    <i class="fa fa-info-circle fa-fw" title="Davet görüntüsü üzerine eklenecek olan butonun tıklanınca gideceği adres"></i>
+                    <input type="text" class="form-control" id="btnHref" placeholder="Davet Butonu Hedefi" name="btnHref" value="<%= callToAction.button.href %>">
+                    </div>
+                </div>
+
+            <br><br>
+            <div class="row">
+                <div class="form-group col-sm-6">
+                    <input type="submit" class="btn btn-info col-sm-12 col-xs-12" value="Kaydet">
+                </div>
+            </div>
+        </div>
+            <br><br>
+        
+
+</div>
+<!-- /.row -->
+    </form>

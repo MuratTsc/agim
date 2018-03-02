@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
 
@@ -35,13 +34,40 @@
 <body>
 
     <div class="container">
+
         <div class="row">
             <div class="col-md-4 col-md-offset-4">
                 <div class="login-panel panel panel-default">
+                    <% if (logo != "no") { %>
                     <div class="panel-heading">
+                        <!-- Kurum logosu -->
+                        <div class="row">
+                            <div class="col-md-8 col-md-offset-2">
+                                <img src="<%= logo %>" class="col-md-12 col-xs-12"></img>
+                            </div>
+                        </div>
+                    </div>
+                    <% } %>
+                    <div class="panel-heading" style="text-align: center;">
                         <h3 class="panel-title">Giriş Paneli</h3>
                     </div>
                     <div class="panel-body">
+                        <% if(mesaj=="errLogin" ) { %>
+                        <div class="alert alert-danger" style="text-align: center;" id="errMesaj" name="errMesaj">
+                            <strong>Kullanıcı bilgileri yanlış!</strong>
+                        </div>
+                        <% } else if(mesaj=="errPermission" ) { %>
+                        <div class="alert alert-danger" style="text-align: center;" id="errMesaj" name="errMesaj">
+                            <strong>Bu sayfaya erişim yetkiniz yok!</strong>
+                            <br>Lütfen kurumunuzun sayfasından giriş yapınız.
+                            <br>(Örn: kurum.agim.com)
+                        </div>
+                        <% } else if(mesaj == "no" || mesaj == "") { %>
+                        <% } else { %>
+                        <div class="alert alert-danger" style="text-align: center;" id="errMesaj" name="errMesaj">
+                            <%- mesaj %>
+                        </div>
+                        <% } %>
                         <form role="form" action="/login" method="POST">
                             <fieldset>
                                 <div class="form-group">
@@ -57,11 +83,17 @@
                                 </div>
                                 <!-- Change this to a button or input when using this as a form -->
                                 <!-- a href="" id="submit" class="btn btn-lg btn-success btn-block">Login</a -->
+                                <% if (logo != "no") { %>
+                                <input class="hidden" name="logo" id="logo" type="text" value="<%= logo %>">
+                                <% } else { %>
+                                <input class="hidden" name="logo" id="logo" type="text" value="">
+                                <% } %>
                                 <input type="submit" class="btn btn-lg btn-success btn-block" value="Giriş">
                             </fieldset>
                         </form>
                     </div>
                 </div>
+                
             </div>
         </div>
     </div>

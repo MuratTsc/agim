@@ -1,0 +1,6 @@
+{
+    "restartable": "rs",
+    "ignore": [
+      "public/mainpage_tr.json"
+    ]
+  }

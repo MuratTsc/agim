@@ -96,9 +96,9 @@
             <div class="col-xs-6 col-md-9">
                 <% if (sorular.soruTipi == 1) { //Çoktan seçmeli %>
                 <% //if(tekCevaplıysa){sorular.testCevap.subString(0,1)} else {sorular.testCevap} %>
-                Cevap: <%= sorular.testCevap %>
+                Cevap: <%- sorular.testCevap %>
                 <% } else { //açık uçlu veya boşluk doldurma %>
-                Cevap: <%= sorular.yaziliCevap %>
+                Cevap: <%- sorular.yaziliCevap %>
                 <% } %>
             </div>
             <div class="col-xs-6 col-md-3 noprint">

@@ -1,0 +1,62 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Anasayfa Genel Ayarlar</h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->
+
+
+<div class="row">
+
+    <% if (mesaj == "no") { %>
+    <% } else if (mesaj == "ok") { %>
+    <div class="alert alert-success">
+    <strong>Bilgiler kayıt edildi.</strong> 
+    </div>
+    <% } else { %>
+    <div class="alert alert-danger">
+    <strong><%- mesaj %></strong> 
+    </div>
+    <% } %>
+
+</div>
+
+<div class="row">
+
+    <form action="/admin/mpGenelAyarlar" method="POST">
+
+        <div class="row">
+            <div class="form-group col-sm-6">
+            <label for="pageTitle">Sayfa Başlığı:</label>
+            <i class="fa fa-info-circle fa-fw" title="Tarayıcının sekme başlığında ve arama motorlarında görünecek olan sayfa başlığı."></i>
+            <input type="text" class="form-control" id="pageTitle" placeholder="Sayfa Başlığı" name="pageTitle" value="<%= head.title %>" required>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="form-group col-sm-6">
+            <label for="keywords">Anahtar Kelime:</label>
+            <i class="fa fa-info-circle fa-fw" title="Arama motorlarının sıralama için dikkate aldığı anahtar kelimeler (meta-keywords)"></i>
+            <textarea class="form-control" id="keywords" placeholder="Anahtar kelime" name="keywords"><%= head.meta.keywords %></textarea>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="form-group col-sm-6">
+            <label for="description">Site Açıklaması:</label>
+            <i class="fa fa-info-circle fa-fw" title="Arama motorlarının siteyi tanımlamak için kullanacağı site açıklaması (meta-descriptions)"></i>
+            <textarea class="form-control" id="description" placeholder="Site açıklaması" name="description"><%= head.meta.description %></textarea>
+            </div>
+        </div>
+        
+        <br><br>
+        <div class="row">
+            <div class="form-group col-sm-6">
+            <input type="submit" class="btn btn-info col-xs-12" value="Kaydet">
+            </div>
+        </div>
+    </form>
+
+</div>
+<!-- /.row -->

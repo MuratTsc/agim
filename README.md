@@ -10,3 +10,25 @@
   -  "mysql": "~2.9.0",
   -  "util": "^0.10.3"
   
+  ## Kurulum
+<div>
+  Bağımlılıkları yüklemek için "package.json" dosyasını ana dizine kopyaladıktan sonra terminalde aşağıdaki kod çalıştırılmalıdır.
+  <code>npm install</code>
+</div>
+
+### Nodemon
+<div>
+  Uygulamayı çalıştırmak için nodemon yüklü olmalıdır. Npm ile global kurulum için:
+  <code>npm install -g nodemon</code>
+</div>
+
+## Kullanım
+<div>
+  Uygulama 8000 portunu kullanır. Uygulamayı çalıştırmak için:
+  <code>npm start</code>
+</div>
+<br>
+<div>
+  Uygulamayı yeniden başlatmak gerekirse:
+  <code>rs</code>
+</div>

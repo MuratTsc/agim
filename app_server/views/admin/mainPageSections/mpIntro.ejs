@@ -1,0 +1,324 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Anasayfa - Slayt Ayarları</h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->
+
+
+<div class="row">
+
+    <% if (mesaj == "no") { %>
+    <% } else if (mesaj == "ok") { %>
+    <div class="alert alert-success">
+    <strong>Bilgiler kayıt edildi.</strong> 
+    </div>
+    <% } else { %>
+    <div class="alert alert-danger">
+    <strong><%- mesaj %></strong> 
+    </div>
+    <% } %>
+
+</div>
+
+<div class="row">
+
+    <form action="/admin/mpIntro" enctype="multipart/form-data" method="POST">
+
+        <div class="container col-md-12">
+            <!-- slide 1-->
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3 class="page-header">Slayt 1</h3>
+                </div>
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                        <input type="text" class="hidden" id="dosyaYolu1" name="dosyaYolu1" value="<%= intro.slide1.img %>">
+                        <img class="col-xs-12" alt="" src="<%= intro.slide1.img %>" />
+                        <label for="upload1" style="margin-top: 10px;">Slayt Görüntüsünü Değiştir:</label>
+                        <i class="fa fa-info-circle fa-fw" title="Aynı görüntü kullanılacaksa tekrar seçim yapmanız gerekmez."></i>
+                        <input class="btn btn-info upload-btn col-xs-12" id="upload1" type="file" accept="image/*" name="upload1" value="<%= intro.slide1.img %>">
+                        </br>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                    <label for="slideTitle1">Slayt Başlığı:</label>
+                    <i class="fa fa-info-circle fa-fw" title="Slayt görüntüsü üzerine yazılacak olan başlık yazısı"></i>
+                    <input type="text" class="form-control" id="slideTitle1" placeholder="Slayt Başlığı" name="slideTitle1" value="<%= intro.slide1.title %>">
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                    <label for="slideDesc1">Slayt Açıklaması:</label>
+                    <i class="fa fa-info-circle fa-fw" title="Slayt görüntüsü üzerine yazılacak olan açıklama yazısı"></i>
+                    <textarea class="form-control" id="slideDesc1" placeholder="Slayt Açıklaması" name="slideDesc1"><%= intro.slide1.description %></textarea>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                    <label for="btnTitle1">Slayt Butonu Başlığı:</label>
+                    <i class="fa fa-info-circle fa-fw" title="Slayt görüntüsü üzerine eklenecek olan butonun üzerindeki yazı"></i>
+                    <input type="text" class="form-control" id="btnTitle1" placeholder="Slayt Butonu Başlığı" name="btnTitle1" value="<%= intro.slide1.button.title %>">
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                    <label for="btnHref1">Slayt Butonu Hedefi:</label>
+                    <i class="fa fa-info-circle fa-fw" title="Slayt görüntüsü üzerine eklenecek olan butonun tıklanınca gideceği adres"></i>
+                    <input type="text" class="form-control" id="btnHref1" placeholder="Slayt Butonu Hedefi" name="btnHref1" value="<%= intro.slide1.button.href %>">
+                    </div>
+                </div>
+            </div>
+            <!-- slide 2-->
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3 class="page-header">Slayt 2
+                        <label class="switch" title="Bu slaytın aktif olup olmadığını seçin">
+                        <% if (intro.slide2.isActive) { %>
+                            <input type="checkbox" id="cbox2" name="cbox2" checked>
+                        <% } else { %>
+                            <input type="checkbox" id="cbox2" name="cbox2">
+                        <% } %>
+                            <span class="slider round"></span>
+                        </label>
+                    </h3>
+                </div>
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                        <input type="text" class="hidden" id="dosyaYolu2" name="dosyaYolu2" value="<%= intro.slide2.img %>">
+                        <img class="col-xs-12" alt="" src="<%= intro.slide2.img %>" />
+                        <label for="upload2" style="margin-top: 10px;">Slayt Görüntüsünü Değiştir:</label>
+                        <i class="fa fa-info-circle fa-fw" title="Aynı görüntü kullanılacaksa tekrar seçim yapmanız gerekmez."></i>
+                        <input class="btn btn-info upload-btn col-xs-12" id="upload2" type="file" accept="image/*" name="upload2">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                    <label for="slideTitle2">Slayt Başlığı:</label>
+                    <i class="fa fa-info-circle fa-fw" title="Slayt görüntüsü üzerine yazılacak olan başlık yazısı"></i>
+                    <input type="text" class="form-control" id="slideTitle2" placeholder="Slayt Başlığı" name="slideTitle2" value="<%= intro.slide2.title %>">
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                    <label for="slideDesc2">Slayt Açıklaması:</label>
+                    <i class="fa fa-info-circle fa-fw" title="Slayt görüntüsü üzerine yazılacak olan açıklama yazısı"></i>
+                    <textarea class="form-control" id="slideDesc2" placeholder="Slayt Açıklaması" name="slideDesc2"><%= intro.slide2.description %></textarea>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                    <label for="btnTitle2">Slayt Butonu Başlığı:</label>
+                    <i class="fa fa-info-circle fa-fw" title="Slayt görüntüsü üzerine eklenecek olan butonun üzerindeki yazı"></i>
+                    <input type="text" class="form-control" id="btnTitle2" placeholder="Slayt Butonu Başlığı" name="btnTitle2" value="<%= intro.slide2.button.title %>">
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                    <label for="btnHref2">Slayt Butonu Hedefi:</label>
+                    <i class="fa fa-info-circle fa-fw" title="Slayt görüntüsü üzerine eklenecek olan butonun tıklanınca gideceği adres"></i>
+                    <input type="text" class="form-control" id="btnHref2" placeholder="Slayt Butonu Hedefi" name="btnHref2" value="<%= intro.slide2.button.href %>">
+                    </div>
+                </div>
+            </div>
+            <!-- slide 3-->
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3 class="page-header">Slayt 3
+                        <label class="switch" title="Bu slaytın aktif olup olmadığını seçin">
+                        <% if (intro.slide3.isActive) { %>
+                            <input type="checkbox" id="cbox3" name="cbox3" checked>
+                        <% } else { %>
+                            <input type="checkbox" id="cbox3" name="cbox3">
+                        <% } %>
+                            <span class="slider round"></span>
+                        </label>
+                    </h3>
+                </div>
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                        </br>
+                        <input type="text" class="hidden" id="dosyaYolu3" name="dosyaYolu3" value="<%= intro.slide3.img %>">
+                        <img class="col-xs-12" alt="" src="<%= intro.slide3.img %>" />
+                        </br>
+                        <label for="upload3" style="margin-top: 10px;">Slayt Görüntüsünü Değiştir:</label>
+                        <i class="fa fa-info-circle fa-fw" title="Aynı görüntü kullanılacaksa tekrar seçim yapmanız gerekmez."></i>
+                        <input class="btn btn-info upload-btn col-xs-12" id="upload3" type="file" accept="image/*" name="upload3">
+                        </br>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                    <label for="slideTitle3">Slayt Başlığı:</label>
+                    <i class="fa fa-info-circle fa-fw" title="Slayt görüntüsü üzerine yazılacak olan başlık yazısı"></i>
+                    <input type="text" class="form-control" id="slideTitle3" placeholder="Slayt Başlığı" name="slideTitle3" value="<%= intro.slide3.title %>">
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                    <label for="slideDesc3">Slayt Açıklaması:</label>
+                    <i class="fa fa-info-circle fa-fw" title="Slayt görüntüsü üzerine yazılacak olan açıklama yazısı"></i>
+                    <textarea class="form-control" id="slideDesc3" placeholder="Slayt Açıklaması" name="slideDesc3"><%= intro.slide3.description %></textarea>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                    <label for="btnTitle3">Slayt Butonu Başlığı:</label>
+                    <i class="fa fa-info-circle fa-fw" title="Slayt görüntüsü üzerine eklenecek olan butonun üzerindeki yazı"></i>
+                    <input type="text" class="form-control" id="btnTitle3" placeholder="Slayt Butonu Başlığı" name="btnTitle3" value="<%= intro.slide3.button.title %>">
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                    <label for="btnHref3">Slayt Butonu Hedefi:</label>
+                    <i class="fa fa-info-circle fa-fw" title="Slayt görüntüsü üzerine eklenecek olan butonun tıklanınca gideceği adres"></i>
+                    <input type="text" class="form-control" id="btnHref3" placeholder="Slayt Butonu Hedefi" name="btnHref3" value="<%= intro.slide3.button.href %>">
+                    </div>
+                </div>
+            </div>
+            <!-- slide 4 -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3 class="page-header">Slayt 4
+                        <label class="switch" title="Bu slaytın aktif olup olmadığını seçin">
+                        <% if (intro.slide4.isActive) { %>
+                            <input type="checkbox" id="cbox4" name="cbox4" checked>
+                        <% } else { %>
+                            <input type="checkbox" id="cbox4" name="cbox4">
+                        <% } %>
+                            <span class="slider round"></span>
+                        </label>
+                    </h3>
+                </div>
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                        </br>
+                        <input type="text" class="hidden" id="dosyaYolu3" name="dosyaYolu3" value="<%= intro.slide4.img %>">
+                        <img class="col-xs-12" alt="" src="<%= intro.slide4.img %>" />
+                        </br>
+                        <label for="upload4" style="margin-top: 10px;">Slayt Görüntüsünü Değiştir:</label>
+                        <i class="fa fa-info-circle fa-fw" title="Aynı görüntü kullanılacaksa tekrar seçim yapmanız gerekmez."></i>
+                        <input class="btn btn-info upload-btn col-xs-12" id="upload4" type="file" accept="image/*" name="upload4">
+                        </br>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                    <label for="slideTitle4">Slayt Başlığı:</label>
+                    <i class="fa fa-info-circle fa-fw" title="Slayt görüntüsü üzerine yazılacak olan başlık yazısı"></i>
+                    <input type="text" class="form-control" id="slideTitle4" placeholder="Slayt Başlığı" name="slideTitle4" value="<%= intro.slide4.title %>">
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                    <label for="slideDesc4">Slayt Açıklaması:</label>
+                    <i class="fa fa-info-circle fa-fw" title="Slayt görüntüsü üzerine yazılacak olan açıklama yazısı"></i>
+                    <textarea class="form-control" id="slideDesc4" placeholder="Slayt Açıklaması" name="slideDesc4"><%= intro.slide4.description %></textarea>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                    <label for="btnTitle4">Slayt Butonu Başlığı:</label>
+                    <i class="fa fa-info-circle fa-fw" title="Slayt görüntüsü üzerine eklenecek olan butonun üzerindeki yazı"></i>
+                    <input type="text" class="form-control" id="btnTitle4" placeholder="Slayt Butonu Başlığı" name="btnTitle4" value="<%= intro.slide4.button.title %>">
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                    <label for="btnHref4">Slayt Butonu Hedefi:</label>
+                    <i class="fa fa-info-circle fa-fw" title="Slayt görüntüsü üzerine eklenecek olan butonun tıklanınca gideceği adres"></i>
+                    <input type="text" class="form-control" id="btnHref4" placeholder="Slayt Butonu Hedefi" name="btnHref4" value="<%= intro.slide4.button.href %>">
+                    </div>
+                </div>
+            </div>
+            <!-- slide 5 -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3 class="page-header">Slayt 5
+                        <label class="switch" title="Bu slaytın aktif olup olmadığını seçin">
+                        <% if (intro.slide5.isActive) { %>
+                            <input type="checkbox" id="cbox5" name="cbox5" checked>
+                        <% } else { %>
+                            <input type="checkbox" id="cbox5" name="cbox5">
+                        <% } %>
+                            <span class="slider round"></span>
+                        </label>
+                    </h3>
+                </div>
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                        </br>
+                        <input type="text" class="hidden" id="dosyaYolu3" name="dosyaYolu3" value="<%= intro.slide5.img %>">
+                        <img class="col-xs-12" alt="" src="<%= intro.slide5.img %>" />
+                        </br>
+                        <label for="upload5" style="margin-top: 10px;">Slayt Görüntüsünü Değiştir:</label>
+                        <i class="fa fa-info-circle fa-fw" title="Aynı görüntü kullanılacaksa tekrar seçim yapmanız gerekmez."></i>
+                        <input class="btn btn-info upload-btn col-xs-12" id="upload5" type="file" accept="image/*" name="upload5">
+                        </br>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                    <label for="slideTitle5">Slayt Başlığı:</label>
+                    <i class="fa fa-info-circle fa-fw" title="Slayt görüntüsü üzerine yazılacak olan başlık yazısı"></i>
+                    <input type="text" class="form-control" id="slideTitle5" placeholder="Slayt Başlığı" name="slideTitle5" value="<%= intro.slide5.title %>">
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                    <label for="slideDesc5">Slayt Açıklaması:</label>
+                    <i class="fa fa-info-circle fa-fw" title="Slayt görüntüsü üzerine yazılacak olan açıklama yazısı"></i>
+                    <textarea class="form-control" id="slideDesc5" placeholder="Slayt Açıklaması" name="slideDesc5"><%= intro.slide5.description %></textarea>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                    <label for="btnTitle5">Slayt Butonu Başlığı:</label>
+                    <i class="fa fa-info-circle fa-fw" title="Slayt görüntüsü üzerine eklenecek olan butonun üzerindeki yazı"></i>
+                    <input type="text" class="form-control" id="btnTitle5" placeholder="Slayt Butonu Başlığı" name="btnTitle5" value="<%= intro.slide5.button.title %>">
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                    <label for="btnHref5">Slayt Butonu Hedefi:</label>
+                    <i class="fa fa-info-circle fa-fw" title="Slayt görüntüsü üzerine eklenecek olan butonun tıklanınca gideceği adres"></i>
+                    <input type="text" class="form-control" id="btnHref5" placeholder="Slayt Butonu Hedefi" name="btnHref5" value="<%= intro.slide5.button.href %>">
+                    </div>
+                </div>
+            </div>
+
+            <br><br>
+        </div>
+    </form>
+            <div class="row">
+                <div class="form-group col-sm-6">
+                    <input type="submit" class="btn btn-info col-sm-12 col-xs-12 disabled" value="Kaydet">
+                </div>
+            </div>
+            <br><br>
+        
+
+</div>
+<!-- /.row -->

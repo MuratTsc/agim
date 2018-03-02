@@ -1,0 +1,268 @@
+{
+    "head": {
+        "meta": {
+            "keywords": "edugineer, akademik, geliştirme, ve, izleme, modeli, materyal, soru, bankası, rehberlik",
+            "description": "EDUGINEER - AGİM | Akademik Geliştirme ve İzleme Modeli"
+        },
+        "title": "EDUGINEER - AGİM"
+    },
+    "body": {
+        "header": {
+            "logo": {
+                "title": "Agim",
+                "img": {
+                    "src": "",
+                    "alt": "",
+                    "title": ""
+                }
+            },
+            "menu": {
+                "item1": "ANASAYFA",
+                "item2": "HAKKIMIZDA",
+                "item3": "ÖZELLİKLER",
+                "item4": "FAALİYETLER",
+                "item5": "İLETİŞİM"
+            }
+        },
+        "intro": {
+            "slide1": {
+                "img": "/public/dist/img/slide/1.jpg",
+                "title": "We are professional",
+                "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                "button": {
+                    "href": "#featured-services",
+                    "title": "Get Started"
+                }
+            },
+            "slide2": {
+                "isActive": "on",
+                "img": "/public/dist/img/slide/2.jpg",
+                "title": "At vero eos et accusamus",
+                "description": "Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut.",
+                "button": {
+                    "href": "#featured-services",
+                    "title": "Get Started"
+                }
+            },
+            "slide3": {
+                "isActive": "on",
+                "img": "/public/dist/img/slide/3.jpg",
+                "title": "Temporibus autem quibusdam",
+                "description": "Beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt omnis iste natus error sit voluptatem accusantium.",
+                "button": {
+                    "href": "#featured-services",
+                    "title": "Get Started"
+                }
+            },
+            "slide4": {
+                "isActive": "on",
+                "img": "/public/dist/img/slide/4.jpg",
+                "title": "Nam libero tempore",
+                "description": "Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum.",
+                "button": {
+                    "href": "#featured-services",
+                    "title": "Get Started"
+                }
+            },
+            "slide5": {
+                "isActive": "on",
+                "img": "/public/dist/img/slide/5.jpg",
+                "title": "Magnam aliquam quaerat",
+                "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                "button": {
+                    "href": "#featured-services",
+                    "title": "Get Started"
+                }
+            }
+        },
+        "main": {
+            "featured": {
+                "item1": {
+                    "icon": "ion-ios-bookmarks-outline",
+                    "title": "Materyal Bankası",
+                    "description": "Kurumunuzun tüm materyalleri, ihtiyaç duyduğunuzda kullanmanız için sistemimizin havuzunda toplanır."
+                },
+                "item2": {
+                    "icon": "ion-ios-stopwatch-outline",
+                    "title": "Soru Bankası",
+                    "description": "Detaylı gruplandırılmış, soru tipi ve zorluğuna göre filtrelenebilir, kurumunuza ait bir soru bankanız olsun."
+                },
+                "item3": {
+                    "icon": "ion-ios-heart-outline",
+                    "title": "Rehberlik",
+                    "description": "Rehberlik faaliyet ve analizlerinizin arşivini oluşurun."
+                },
+                "isActive": "on"
+            },
+            "about": {
+                "isActive": true,
+                "header": {
+                    "title": "HAKKIMIZDA",
+                    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+                },
+                "item1": {
+                    "icon": "ion-ios-speedometer-outline",
+                    "title": "Our Mission",
+                    "description": "Lorem ipsum dolor sit amet, consectetur elit, sed do eiusmod tempor ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                    "img": {
+                        "src": "/public/dist/img/about/1.jpg",
+                        "alt": ""
+                    }
+                },
+                "item2": {
+                    "icon": "ion-ios-list-outline",
+                    "title": "Our Plan",
+                    "description": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem  doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.",
+                    "img": {
+                        "src": "/public/dist/img/about/2.jpg",
+                        "alt": ""
+                    }
+                },
+                "item3": {
+                    "icon": "ion-ios-eye-outline",
+                    "title": "Our Vision",
+                    "description": "Nemo enim ipsam voluptatem quia voluptas sit aut odit aut fugit, sed quia magni dolores eos qui ratione voluptatem sequi nesciunt Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet.",
+                    "img": {
+                        "src": "/public/dist/img/about/3.jpg",
+                        "alt": ""
+                    }
+                }
+            },
+            "services": {
+                "header": {
+                    "title": "ÖZELLİKLER",
+                    "description": "Laudem latine persequeris id sed, ex fabulas delectus quo. No vel partiendo abhorreant vituperatoribus, ad pro quaestio laboramus. Ei ubique vivendum pro. At ius nisl accusam lorenta zanos paradigno tridexa panatarel."
+                },
+                "item1": {
+                    "icon": "ion-ios-analytics-outline",
+                    "title": "Hızlı İşlemler",
+                    "description": "Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident"
+                },
+                "item2": {
+                    "icon": "ion-ios-bookmarks-outline",
+                    "title": "Anlaşılır Arayüz",
+                    "description": "Minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat tarad limino ata"
+                },
+                "item3": {
+                    "icon": "ion-ios-paper-outline",
+                    "title": "Kolay Kullanım",
+                    "description": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur"
+                },
+                "item4": {
+                    "icon": "ion-ios-speedometer-outline",
+                    "title": "Yüksek Performans",
+                    "description": "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum"
+                },
+                "item5": {
+                    "icon": "ion-ios-barcode-outline",
+                    "title": "Uyumlu Panel",
+                    "description": "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque"
+                },
+                "item6": {
+                    "icon": "ion-ios-people-outline",
+                    "title": "Kullanıcı Yönetimi",
+                    "description": "Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi"
+                },
+                "isActive": "on"
+            },
+            "callToAction": {
+                "title": "Davet",
+                "description": "Bizimle çalışmak ister misiniz? Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                "button": {
+                    "title": "Call To Action",
+                    "href": "#"
+                },
+                "isActive": "on"
+            },
+            "facts": {
+                "title": "FAALİYETLER",
+                "description": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque",
+                "img": {
+                    "src": "/public/dist/img/facts-img.png",
+                    "alt": ""
+                },
+                "isActive": "on"
+            },
+            "clients": {
+                "title": "REFERANSLAR",
+                "description": "",
+                "isActive": "on"
+            },
+            "contact": {
+                "header": {
+                    "title": "İLETİŞİM",
+                    "description": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque"
+                },
+                "info": {
+                    "address": {
+                        "icon": "ion-ios-location-outline",
+                        "title": "Adres",
+                        "description": "A108 Adam Street, NY 535022, USA",
+                        "descHref": ""
+                    },
+                    "phone": {
+                        "icon": "ion-ios-telephone-outline",
+                        "title": "Telefon",
+                        "description": "+1 5589 55488 55",
+                        "descHref": "tel:+155895548855"
+                    },
+                    "email": {
+                        "icon": "ion-ios-email-outline",
+                        "title": "E-Posta",
+                        "description": "info@agim.com",
+                        "descHref": "mailto:info@agim.com"
+                    }
+                },
+                "isActive": "on"
+            }
+        },
+        "footer": {
+            "isActive": true,
+            "info": {
+                "title": "Agim",
+                "description": "Cras fermentum odio eu feugiat lide par naso tierra. Justo eget nada terra videa magna derita valies darta donna mare fermentum iaculis eu non diam phasellus. Scelerisque felis imperdiet proin fermentum leo. Amet volutpat consequat mauris nunc congue."
+            },
+            "links": {
+                "title": "BAĞLANTILAR",
+                "item1": {
+                    "title": "Anasayfa",
+                    "href": "#intro"
+                },
+                "item2": {
+                    "title": "Hakkımızda",
+                    "href": "#about"
+                },
+                "item3": {
+                    "title": "Özellikler",
+                    "href": "#services"
+                },
+                "item4": {
+                    "title": "Faaliyetler",
+                    "href": "#facts"
+                },
+                "item5": {
+                    "title": "İletişim",
+                    "href": "#contact"
+                }
+            },
+            "contact": {
+                "title": "İLETİŞİM",
+                "description": "A108 Adam Street <br>New York, NY 535022<br>United States <br><strong>Phone:</strong> +1 5589 55488 55<br><strong>Email:</strong> info@example.com<br>",
+                "social": {
+                    "isActive": true,
+                    "twitter": "#",
+                    "facebook": "#",
+                    "instagram": "#",
+                    "googleplus": "#",
+                    "linkedin": "#"
+                }
+            },
+            "newsletter": {
+                "title": "BÜLTEN",
+                "description": "Tamen quem nulla quae legam multos aute sint culpa legam noster magna veniam enim veniam illum dolore legam minim quorum culpa amet magna export quem marada parida nodela caramase seza."
+            },
+            "copyright": "AGİM | Akademik Geliştirme ve İzleme Modeli",
+            "credits": "<strong>EDUGINEER - AGİM</strong> &copy; 2018"
+        }
+    }
+}

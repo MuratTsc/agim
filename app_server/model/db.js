@@ -1,5 +1,4 @@
 var mysql = require('mysql');
-var asd = require('./test');
 
 var con = mysql.createConnection({
   host: "localhost",
@@ -13,5 +12,3 @@ con.connect(function (err) {
 });
 
 module.exports = con;
-
-asd(mysql, con);

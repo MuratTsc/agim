@@ -1,0 +1,68 @@
+    <form action="/admin/mpFacts" method="POST">
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Anasayfa - Faaliyetler Bölümü Ayarları
+            <label class="switch" title="Bu Bölümün aktif olup olmadığını seçin">
+            <% if (facts.isActive) { %>
+                <input type="checkbox" id="isActive" name="isActive" checked>
+            <% } else { %>
+                <input type="checkbox" id="isActive" name="isActive">
+            <% } %>
+                <span class="slider round"></span>
+            </label>
+        </h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->
+
+
+<div class="row">
+
+    <% if (mesaj == "no") { %>
+    <% } else if (mesaj == "ok") { %>
+    <div class="alert alert-success">
+    <strong>Bilgiler kayıt edildi.</strong> 
+    </div>
+    <% } else { %>
+    <div class="alert alert-danger">
+    <strong><%- mesaj %></strong> 
+    </div>
+    <% } %>
+
+</div>
+
+<div class="row">
+
+
+        <div class="container col-md-12">
+            
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                    <label for="factsTitle1">Faaliyet Başlığı:</label>
+                    <i class="fa fa-info-circle fa-fw" title="Faaliyet görüntüsü üzerine yazılacak olan başlık yazısı"></i>
+                    <input type="text" class="form-control" id="factsTitle1" placeholder="Faaliyet Başlığı" name="factsTitle1" value="<%= facts.title %>">
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                    <label for="factsDesc1">Faaliyet Açıklaması:</label>
+                    <i class="fa fa-info-circle fa-fw" title="Faaliyet görüntüsü üzerine yazılacak olan açıklama yazısı"></i>
+                    <textarea class="form-control" id="factsDesc1" placeholder="Faaliyet Açıklaması" name="factsDesc1"><%= facts.description %></textarea>
+                    </div>
+                </div>
+
+            <br><br>
+            <div class="row">
+                <div class="form-group col-sm-6">
+                    <input type="submit" class="btn btn-info col-sm-12 col-xs-12" value="Kaydet">
+                </div>
+            </div>
+        </div>
+            <br><br>
+        
+
+</div>
+<!-- /.row -->
+    </form>

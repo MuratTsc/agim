@@ -6,9 +6,6 @@ var ctrlHome = require('../controller/homeController');
 
 router.get('/', ctrlHome.index);
 // router.get('/index.html', ctrlHome.index);
-router.get('/flot', ctrlHome.flot);
-router.get('/tables', ctrlHome.tables);
-
 
 router.get('/kullanicilar', ctrlHome.kullanicilar);
 router.get('/kullanicilar/:kullaniciId', ctrlHome.kullaniciDuzenle);
@@ -99,6 +96,9 @@ router.post('/soruEkle', ctrlHome.soruEklePost);
 router.get('/soruDuzenle/:soruId', ctrlHome.soruDuzenleGet);
 router.post('/soruDuzenle', ctrlHome.soruDuzenlePost);
 router.post('/soruSil', ctrlHome.soruSilPost);
+
+router.get('/profil', ctrlHome.kurumProfil);
+router.post('/profil', ctrlHome.kurumProfilPost);
 
 router.get('/403', ctrlHome.yasak);
 router.get('/hata', ctrlHome.hata);

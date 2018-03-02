@@ -1,0 +1,187 @@
+    <form action="/admin/mpContact" method="POST">
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Anasayfa - İletişim Bölümü Ayarları
+            <label class="switch" title="Bu bölümün aktif olup olmadığını seçin">
+            <% if (contact.isActive) { %>
+                <input type="checkbox" id="isActive" name="isActive" checked>
+            <% } else { %>
+                <input type="checkbox" id="isActive" name="isActive">
+            <% } %>
+                <span class="slider round"></span>
+            </label>
+        </h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->
+
+
+<div class="row">
+
+    <% if (mesaj == "no") { %>
+    <% } else if (mesaj == "ok") { %>
+    <div class="alert alert-success">
+    <strong>Bilgiler kayıt edildi.</strong> 
+    </div>
+    <% } else { %>
+    <div class="alert alert-danger">
+    <strong><%- mesaj %></strong> 
+    </div>
+    <% } %>
+
+</div>
+
+<div class="row">
+
+
+        <div class="container col-md-12">
+            <!-- Üst Bölüm -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3 class="page-header">Üst Bölüm</h3>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                    <label for="headerTitle">Bölüm Başlığı:</label>
+                    <input type="text" class="form-control" id="headerTitle" placeholder="Bölüm Başlığı" name="headerTitle" value="<%= contact.header.title %>">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                    <label for="headerDesc">Bölüm Açıklaması:</label>
+                    <input type="text" class="form-control" id="headerDesc" placeholder="Bölüm Açıklaması" name="headerDesc" value="<%= contact.header.description %>">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sol Bölüm -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3 class="page-header">Sol Bölüm</h3>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                        <div class="form-group col-xs-12 text-center">
+                            <i class="<%= contact.info.address.icon %>" style="font-size: 50px;"></i>
+                        </div>
+                            <label for="icon1">Simge Değiştir:</label>
+                            <i class="fa fa-info-circle fa-fw" title="Değiştirmek istediğiniz simgenin ion veya fa class değerini girmelisiniz."></i>
+                            <input type="text" class="form-control" id="icon1" name="icon1" value="<%= contact.info.address.icon %>">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                    <label for="itemTitle1">Sol Bölüm Başlığı:</label>
+                    <input type="text" class="form-control" id="itemTitle1" placeholder="Sol Bölüm Başlığı" name="itemTitle1" value="<%= contact.info.address.title %>">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                    <label for="itemDesc1">Sol Bölüm Açıklaması:</label>
+                    <input type="text" class="form-control" id="itemDesc1" placeholder="Sol Bölüm Açıklaması" name="itemDesc1" value="<%= contact.info.address.description %>">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                    <label for="itemDescHref1">Sol Bölüm Açıklama Bağlantısı:</label>
+                    <input type="text" class="form-control" id="itemDescHref1" placeholder="Sol Bölüm Açıklama Bağlantısı" name="itemDescHref1" value="<%= contact.info.address.descHref %>">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Orta Bölüm -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3 class="page-header">Orta Bölüm</h3>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                        <div class="form-group col-xs-12 text-center">
+                            <i class="<%= contact.info.phone.icon %>" style="font-size: 50px;"></i>
+                        </div>
+                        <label for="icon2">Simge Değiştir:</label>
+                        <i class="fa fa-info-circle fa-fw" title="Değiştirmek istediğiniz simgenin ion veya fa class değerini girmelisiniz."></i>
+                        <input type="text" class="form-control" id="icon2" name="icon2" value="<%= contact.info.phone.icon %>">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                    <label for="itemTitle2">Orta Bölüm Başlığı:</label>
+                    <input type="text" class="form-control" id="itemTitle2" placeholder="Orta Bölüm Başlığı" name="itemTitle2" value="<%= contact.info.phone.title %>">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                    <label for="itemDesc2">Orta Bölüm Açıklaması:</label>
+                    <input type="text" class="form-control" id="itemDesc2" placeholder="Orta Bölüm Açıklaması" name="itemDesc2" value="<%= contact.info.phone.description %>">
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                    <label for="itemDescHref2">Orta Bölüm Açıklama Bağlantısı:</label>
+                    <input type="text" class="form-control" id="itemDescHref2" placeholder="Orta Bölüm Açıklama Bağlantısı" name="itemDescHref2" value="<%= contact.info.phone.descHref %>">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sağ Bölüm -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3 class="page-header">Sağ Bölüm</h3>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                        <div class="form-group col-xs-12 text-center">
+                            <i class="<%= contact.info.email.icon %>" style="font-size: 50px;"></i>
+                        </div>
+                        <label for="icon3">Simge Değiştir:</label>
+                        <i class="fa fa-info-circle fa-fw" title="Değiştirmek istediğiniz simgenin ion veya fa class değerini girmelisiniz."></i>
+                        <input type="text" class="form-control" id="icon3" name="icon3" value="<%= contact.info.email.icon %>">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                    <label for="itemTitle3">Sağ Bölüm Başlığı:</label>
+                    <input type="text" class="form-control" id="itemTitle3" placeholder="Sağ Bölüm Başlığı" name="itemTitle3" value="<%= contact.info.email.title %>">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                    <label for="itemDesc3">Sağ Bölüm Açıklaması:</label>
+                    <input type="text" class="form-control" id="itemDesc3" placeholder="Sağ Bölüm Açıklaması" name="itemDesc3" value="<%= contact.info.email.description %>">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                    <label for="itemDescHref3">Sağ Bölüm Açıklama Bağlantısı:</label>
+                    <input type="text" class="form-control" id="itemDescHref3" placeholder="Sağ Bölüm Açıklama Bağlantısı" name="itemDescHref3" value="<%= contact.info.email.descHref %>">
+                    </div>
+                </div>
+            </div>
+
+            <br><br>
+            <div class="row">
+                <input type="submit" class="btn btn-info col-sm-6 col-xs-12" value="Kaydet">
+            </div>
+            <br><br>
+        </div>
+
+
+</div>
+<!-- /.row -->
+    </form>

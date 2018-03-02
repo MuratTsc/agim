@@ -1,0 +1,216 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Anasayfa - Alt Bilgi (Footer) Bölümü Ayarları
+            <label class="switch" title="Bu slaytın aktif olup olmadığını seçin.(Copyright kısmı her zaman görünür.)">
+            <% if (footer.isActive) { %>
+                <input type="checkbox" id="isActive" name="isActive" checked>
+            <% } else { %>
+                <input type="checkbox" id="isActive" name="isActive">
+            <% } %>
+                <span class="slider round"></span>
+            </label>
+        </h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->
+
+
+<div class="row">
+
+    <% if (mesaj == "no") { %>
+    <% } else if (mesaj == "ok") { %>
+    <div class="alert alert-success">
+    <strong>Bilgiler kayıt edildi.</strong> 
+    </div>
+    <% } else { %>
+    <div class="alert alert-danger">
+    <strong><%- mesaj %></strong> 
+    </div>
+    <% } %>
+
+</div>
+
+<div class="row">
+
+    <form action="/admin/mpFooter" method="POST">
+
+        <div class="container col-xs-12">
+
+            <!-- 1. Bölüm -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3 class="page-header">1. Bölüm</h3>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                    <label for="colTitle1">Bölüm Başlığı:</label>
+                    <input type="text" class="form-control" id="colTitle1" placeholder="Bölüm Başlığı" name="colTitle1" value="<%= footer.info.title %>">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                    <label for="colDesc1">Bölüm Açıklaması:</label>
+                    <textarea class="form-control" id="colDesc1" placeholder="Bölüm Açıklaması" name="colDesc1"><%= footer.info.description %></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Bölüm -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3 class="page-header">2. Bölüm</h3>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                    <label for="colTitle2">Bölüm Başlığı:</label>
+                    <input type="text" class="form-control" id="colTitle2" placeholder="Bölüm Başlığı" name="colTitle2" value="<%= footer.links.title %>">
+                    </div>
+                </div>
+
+                <!-- 1. Satır -->
+                <div class="row bg-warning">
+                    <div class="form-group col-sm-6">
+                    <label for="itemTitle1">Bağlantı Başlığı:</label>
+                    <input type="text" class="form-control" id="itemTitle1" placeholder="Bağlantı Başlığı" name="itemTitle1" value="<%= footer.links.item1.title %>">
+                    </div>
+
+                    <div class="form-group col-sm-6">
+                    <label for="itemHref1">Bağlantı Adresi:</label>
+                    <input type="text" class="form-control" id="itemHref1" placeholder="Bağlantı Adresi" name="itemHref1" value="<%= footer.links.item1.href %>">
+                    </div>
+                </div>
+
+                <!-- 2. Satır -->
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                    <label for="itemTitle2">Bağlantı Başlığı:</label>
+                    <input type="text" class="form-control" id="itemTitle2" placeholder="Bağlantı Başlığı" name="itemTitle2" value="<%= footer.links.item2.title %>">
+                    </div>
+                    
+                    <div class="form-group col-sm-6">
+                    <label for="itemHref2">Bağlantı Adresi:</label>
+                    <input type="text" class="form-control" id="itemHref2" placeholder="Bağlantı Adresi" name="itemHref2" value="<%= footer.links.item2.href %>">
+                    </div>
+                </div>
+
+                <!-- 3. Satır -->
+                <div class="row bg-warning">
+                    <div class="form-group col-sm-6">
+                    <label for="itemTitle3">Bağlantı Başlığı:</label>
+                    <input type="text" class="form-control" id="itemTitle3" placeholder="Bağlantı Başlığı" name="itemTitle3" value="<%= footer.links.item3.title %>">
+                    </div>
+                    
+                    <div class="form-group col-sm-6">
+                    <label for="itemHref3">Bağlantı Adresi:</label>
+                    <input type="text" class="form-control" id="itemHref3" placeholder="Bağlantı Adresi" name="itemHref3" value="<%= footer.links.item3.href %>">
+                    </div>
+                </div>
+
+                <!-- 4. Satır -->
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                    <label for="itemTitle4">Bağlantı Başlığı:</label>
+                    <input type="text" class="form-control" id="itemTitle4" placeholder="Bağlantı Başlığı" name="itemTitle4" value="<%= footer.links.item4.title %>">
+                    </div>
+                    
+                    <div class="form-group col-sm-6">
+                    <label for="itemHref4">Bağlantı Adresi:</label>
+                    <input type="text" class="form-control" id="itemHref4" placeholder="Bağlantı Adresi" name="itemHref4" value="<%= footer.links.item4.href %>">
+                    </div>
+                </div>
+
+                <!-- 5. Satır -->
+                <div class="row bg-warning">
+                    <div class="form-group col-sm-6">
+                    <label for="itemTitle5">Bağlantı Başlığı:</label>
+                    <input type="text" class="form-control" id="itemTitle5" placeholder="Bağlantı Başlığı" name="itemTitle5" value="<%= footer.links.item5.title %>">
+                    </div>
+                    
+                    <div class="form-group col-sm-6">
+                    <label for="itemHref5">Bağlantı Adresi:</label>
+                    <input type="text" class="form-control" id="itemHref5" placeholder="Bağlantı Adresi" name="itemHref5" value="<%= footer.links.item5.href %>">
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- 3. Bölüm -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3 class="page-header">3. Bölüm</h3>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                    <label for="colTitle2">Bölüm Başlığı:</label>
+                    <input type="text" class="form-control" id="colTitle2" placeholder="Bölüm Başlığı" name="colTitle2" value="<%= footer.contact.title %>">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                    <label for="colDesc2">Bölüm Açıklaması:</label>
+                    <textarea class="form-control" id="colDesc2" placeholder="Bölüm Açıklaması" name="colDesc2"><%= footer.contact.description %></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!--4. Bölüm -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3 class="page-header">4. Bölüm</h3>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                    <label for="colTitle4">Bölüm Başlığı:</label>
+                    <input type="text" class="form-control" id="colTitle4" placeholder="Bölüm Başlığı" name="colTitle4" value="<%= footer.newsletter.title %>">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                    <label for="colDesc4">Bölüm Açıklaması:</label>
+                    <textarea class="form-control" id="colDesc4" placeholder="Bölüm Açıklaması" name="colDesc4"><%= footer.newsletter.description %></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Son Satır (Copyright) -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3 class="page-header">Telif Bölümü
+                    <i class="fa fa-info-circle fa-fw" title="Alt bilgi bölümünü pasif etmek Telif (copyright) kısmını gizlemez."></i>
+                    </h3>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                    <label for="copyright">İlk Satır:</label>
+                    <textarea class="form-control" id="copyright" placeholder="Telif hakkı ile ilgili yazınız." name="copyright"><%= footer.copyright %></textarea>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                    <label for="credits">İkinci Satır:</label>
+                    <textarea class="form-control" id="credits" placeholder="Firma kimliği" name="credits"><%= footer.credits %></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <br><br>
+            <div class="row">
+                <input type="submit" class="btn btn-info col-sm-6 col-xs-12" value="Kaydet">
+            </div>
+            <br><br>
+        </div>
+
+    </form>
+
+</div>
+<!-- /.row -->

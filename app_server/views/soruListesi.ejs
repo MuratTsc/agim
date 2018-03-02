@@ -111,12 +111,12 @@
 
         </table>
     
-                <layer for="cbHepsiniSec">&nbsp; <input type="checkbox" id="cbHepsiniSec" name="cbHepsiniSec" onclick="hepsiniSec()">&nbsp;&nbsp;Tümünü Seç</layer>
-                <input type="number" class="hidden" id="dersId" name="dersId" value="<%= secilen %>">
-                <input type="number" class="hidden" id="toplam" name="toplam" value="<%= sorular.length %>">
-        <br>
         <div class="row">
             <div class="form-group col-sm-4">
+                <layer style="cursor: pointer;" onclick="cbHepsiniSec.click()">&nbsp; <input type="checkbox" id="cbHepsiniSec" name="cbHepsiniSec" onclick="hepsiniSec()">&nbsp;&nbsp;Tümünü Seç</layer>
+                <input type="number" class="hidden" id="dersId" name="dersId" value="<%= secilen %>">
+                <input type="number" class="hidden" id="toplam" name="toplam" value="<%= sorular.length %>">
+                <br>
                 <input type="submit" class="btn btn-danger col-sm-4" value="Seçilenleri Sil">
             </div>
         </div>

@@ -1,0 +1,160 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>EDUGINEER - AGİM</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/public/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="/public/vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
+
+    <!-- Morris Charts CSS -->
+    <link href="/public/vendor/morrisjs/morris.css" rel="stylesheet">
+
+    <!-- Morris Charts CSS -->
+    <link href="/public/vendor/datatables/css/jquery.dataTables.min.css" rel="stylesheet">
+
+    <!-- DataTables CSS -->
+    <link href="/public/vendor/datatables-plugins/dataTables.bootstrap.css" rel="stylesheet">
+
+    <!-- DataTables Responsive CSS -->
+    <link href="/public/vendor/datatables-responsive/dataTables.responsive.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="/public/dist/css/sb-admin-2.css" rel="stylesheet">
+    <link href="/public/dist/css/admin-style.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="/public/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    <!-- İon İcons -->
+    <link href="/public/dist/css/ionicons.min.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- CKEditor 4 -->
+    <script src="/public/ckeditor/ckeditor.js"></script>
+
+    <style type="text/css">
+
+    .table-striped>tbody>tr:nth-of-type(odd){background-color:#d9edf7}
+    .table-striped>tbody>tr:nth-of-type(odd):hover{background-color:#c4e3f3}
+
+    @media print
+    {
+    .noprint {display:none;}
+    }
+    </style>
+
+</head>
+<body>
+
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/admin/">AGİM | Akademik Geliştirme ve İzleme Modeli</a>
+            </div>
+            <!-- /.navbar-header -->
+
+            <ul class="nav navbar-top-links navbar-right">
+                <li class="dropdown dropdown-right">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    Hoşgeldin, <%= session.kullaniciAdi %>&nbsp;
+                        <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <!--% if ( session.logged_in ) { %-->
+                        <!-- % if (session.yetki < 2){ % -->
+                            <!-- li><a href="/profil"><i class="fa fa-user fa-fw"></i> Profil</a>
+                            </li -->
+                        <!-- % } % -->
+                            <!--li><a href="#"><i class="fa fa-gear fa-fw"></i> Ayarlar</a>
+                            </li-->
+                            <!-- li class="divider"></li -->
+                            <li><a href="/admin/logout"><i class="fa fa-sign-out fa-fw"></i> Çıkış</a>
+                        <!--% } else { %-->
+                        <!--
+                            <li><a href="login"><i class="fa fa-user fa-fw"></i> Giriş Yap</a>
+                            </li>
+                        -->
+                        <!--% } %-->
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-user -->
+                </li>
+                <!-- /.dropdown -->
+            </ul>
+            <!-- /.navbar-top-links -->
+
+            <%- include('sidebar') -%>
+
+            
+        </nav>
+
+
+        <div id="page-wrapper">
+            <%- body%>
+        </div>
+        <!-- /#page-wrapper -->
+
+
+
+    </div>
+    <!-- /#wrapper -->
+
+
+
+
+    <script type="text/javascript" src="/public/js/jquery-3.2.1.min.js"></script>
+
+    <!-- jQuery -->
+    <script src="/public/vendor/jquery/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/public/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="/public/vendor/metisMenu/metisMenu.min.js"></script>
+
+    <!-- DataTables JavaScript 
+    -->
+    <script src="/public/vendor/datatables/js/jquery.dataTables.js"></script>
+    <script src="/public/vendor/datatables-plugins/dataTables.bootstrap.min.js"></script>
+    <script src="/public/vendor/datatables-responsive/dataTables.responsive.js"></script>
+
+    <!-- Page-Level Demo Scripts - Tables - Use for reference 
+    -->
+    <script>
+    $(document).ready(function() {
+        $('#dataTable').DataTable({
+            responsive: true
+            // "order": [0,""]
+            // "pagingType": "numbers"
+            
+        });
+    });
+    </script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="/public/dist/js/sb-admin-2.js"></script>
+
+
+</body>
+</html>
